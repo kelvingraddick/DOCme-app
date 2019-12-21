@@ -5,7 +5,7 @@ import Fonts from '../Constants/Fonts';
 
 class LogoTitle extends React.Component {
   render() {
-    return (<Image style={styles.logoText} source={require('../Images/docme-logo-with-icon.png')} />);
+    return (<Image style={styles.logoText} source={require('../Images/docme-logo-icon-and-text.png')} />);
   }
 }
 
@@ -21,7 +21,7 @@ export default class SearchScreen extends Component {
         <SafeAreaView />
         <View style={styles.container}>
           <View style={styles.header}>
-            <Image style={styles.logoIcon} source={require('../Images/docme-logo-icon-white.png')} />
+            <Image style={styles.logoIcon} source={require('../Images/docme-logo-icon.png')} />
             <Text style={styles.titleText}>Welcome to DOCme!{'\n'}Tell us what you need below</Text>
             <TextInput
               style={styles.textBox}
@@ -76,7 +76,6 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
     alignSelf: 'center',
-    tintColor: Colors.WHITE,
     marginTop: 10,
     marginBottom: 10
   },
