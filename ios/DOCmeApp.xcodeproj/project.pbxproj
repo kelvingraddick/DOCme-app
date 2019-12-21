@@ -19,7 +19,7 @@
 		7F2C88AFAE6D49789BB77F0C /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D63F1EE8D3F34EB28FFDC0E5 /* Ionicons.ttf */; };
 		98A5221F25AE961A207AC78A /* libPods-DOCmeAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7555325AA737A0312E48433 /* libPods-DOCmeAppTests.a */; };
 		A1D64E77BFDC7109ED8DAFB7 /* libPods-DOCmeApp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EAA7E3FC8FF2C688362C8B /* libPods-DOCmeApp-tvOS.a */; };
-		B652755923A6DE0600E6FF8F /* docme-logo-with-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B652755823A6DE0600E6FF8F /* docme-logo-with-icon.png */; };
+		B6A003DF23ADBBC70088285B /* docme-logo-icon-and-text.png in Resources */ = {isa = PBXBuildFile; fileRef = B6A003DE23ADBBC70088285B /* docme-logo-icon-and-text.png */; };
 		EDF474EAD8DBA1352E036361 /* libPods-DOCmeApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1390454C1AA0280B5F510BE8 /* libPods-DOCmeApp.a */; };
 		FC5E495EBB875B5FAF04491B /* libPods-DOCmeApp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 355B36539A97FFAF303EAC53 /* libPods-DOCmeApp-tvOSTests.a */; };
 /* End PBXBuildFile section */
@@ -63,7 +63,7 @@
 		6281E48F4B2AE3105BA43819 /* Pods-DOCmeApp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DOCmeApp-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-DOCmeApp-tvOSTests/Pods-DOCmeApp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6304B6EC31C1B8D3F703E098 /* Pods-DOCmeApp-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DOCmeApp-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-DOCmeApp-tvOSTests/Pods-DOCmeApp-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		8350A9A9BEEB9D0EC7C386D3 /* Pods-DOCmeApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DOCmeApp.release.xcconfig"; path = "Target Support Files/Pods-DOCmeApp/Pods-DOCmeApp.release.xcconfig"; sourceTree = "<group>"; };
-		B652755823A6DE0600E6FF8F /* docme-logo-with-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "docme-logo-with-icon.png"; sourceTree = "<group>"; };
+		B6A003DE23ADBBC70088285B /* docme-logo-icon-and-text.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "docme-logo-icon-and-text.png"; sourceTree = "<group>"; };
 		BA54BCC0DF962BEC61394D4F /* Pods-DOCmeApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DOCmeApp.debug.xcconfig"; path = "Target Support Files/Pods-DOCmeApp/Pods-DOCmeApp.debug.xcconfig"; sourceTree = "<group>"; };
 		D63F1EE8D3F34EB28FFDC0E5 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-ionicons/fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		E2F6BB43A7178DD6FFF0470C /* Pods-DOCmeAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DOCmeAppTests.debug.xcconfig"; path = "Target Support Files/Pods-DOCmeAppTests/Pods-DOCmeAppTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -206,7 +206,7 @@
 		B652755723A6DDDF00E6FF8F /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				B652755823A6DE0600E6FF8F /* docme-logo-with-icon.png */,
+				B6A003DE23ADBBC70088285B /* docme-logo-icon-and-text.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -362,8 +362,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B652755923A6DE0600E6FF8F /* docme-logo-with-icon.png in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				B6A003DF23ADBBC70088285B /* docme-logo-icon-and-text.png in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				7F2C88AFAE6D49789BB77F0C /* Ionicons.ttf in Resources */,
 			);

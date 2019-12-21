@@ -13,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="docme-logo-with-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="bUX-bK-RxG">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="docme-logo-icon-and-text.png" translatesAutoresizingMaskIntoConstraints="NO" id="bUX-bK-RxG">
                     <rect key="frame" x="120" y="176" width="240" height="128"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="128" id="H4E-TF-Pj5"/>
@@ -32,6 +32,6 @@
         </view>
     </objects>
     <resources>
-        <image name="docme-logo-with-icon.png" width="428.39999389648438" height="79.199996948242188"/>
+        <image name="docme-logo-icon-and-text.png" width="486" height="151.19999694824219"/>
     </resources>
 </document>
