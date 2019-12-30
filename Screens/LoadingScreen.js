@@ -4,7 +4,7 @@ import { Buffer } from 'buffer'
 
 export default class LoadingScreen extends Component {
   async componentDidMount() {
-    var user = await this.signIn('kelvingraddick@gmail.com-', 'password');
+    var user = await this.signIn('kelvingraddick@gmail.com', 'password');
     this.props.navigation.navigate('BottomTabNavigator');
   }
   
@@ -21,7 +21,7 @@ export default class LoadingScreen extends Component {
 
   async signIn(emailAddress, password) {
     var base64 = new Buffer(emailAddress + ':' + password).toString('base64');
-    return fetch('http://localhost:3000/user/signin', {
+    return fetch('http://www.docmeapp.com/user/signin', {
       method: 'GET',
       headers: {
         Authorization: 'Basic ' + base64,
