@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, Modal, FlatList } from 'react-native';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
+import ModelHeader from '../Components/ModalHeader';
 
 class LogoTitle extends React.Component {
   render() {
@@ -13,6 +14,39 @@ export default class SearchScreen extends Component {
   static navigationOptions = {
     headerTitle: () => <LogoTitle />
   };
+
+  state = {
+    isSpecialtySearchModalVisible: false,
+    specialtyOptions: [],
+    selectedSpecialtyOption: {}
+  };
+
+  async onSearchBoxChangeText(text) {
+    var specialties = await fetch('http://www.docmeapp.com/specialty/search/' + encodeURIComponent(text), { method: 'GET' })
+    .then((response) => { 
+      if (response.status == 200) {
+        return response.json()
+        .then((responseJson) => {
+          if (responseJson.isSuccess) {
+            return responseJson.specialties;
+          }
+        })
+      }
+      return undefined;
+    })
+    .catch((error) => {
+      console.error(error);
+      return undefined;
+    });
+
+    this.setState({specialtyOptions: specialties});
+  }
+
+  onSpecialtyOptionSelected(option) {
+    this.setState({selectedSpecialtyOption: option});
+    this.setState({isSpecialtySearchModalVisible: false});
+    this.setState({specialtyOptions: []});
+  }
 
   render() {
     return (
@@ -27,6 +61,8 @@ export default class SearchScreen extends Component {
               style={styles.textBox}
               placeholder='Illness'
               placeholderTextColor={Colors.MEDIUM_BLUE}
+              value={this.state.selectedSpecialtyOption.name}
+              onFocus={() => this.setState({isSpecialtySearchModalVisible: true})}
             />
             <TextInput
               style={styles.textBox}
@@ -45,11 +81,41 @@ export default class SearchScreen extends Component {
             />
             <TouchableOpacity
               style={styles.button}
-              //onPress={() => navigate('HomeScreen')}
+              onPress={() => {}}
               underlayColor='#fff'>
               <Text style={styles.buttonText}>Find</Text>
             </TouchableOpacity>
           </View>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.isSpecialtySearchModalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}>
+            <SafeAreaView />
+            <ModelHeader titleText="Search" onCancelButtonPress={() => this.setState({isSpecialtySearchModalVisible: false})} />
+            <TextInput
+              style={styles.searchBox}
+              placeholder='Start typing in a specialty..'
+              placeholderTextColor={Colors.GRAY}
+              onChangeText={(text) => this.onSearchBoxChangeText(text)}
+            />
+            <FlatList
+              data={this.state.specialtyOptions}
+              keyExtractor={item => item.id}
+              renderItem={({item, index, separators}) => (
+                <TouchableHighlight
+                  style={styles.option}
+                  onPress={() => this.onSpecialtyOptionSelected(item)}
+                  onShowUnderlay={separators.highlight}
+                  onHideUnderlay={separators.unhighlight}>
+                  <Text style={styles.optionText}>{item.name}</Text>
+                </TouchableHighlight>
+              )}
+              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+            />
+          </Modal>
         </View>
       </>
     );
@@ -107,5 +173,29 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: Fonts.MEDIUM,
     textAlign: 'center'
+  },
+  option: {
+    height: 60,
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center'
+  },
+  optionText: {
+    padding: 10,
+    color: Colors.DARK_BLUE,
+    fontSize: 18,
+    fontFamily: Fonts.NORMAL
+  },
+  optionSeparator: {
+    height: 1,
+    backgroundColor: Colors.LIGHT_GRAY
+  },
+  searchBox: {
+    height: 60,
+    padding: 10,
+    color: Colors.DARK_GRAY,
+    fontSize: 18,
+    borderBottomColor: Colors.LIGHT_GRAY,
+    borderBottomWidth: 1
   }
 })
