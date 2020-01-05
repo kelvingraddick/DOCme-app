@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, Modal, FlatList } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import Moment from 'moment';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import ModelHeader from '../Components/ModalHeader';
@@ -21,7 +23,12 @@ export default class SearchScreen extends Component {
     selectedSpecialtyOption: {},
     isLocationSearchModalVisible: false,
     locationOptions: [],
-    selectedLocationOption: {}
+    selectedLocationOption: {},
+    isDatePickerModalVisible: false,
+    selectedDate: {
+      value: new Date(),
+      display: Moment(new Date()).format("dddd, MMMM Do YYYY")
+    }
   };
 
   async onSpecialtySearchBoxChangeText(text) {
@@ -80,6 +87,10 @@ export default class SearchScreen extends Component {
     this.setState({locationOptions: []});
   }
 
+  onDateSelected(event, date) {
+    this.setState({selectedDate: { value: date, display: Moment(date).format("dddd, MMMM Do YYYY") }});
+  }
+
   render() {
     return (
       <>
@@ -107,6 +118,8 @@ export default class SearchScreen extends Component {
               style={styles.textBox}
               placeholder='Date'
               placeholderTextColor={Colors.MEDIUM_BLUE}
+              value={this.state.selectedDate.display}
+              onFocus={() => this.setState({isDatePickerModalVisible: true})}
             />
             <TextInput
               style={styles.textBox}
@@ -179,6 +192,31 @@ export default class SearchScreen extends Component {
               )}
               ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
             />
+          </Modal>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.isDatePickerModalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}>
+            <SafeAreaView />
+            <ModelHeader titleText="Date" onCancelButtonPress={() => this.setState({isDatePickerModalVisible: false})} />
+            <View style={{margin: 20}}>
+              <DateTimePicker 
+                value={this.state.selectedDate.value}
+                minimumDate={new Date()}
+                mode='date'
+                is24Hour={true}
+                display='default'
+                onChange={(event, date) => this.onDateSelected(event, date)} />
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => this.setState({isDatePickerModalVisible: false})}
+                underlayColor='#fff'>
+                <Text style={styles.buttonText}>Done</Text>
+              </TouchableOpacity>
+            </View>
           </Modal>
         </View>
       </>
