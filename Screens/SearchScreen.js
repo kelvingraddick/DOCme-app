@@ -18,7 +18,10 @@ export default class SearchScreen extends Component {
   state = {
     isSpecialtySearchModalVisible: false,
     specialtyOptions: [],
-    selectedSpecialtyOption: {}
+    selectedSpecialtyOption: {},
+    isLocationSearchModalVisible: false,
+    locationOptions: [],
+    selectedLocationOption: {}
   };
 
   async onSpecialtySearchBoxChangeText(text) {
@@ -48,6 +51,35 @@ export default class SearchScreen extends Component {
     this.setState({specialtyOptions: []});
   }
 
+  async onLocationSearchBoxChangeText(text) {
+    var query = encodeURIComponent(text);
+    var apiKey = 'AIzaSyBxibHzVBhbWfOYekruViZrdWLZXbqKZ44';
+    var locations = await fetch('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + query + '&key=' + apiKey + '&types=geocode&components=country:us&language=en', { method: 'GET' })
+    .then((response) => { 
+      if (response.status == 200) {
+        return response.json()
+        .then((responseJson) => {
+          if (responseJson.status == 'OK') {
+            return responseJson.predictions;
+          }
+        })
+      }
+      return undefined;
+    })
+    .catch((error) => {
+      console.error(error);
+      return undefined;
+    });
+
+    this.setState({locationOptions: locations});
+  }
+
+  onLocationOptionSelected(option) {
+    this.setState({selectedLocationOption: option});
+    this.setState({isLocationSearchModalVisible: false});
+    this.setState({locationOptions: []});
+  }
+
   render() {
     return (
       <>
@@ -68,6 +100,8 @@ export default class SearchScreen extends Component {
               style={styles.textBox}
               placeholder='Location'
               placeholderTextColor={Colors.MEDIUM_BLUE}
+              value={this.state.selectedLocationOption.description}
+              onFocus={() => this.setState({isLocationSearchModalVisible: true})}
             />
             <TextInput
               style={styles.textBox}
@@ -111,6 +145,36 @@ export default class SearchScreen extends Component {
                   onShowUnderlay={separators.highlight}
                   onHideUnderlay={separators.unhighlight}>
                   <Text style={styles.optionText}>{item.name}</Text>
+                </TouchableHighlight>
+              )}
+              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+            />
+          </Modal>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.isLocationSearchModalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}>
+            <SafeAreaView />
+            <ModelHeader titleText="Search" onCancelButtonPress={() => this.setState({isLocationSearchModalVisible: false})} />
+            <TextInput
+              style={styles.searchBox}
+              placeholder='Start typing in a city or zip code..'
+              placeholderTextColor={Colors.GRAY}
+              onChangeText={(text) => this.onLocationSearchBoxChangeText(text)}
+            />
+            <FlatList
+              data={this.state.locationOptions}
+              keyExtractor={item => item.id}
+              renderItem={({item, index, separators}) => (
+                <TouchableHighlight
+                  style={styles.option}
+                  onPress={() => this.onLocationOptionSelected(item)}
+                  onShowUnderlay={separators.highlight}
+                  onHideUnderlay={separators.unhighlight}>
+                  <Text style={styles.optionText}>{item.description}</Text>
                 </TouchableHighlight>
               )}
               ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
