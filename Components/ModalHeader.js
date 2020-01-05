@@ -47,14 +47,14 @@ const styles = StyleSheet.create({
   buttonText: {
     flex: 1,
     color: Colors.DARK_GRAY,
-    fontSize: 16,
+    fontSize: 15,
     fontFamily: Fonts.BOLD,
     alignSelf: 'center'
   },
   titleText: {
     flex: 1,
     color: Colors.DARK_GRAY,
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: Fonts.BOLD,
     textAlign: 'center',
     alignSelf: 'center'

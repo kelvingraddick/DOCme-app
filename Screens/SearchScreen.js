@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   option: {
-    height: 60,
+    height: 55,
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center'
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   optionText: {
     padding: 10,
     color: Colors.DARK_BLUE,
-    fontSize: 18,
+    fontSize: 15,
     fontFamily: Fonts.NORMAL
   },
   optionSeparator: {
@@ -191,10 +191,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.LIGHT_GRAY
   },
   searchBox: {
-    height: 60,
+    height: 55,
     padding: 10,
     color: Colors.DARK_GRAY,
-    fontSize: 18,
+    fontSize: 15,
     borderBottomColor: Colors.LIGHT_GRAY,
     borderBottomWidth: 1
   }
