@@ -21,7 +21,7 @@ export default class SearchScreen extends Component {
     selectedSpecialtyOption: {}
   };
 
-  async onSearchBoxChangeText(text) {
+  async onSpecialtySearchBoxChangeText(text) {
     var specialties = await fetch('http://www.docmeapp.com/specialty/search/' + encodeURIComponent(text), { method: 'GET' })
     .then((response) => { 
       if (response.status == 200) {
@@ -99,7 +99,7 @@ export default class SearchScreen extends Component {
               style={styles.searchBox}
               placeholder='Start typing in a specialty..'
               placeholderTextColor={Colors.GRAY}
-              onChangeText={(text) => this.onSearchBoxChangeText(text)}
+              onChangeText={(text) => this.onSpecialtySearchBoxChangeText(text)}
             />
             <FlatList
               data={this.state.specialtyOptions}
