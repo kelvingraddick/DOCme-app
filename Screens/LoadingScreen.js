@@ -4,8 +4,10 @@ import { Buffer } from 'buffer'
 
 export default class LoadingScreen extends Component {
   async componentDidMount() {
-    var user = await this.signIn('kelvingraddick@gmail.com', 'password');
-    this.props.navigation.navigate('BottomTabNavigator');
+    var patient = await this.signIn('kelvingraddick@gmail.com', 'password');
+    if (patient) {
+      this.props.navigation.navigate('BottomTabNavigator');
+    }
   }
   
   render() {
@@ -21,7 +23,7 @@ export default class LoadingScreen extends Component {
 
   async signIn(emailAddress, password) {
     var base64 = new Buffer(emailAddress + ':' + password).toString('base64');
-    return fetch('http://www.docmeapp.com/user/signin', {
+    return fetch('http://www.docmeapp.com/patient/signin', {
       method: 'GET',
       headers: {
         Authorization: 'Basic ' + base64,
@@ -32,7 +34,7 @@ export default class LoadingScreen extends Component {
         return response.json()
         .then((responseJson) => {
           if (responseJson.isSuccess) {
-            return responseJson.user;
+            return responseJson.patient;
           }
         })
       }
