@@ -5,13 +5,15 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Colors from './Constants/Colors';
 import SearchScreen from './Screens/SearchScreen';
+import ResultsScreen from './Screens/ResultsScreen';
 import AppointmentsScreen from './Screens/AppointmentsScreen';
 import LoadingScreen from './Screens/LoadingScreen';
 import Icon from 'react-native-ionicons';
 
 const SearchScreenStackNavigator = createStackNavigator(
   {
-    SearchScreen: SearchScreen
+    SearchScreen: SearchScreen,
+    ResultsScreen: ResultsScreen
   },
   {
     navigationOptions: {

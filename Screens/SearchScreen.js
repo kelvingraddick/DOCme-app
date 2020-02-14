@@ -14,7 +14,9 @@ class LogoTitle extends React.Component {
 
 export default class SearchScreen extends Component {
   static navigationOptions = {
-    headerTitle: () => <LogoTitle />
+    headerTitle: () => <LogoTitle />,
+    headerBackTitle: "",
+    headerTruncatedBackTitle: ""
   };
 
   state = {
@@ -155,6 +157,10 @@ export default class SearchScreen extends Component {
     this.setState({isInsurancePlanSearchModalVisible: false});
   }
 
+  onFindButtonTapped() {
+    this.props.navigation.navigate('ResultsScreen');
+  }
+
   render() {
     return (
       <>
@@ -204,7 +210,7 @@ export default class SearchScreen extends Component {
             }
             <TouchableOpacity
               style={styles.button}
-              onPress={() => {}}
+              onPress={() => this.onFindButtonTapped()}
               underlayColor='#fff'>
               <Text style={styles.buttonText}>Find</Text>
             </TouchableOpacity>
