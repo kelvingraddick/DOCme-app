@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet, View, StatusBar, FlatList, Image, Text } from 'react-native';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
+import Icon from 'react-native-ionicons';
 
 export default class ResultsScreen extends Component {
   state = {
@@ -45,6 +46,17 @@ export default class ResultsScreen extends Component {
                 <View style={styles.doctorDetailsView}>  
                   <Text style={styles.doctorNameText}>{item.firstName} {item.lastName}</Text>
                   <Text style={styles.doctorEmailAddressText}>{item.emailAddress}</Text>
+                  { item.practice &&
+                    <Text style={styles.doctorLocationText}>{item.practice.addressLine1} {item.practice.addressLine2} {item.practice.city}, {item.practice.state} {item.practice.postalCode}</Text>
+                  }
+                  <View style={styles.doctorStarsView}>  
+                    <Icon style={styles.doctorStarIcon} name="star" />
+                    <Icon style={styles.doctorStarIcon} name="star" />
+                    <Icon style={styles.doctorStarIcon} name="star" />
+                    <Icon style={styles.doctorStarIcon} name="star" />
+                    <Icon style={styles.doctorStarIcon} name="star" />
+                    <Text style={styles.doctorStarText}>(471)</Text>
+                  </View>
                 </View>
               </View>
             }
@@ -71,17 +83,39 @@ const styles = StyleSheet.create({
     borderRadius: 35
   },
   doctorDetailsView: {
-    paddingLeft: 15
+    paddingLeft: 15,
+    justifyContent: 'center'
   },
   doctorNameText: {
     color: Colors.DARK_BLUE,
-    fontSize: 20,
+    fontSize: 15,
     fontFamily: Fonts.MEDIUM,
-    marginBottom: 5
+    marginBottom: 3
   },
   doctorEmailAddressText: {
     color: Colors.DARK_BLUE,
-    fontSize: 15,
-    fontFamily: Fonts.NORMAL
+    fontSize: 13,
+    fontFamily: Fonts.LIGHT,
+    marginBottom: 3
+  },
+  doctorLocationText: {
+    color: Colors.GRAY,
+    fontSize: 13,
+    fontFamily: Fonts.LIGHT,
+    marginBottom: 3
+  },
+  doctorStarsView: {
+    flexDirection: 'row'
+  },
+  doctorStarIcon: {
+    color: Colors.GREEN,
+    fontSize: 20,
+    marginRight: 2
+  },
+  doctorStarText: {
+    color: Colors.GRAY,
+    fontSize: 13,
+    fontFamily: Fonts.NORMAL,
+    lineHeight: 20
   }
 })
