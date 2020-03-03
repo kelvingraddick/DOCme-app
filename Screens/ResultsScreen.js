@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar, FlatList, Image, Text } from 'react-native';
+import { SafeAreaView, StyleSheet, View, StatusBar, FlatList, Image, Text, TouchableOpacity } from 'react-native';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import Icon from 'react-native-ionicons';
@@ -37,28 +37,31 @@ export default class ResultsScreen extends Component {
         <View style={styles.container}>  
           <FlatList
             data={this.state.doctors}
+            keyExtractor={item => item.id.toString()}
             renderItem={({item}) => 
-              <View style={styles.doctorView}> 
-                <Image
-                  style={styles.doctorImage}
-                  source={{uri: item.imageUrl ? item.imageUrl : ''}}
-                />
-                <View style={styles.doctorDetailsView}>  
-                  <Text style={styles.doctorNameText}>{item.firstName} {item.lastName}</Text>
-                  <Text style={styles.doctorEmailAddressText}>{item.emailAddress}</Text>
-                  { item.practice &&
-                    <Text style={styles.doctorLocationText}>{item.practice.addressLine1} {item.practice.addressLine2} {item.practice.city}, {item.practice.state} {item.practice.postalCode}</Text>
-                  }
-                  <View style={styles.doctorStarsView}>  
-                    <Icon style={styles.doctorStarIcon} name="star" />
-                    <Icon style={styles.doctorStarIcon} name="star" />
-                    <Icon style={styles.doctorStarIcon} name="star" />
-                    <Icon style={styles.doctorStarIcon} name="star" />
-                    <Icon style={styles.doctorStarIcon} name="star" />
-                    <Text style={styles.doctorStarText}>(471)</Text>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('DoctorScreen', { id: item.id })}>
+                <View style={styles.doctorView}> 
+                  <Image
+                    style={styles.doctorImage}
+                    source={{uri: item.imageUrl ? item.imageUrl : ''}}
+                  />
+                  <View style={styles.doctorDetailsView}>  
+                    <Text style={styles.doctorNameText}>{item.firstName} {item.lastName}</Text>
+                    <Text style={styles.doctorEmailAddressText}>{item.emailAddress}</Text>
+                    { item.practice &&
+                      <Text style={styles.doctorLocationText}>{item.practice.addressLine1} {item.practice.addressLine2} {item.practice.city}, {item.practice.state} {item.practice.postalCode}</Text>
+                    }
+                    <View style={styles.doctorStarsView}>  
+                      <Icon style={styles.doctorStarIcon} name="star" />
+                      <Icon style={styles.doctorStarIcon} name="star" />
+                      <Icon style={styles.doctorStarIcon} name="star" />
+                      <Icon style={styles.doctorStarIcon} name="star" />
+                      <Icon style={styles.doctorStarIcon} name="star" />
+                      <Text style={styles.doctorStarText}>(471)</Text>
+                    </View>
                   </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             }
           />
         </View>

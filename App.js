@@ -8,12 +8,14 @@ import SearchScreen from './Screens/SearchScreen';
 import ResultsScreen from './Screens/ResultsScreen';
 import AppointmentsScreen from './Screens/AppointmentsScreen';
 import LoadingScreen from './Screens/LoadingScreen';
+import DoctorScreen from './Screens/DoctorScreen';
 import Icon from 'react-native-ionicons';
 
 const SearchScreenStackNavigator = createStackNavigator(
   {
     SearchScreen: SearchScreen,
-    ResultsScreen: ResultsScreen
+    ResultsScreen: ResultsScreen,
+    DoctorScreen: DoctorScreen
   },
   {
     navigationOptions: {
