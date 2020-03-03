@@ -655,7 +655,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.6;
+				CURRENT_PROJECT_VERSION = 1.7;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = HCQ2A438C7;
 				INFOPLIST_FILE = DOCmeApp/Info.plist;
@@ -677,7 +677,7 @@
 			baseConfigurationReference = 8350A9A9BEEB9D0EC7C386D3 /* Pods-DOCmeApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1.6;
+				CURRENT_PROJECT_VERSION = 1.7;
 				DEVELOPMENT_TEAM = HCQ2A438C7;
 				INFOPLIST_FILE = DOCmeApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
