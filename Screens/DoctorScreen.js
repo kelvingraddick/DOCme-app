@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar, Image, Text } from 'react-native';
+import { SafeAreaView, StyleSheet, View, StatusBar, Image, Text, Button } from 'react-native';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import Icon from 'react-native-ionicons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default class DoctorScreen extends Component {
   static navigationOptions = {
@@ -59,6 +60,18 @@ export default class DoctorScreen extends Component {
             <Icon style={styles.doctorStarIcon} name="star" />
             <Text style={styles.doctorStarText}>(471)</Text>
           </View>
+          <View style={styles.divider}></View>
+          <Text style={styles.bookAnAppointmentText}>Book an appointment</Text>
+          <View style={styles.dateControl}>
+            <TouchableOpacity><Icon style={styles.doctorStarIcon} name="arrow-back" /></TouchableOpacity>
+            <TouchableOpacity>
+              <View style={styles.dateControlLabel}>
+                <Icon style={styles.dateControlLabelIcon} name="calendar" />
+                <Text style={styles.dateControlLabelText}> Wed, Mar 11</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity><Icon style={styles.doctorStarIcon} name="arrow-forward" /></TouchableOpacity>
+          </View>
         </View>
       </>
     );
@@ -96,7 +109,8 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   doctorStarsView: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginBottom: 20
   },
   doctorStarIcon: {
     color: Colors.GREEN,
@@ -108,5 +122,36 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: Fonts.NORMAL,
     lineHeight: 20
+  },
+  divider: {
+    alignSelf: 'stretch',
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.LIGHT_GRAY,
+    marginBottom: 20
+  },
+  bookAnAppointmentText: {
+    color: Colors.DARK_BLUE,
+    fontSize: 17,
+    fontFamily: Fonts.BOLD,
+    marginBottom: 10
+  },
+  dateControl: {
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  dateControlLabel: {
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  dateControlLabelIcon: {
+    color: Colors.DARK_GRAY,
+    fontSize: 20
+  },
+  dateControlLabelText: {
+    color: Colors.DARK_GRAY,
+    textAlignVertical: 'center',
+    fontSize: 15,
+    fontFamily: Fonts.BOLD
   }
 })
