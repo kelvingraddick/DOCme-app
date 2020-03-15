@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar, Image, Text, Button } from 'react-native';
+import { SafeAreaView, StyleSheet, View, StatusBar, Image, Text, Button, FlatList } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import Icon from 'react-native-ionicons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import Moment from 'moment';
 
 export default class DoctorScreen extends Component {
   static navigationOptions = {
-    headerTitle: "Doctor",
-    headerBackTitle: "",
-    headerTruncatedBackTitle: ""
+    headerTitle: 'Doctor',
+    headerBackTitle: '',
+    headerTruncatedBackTitle: ''
   };
+
+  CHANGE_DATE_DIRECTION = { BACK: 0, FORWARD: 1 }
   
   state = {
-    doctor: {}
+    doctor: {},
+    date: Moment().startOf('date'),
+    times: []
   };
   
   async componentDidMount() {
@@ -35,6 +40,7 @@ export default class DoctorScreen extends Component {
     });
     this.setState({doctor: doctor});
     this.props.navigation.setParams({ headerTitle: this.state.doctor.firstName });
+    this.changeTimes();
   }
   
   render() {
@@ -53,41 +59,93 @@ export default class DoctorScreen extends Component {
             <Text style={styles.doctorLocationText}>{this.state.doctor.practice.addressLine1} {this.state.doctor.practice.addressLine2} {this.state.doctor.practice.city}, {this.state.doctor.practice.state} {this.state.doctor.practice.postalCode}</Text>
           }
           <View style={styles.doctorStarsView}>  
-            <Icon style={styles.doctorStarIcon} name="star" />
-            <Icon style={styles.doctorStarIcon} name="star" />
-            <Icon style={styles.doctorStarIcon} name="star" />
-            <Icon style={styles.doctorStarIcon} name="star" />
-            <Icon style={styles.doctorStarIcon} name="star" />
+            <Icon style={styles.starIcon} name="star" />
+            <Icon style={styles.starIcon} name="star" />
+            <Icon style={styles.starIcon} name="star" />
+            <Icon style={styles.starIcon} name="star" />
+            <Icon style={styles.starIcon} name="star" />
             <Text style={styles.doctorStarText}>(471)</Text>
           </View>
           <View style={styles.divider}></View>
           <Text style={styles.bookAnAppointmentText}>Book an appointment</Text>
           <View style={styles.dateControl}>
-            <TouchableOpacity><Icon style={styles.doctorStarIcon} name="arrow-back" /></TouchableOpacity>
+            <TouchableOpacity onPress={() => this.changeDate(this.CHANGE_DATE_DIRECTION.BACK)} hitSlop={styles.dateControlArrowIconHitSlop}>
+              <Icon style={styles.dateControlArrowIcon} name="arrow-back" />
+            </TouchableOpacity>
             <TouchableOpacity>
               <View style={styles.dateControlLabel}>
                 <Icon style={styles.dateControlLabelIcon} name="calendar" />
-                <Text style={styles.dateControlLabelText}> Wed, Mar 11</Text>
+                <Text style={styles.dateControlLabelText}>  {this.state.date.format('ddd, MMM D')}</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity><Icon style={styles.doctorStarIcon} name="arrow-forward" /></TouchableOpacity>
+            <TouchableOpacity onPress={() => this.changeDate(this.CHANGE_DATE_DIRECTION.FORWARD)} hitSlop={styles.dateControlArrowIconHitSlop}>
+              <Icon style={styles.dateControlArrowIcon} name="arrow-forward" />
+            </TouchableOpacity>
           </View>
+          <FlatList
+            data={this.state.times}
+            keyExtractor={item => item.toString()}
+            style={styles.timesList}
+            horizontal={true}
+            renderItem={({item}) => 
+              <TouchableOpacity
+                style={styles.timeButton}
+                underlayColor='#fff'>
+                <Text style={styles.timeButtonText}>{item.format('h:mma')}</Text>
+              </TouchableOpacity>
+            }
+            ListEmptyComponent={<Text style={styles.noTimesText}>No times available</Text>}
+          />
         </View>
       </>
     );
   }
+
+  changeTimes() {
+    var times = [];
+    var schedule = this.state.doctor.schedule;
+    if (schedule) {
+      var dayOfWeek = this.state.date.format('dddd').toLowerCase();
+      var availabilityStartTime = this.getTimeFromString(schedule[dayOfWeek + 'AvailabilityStartTime']);
+      var availabilityEndTime = this.getTimeFromString(schedule[dayOfWeek + 'AvailabilityEndTime']);
+      var breakStartTime = this.getTimeFromString(schedule[dayOfWeek + 'BreakStartTime']);
+      var breakEndTime = this.getTimeFromString(schedule[dayOfWeek + 'BreakEndTime']);
+      if (availabilityStartTime && availabilityEndTime) {
+        var time = Moment(availabilityStartTime);
+        while(time.isBefore(availabilityEndTime)) {
+          if (!breakStartTime || !breakEndTime || (!time.isSame(breakStartTime) && !time.isBetween(breakStartTime, breakEndTime))) { 
+            times.push(Moment(time)); 
+          }
+          time.add(30, 'minutes');
+        }
+      }
+    }
+    this.setState({times: times});
+  }
+
+  getTimeFromString(string) {
+    return string ? 
+      Moment(this.state.date.format('YYYY-MM-DD') + ' ' + string, "YYYY-MM-DD HH:mm:ss") : null;
+  }
+
+  changeDate(direction) {
+    if (direction == this.CHANGE_DATE_DIRECTION.FORWARD) this.setState({date: this.state.date.add(1, 'days')});
+    else if (this.state.date.isSameOrAfter(Moment())) this.setState({date: this.state.date.subtract(1, 'days')});
+    this.changeTimes();
+  }
 };
 
+const DATE_CONTROL_HEIGHT = 30;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    padding: 20
+    alignItems: 'center'
   },
   doctorImage: {
     width: 100,
     height: 100,
     borderRadius: 50,
+    marginTop: 20,
     marginBottom: 10
   },
   doctorNameText: {
@@ -112,7 +170,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 20
   },
-  doctorStarIcon: {
+  starIcon: {
     color: Colors.GREEN,
     fontSize: 20,
     marginRight: 2
@@ -136,22 +194,61 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   dateControl: {
-    alignSelf: 'stretch',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    alignSelf: 'stretch',
+    marginBottom: 10,
+    marginRight: 20,
+    marginLeft: 20
   },
   dateControlLabel: {
+    height: DATE_CONTROL_HEIGHT,
     flexDirection: 'row',
-    justifyContent: 'space-around'
   },
   dateControlLabelIcon: {
-    color: Colors.DARK_GRAY,
-    fontSize: 20
+    height: DATE_CONTROL_HEIGHT,
+    lineHeight: DATE_CONTROL_HEIGHT,
+    fontSize: 20,
+    color: Colors.DARK_GRAY
   },
   dateControlLabelText: {
     color: Colors.DARK_GRAY,
     textAlignVertical: 'center',
+    height: DATE_CONTROL_HEIGHT,
+    lineHeight: DATE_CONTROL_HEIGHT,
     fontSize: 15,
     fontFamily: Fonts.BOLD
+  },
+  dateControlArrowIcon: {
+    height: DATE_CONTROL_HEIGHT,
+    lineHeight: DATE_CONTROL_HEIGHT,
+    color: Colors.GREEN,
+    fontSize: 30
+  },
+  dateControlArrowIconHitSlop: {top: 10, bottom: 10, left: 10, right: 10},
+  timesList: {
+    paddingLeft: 20
+  },
+  timeButton: {
+    color: Colors.WHITE,
+    padding: 10,
+    backgroundColor: Colors.DARK_BLUE,
+    borderRadius: 5,
+    marginBottom: 20,
+    marginRight: 10
+  },
+  timeButtonText: {
+    color: Colors.WHITE,
+    fontSize: 17,
+    fontFamily: Fonts.MEDIUM,
+    textAlign: 'center'
+  },
+  noTimesText: {
+    color: Colors.DARK_GRAY,
+    textAlignVertical: 'center',
+    height: 37,
+    lineHeight: 37,
+    fontSize: 15
   }
 })
