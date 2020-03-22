@@ -9,9 +9,9 @@ For local development, at a minimum you will need a macOS machine to build/run t
 ## Getting started
 
 Follow the [React Native "Getting Started" instructions](http://reactnative.dev/docs/getting-started):
-- Select the `"React Native CLI Quickstart"` option
-- Select your `"Development OS"`: macOS, Windows, or Linux
-- Select your `"Target OS: iOS"` or Android
+- Select the **"React Native CLI Quickstart"** option
+- Select your **"Development OS"**: macOS, Windows, or Linux
+- Select your **"Target OS: iOS"** or Android
 - Follow the instructions to install/setup the dependencies
 
 ## Install
