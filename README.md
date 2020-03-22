@@ -27,6 +27,7 @@ The variables you will need are:
 ## Running the project
     $ npx react-native run-ios
 OR
+    
     $ npx react-native run-android
 
 ## Build for production
@@ -36,6 +37,7 @@ Archive and upload through XCode; make sure you have the required certs and prov
 
 ### Android 
 Run the following:
+    
     $ cd android
     $ ./gradlew bundleRelease
 Make sure you have the required private signing cert on your machine and is pointed to in the local gradle properties file
