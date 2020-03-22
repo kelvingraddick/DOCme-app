@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet, View, StatusBar, Image, Text, Button, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import MapView from 'react-native-maps';
+import Geocoder from 'react-native-geocoding';
+import { Marker } from 'react-native-maps';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import Icon from 'react-native-ionicons';
@@ -18,7 +21,9 @@ export default class DoctorScreen extends Component {
   state = {
     doctor: {},
     date: Moment().startOf('date'),
-    times: []
+    times: [],
+    mapRegion: {},
+    mapMarkers: []
   };
   
   async componentDidMount() {
@@ -41,6 +46,23 @@ export default class DoctorScreen extends Component {
     this.setState({doctor: doctor});
     this.props.navigation.setParams({ headerTitle: this.state.doctor.firstName });
     this.changeTimes();
+
+    Geocoder.init("xxxxx");
+    var coordinates = await Geocoder.from(this.state.doctor.practice.addressLine1 + " " + this.state.doctor.practice.addressLine2 + " " + this.state.doctor.practice.city + ", " + this.state.doctor.practice.state + " " + this.state.doctor.practice.postalCode)
+    .then((json) => { 
+      return {
+        latitude: json.results[0].geometry.location.lat,
+        longitude: json.results[0].geometry.location.lng,
+        latitudeDelta: 0.05,
+        longitudeDelta: 0.05
+      };
+    })
+    .catch((error) => {
+      console.error(error);
+      return undefined;
+    });
+    this.setState({mapRegion: coordinates});
+    this.setState({mapMarkers: [coordinates]});
   }
   
   render() {
@@ -96,6 +118,17 @@ export default class DoctorScreen extends Component {
             }
             ListEmptyComponent={<Text style={styles.noTimesText}>No times available</Text>}
           />
+          <MapView
+            style={styles.mapView}
+            region={this.state.mapRegion}>
+            {this.state.mapMarkers.map(marker => (
+              <Marker
+                coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+                title={marker.title}
+                description={marker.description}
+              />
+            ))}
+          </MapView>
         </View>
       </>
     );
@@ -228,6 +261,7 @@ const styles = StyleSheet.create({
   },
   dateControlArrowIconHitSlop: {top: 10, bottom: 10, left: 10, right: 10},
   timesList: {
+    maxHeight: 60,
     paddingLeft: 20
   },
   timeButton: {
@@ -235,7 +269,6 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: Colors.DARK_BLUE,
     borderRadius: 5,
-    marginBottom: 20,
     marginRight: 10
   },
   timeButtonText: {
@@ -250,5 +283,9 @@ const styles = StyleSheet.create({
     height: 37,
     lineHeight: 37,
     fontSize: 15
+  },
+  mapView: {
+    height: 150,
+    alignSelf: 'stretch'
   }
 })
