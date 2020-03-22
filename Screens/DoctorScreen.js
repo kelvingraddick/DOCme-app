@@ -8,6 +8,7 @@ import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import Icon from 'react-native-ionicons';
 import Moment from 'moment';
+import { GOOGLE_API_KEY } from 'react-native-dotenv'
 
 export default class DoctorScreen extends Component {
   static navigationOptions = {
@@ -47,7 +48,7 @@ export default class DoctorScreen extends Component {
     this.props.navigation.setParams({ headerTitle: this.state.doctor.firstName });
     this.changeTimes();
 
-    Geocoder.init("xxxxx");
+    Geocoder.init(GOOGLE_API_KEY);
     var coordinates = await Geocoder.from(this.state.doctor.practice.addressLine1 + " " + this.state.doctor.practice.addressLine2 + " " + this.state.doctor.practice.city + ", " + this.state.doctor.practice.state + " " + this.state.doctor.practice.postalCode)
     .then((json) => { 
       return {
