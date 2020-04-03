@@ -11,7 +11,7 @@ For local development, at a minimum you will need a macOS machine to build/run t
 Follow the [React Native "Getting Started" instructions](http://reactnative.dev/docs/getting-started):
 - Select the **"React Native CLI Quickstart"** option
 - Select your **"Development OS"**: macOS, Windows, or Linux
-- Select your **"Target OS: iOS"** or Android
+- Select your **"Target OS"**: iOS or Android
 - Follow the instructions to install/setup the dependencies
 
 ## Install
@@ -40,5 +40,7 @@ Run the following:
     
     $ cd android
     $ ./gradlew bundleRelease
-Make sure you have the required private signing cert on your machine and is pointed to in the local gradle properties file
+
+Make sure you have the required private signing cert on your machine and is pointed to in the local gradle properties file.
+
 More instructions are are in the React Native ["Publishing to Google Play Store" documentation](http://reactnative.dev/docs/signed-apk-android).
