@@ -42,5 +42,4 @@ Run the following:
     $ ./gradlew bundleRelease
 
 Make sure you have the required private signing cert on your machine and is pointed to in the local gradle properties file.
-
 More instructions are are in the React Native ["Publishing to Google Play Store" documentation](http://reactnative.dev/docs/signed-apk-android).
