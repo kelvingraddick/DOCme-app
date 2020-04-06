@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar, Image, Text, Button, FlatList } from 'react-native';
+import { SafeAreaView, StyleSheet, View, ScrollView, StatusBar, Image, Text, Button, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MapView from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
@@ -71,66 +71,93 @@ export default class DoctorScreen extends Component {
       <>
         <StatusBar barStyle="dark-content" />
         <SafeAreaView />
-        <View style={styles.container}>  
-          <Image
-            style={styles.doctorImage}
-            source={{uri: this.state.doctor.imageUrl ? this.state.doctor.imageUrl : ''}}
-          />
-          <Text style={styles.doctorNameText}>{this.state.doctor.firstName} {this.state.doctor.lastName}</Text>
-          <Text style={styles.doctorEmailAddressText}>{this.state.doctor.emailAddress}</Text>
-          { this.state.doctor.practice &&
-            <Text style={styles.doctorLocationText}>{this.state.doctor.practice.addressLine1} {this.state.doctor.practice.addressLine2} {this.state.doctor.practice.city}, {this.state.doctor.practice.state} {this.state.doctor.practice.postalCode}</Text>
-          }
-          <View style={styles.doctorStarsView}>  
-            <Icon style={styles.starIcon} name="star" />
-            <Icon style={styles.starIcon} name="star" />
-            <Icon style={styles.starIcon} name="star" />
-            <Icon style={styles.starIcon} name="star" />
-            <Icon style={styles.starIcon} name="star" />
-            <Text style={styles.doctorStarText}>(471)</Text>
-          </View>
-          <View style={styles.divider}></View>
-          <Text style={styles.bookAnAppointmentText}>Book an appointment</Text>
-          <View style={styles.dateControl}>
-            <TouchableOpacity onPress={() => this.changeDate(this.CHANGE_DATE_DIRECTION.BACK)} hitSlop={styles.dateControlArrowIconHitSlop}>
-              <Icon style={styles.dateControlArrowIcon} name="arrow-back" />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.dateControlLabel}>
-                <Icon style={styles.dateControlLabelIcon} name="calendar" />
-                <Text style={styles.dateControlLabelText}>  {this.state.date.format('ddd, MMM D')}</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.changeDate(this.CHANGE_DATE_DIRECTION.FORWARD)} hitSlop={styles.dateControlArrowIconHitSlop}>
-              <Icon style={styles.dateControlArrowIcon} name="arrow-forward" />
-            </TouchableOpacity>
-          </View>
-          <FlatList
-            data={this.state.times}
-            keyExtractor={item => item.toString()}
-            style={styles.timesList}
-            horizontal={true}
-            renderItem={({item}) => 
-              <TouchableOpacity
-                style={styles.timeButton}
-                underlayColor='#fff'>
-                <Text style={styles.timeButtonText}>{item.format('h:mma')}</Text>
+        <ScrollView>
+          <View style={styles.container}>  
+            <Image
+              style={styles.doctorImage}
+              source={{uri: this.state.doctor.imageUrl ? this.state.doctor.imageUrl : ''}}
+            />
+            <Text style={styles.doctorNameText}>{this.state.doctor.firstName} {this.state.doctor.lastName}</Text>
+            <Text style={styles.doctorEmailAddressText}>{this.state.doctor.emailAddress}</Text>
+            <View style={styles.doctorStarsView}>  
+              <Icon style={styles.starIcon} name="star" />
+              <Icon style={styles.starIcon} name="star" />
+              <Icon style={styles.starIcon} name="star" />
+              <Icon style={styles.starIcon} name="star" />
+              <Icon style={styles.starIcon} name="star" />
+              <Text style={styles.doctorStarText}>(471)</Text>
+            </View>
+            <View style={styles.divider}></View>
+            <Text style={styles.sectionTitleText}>Book an appointment</Text>
+            <View style={styles.dateControl}>
+              <TouchableOpacity onPress={() => this.changeDate(this.CHANGE_DATE_DIRECTION.BACK)} hitSlop={styles.dateControlArrowIconHitSlop}>
+                <Icon style={styles.dateControlArrowIcon} name="arrow-back" />
               </TouchableOpacity>
+              <TouchableOpacity>
+                <View style={styles.dateControlLabel}>
+                  <Icon style={styles.dateControlLabelIcon} name="calendar" />
+                  <Text style={styles.dateControlLabelText}>  {this.state.date.format('ddd, MMM D')}</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.changeDate(this.CHANGE_DATE_DIRECTION.FORWARD)} hitSlop={styles.dateControlArrowIconHitSlop}>
+                <Icon style={styles.dateControlArrowIcon} name="arrow-forward" />
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={this.state.times}
+              keyExtractor={item => item.toString()}
+              style={styles.timesList}
+              horizontal={true}
+              renderItem={({item}) => 
+                <TouchableOpacity
+                  style={styles.timeButton}
+                  underlayColor='#fff'>
+                  <Text style={styles.timeButtonText}>{item.format('h:mma')}</Text>
+                </TouchableOpacity>
+              }
+              ListEmptyComponent={<Text style={styles.noTimesText}>No times available</Text>}
+            />
+            <View style={styles.divider}></View>
+            <Text style={styles.sectionTitleText}>Location</Text>
+            <MapView
+              style={styles.mapView}
+              region={this.state.mapRegion}>
+              {this.state.mapMarkers.map(marker => (
+                <Marker
+                  coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+                  title={marker.title}
+                  description={marker.description}
+                />
+              ))}
+            </MapView>
+            { this.state.doctor.practice &&
+              <Text style={styles.doctorLocationText}>{this.state.doctor.practice.addressLine1} {this.state.doctor.practice.addressLine2} {this.state.doctor.practice.city}, {this.state.doctor.practice.state} {this.state.doctor.practice.postalCode}</Text>
             }
-            ListEmptyComponent={<Text style={styles.noTimesText}>No times available</Text>}
-          />
-          <MapView
-            style={styles.mapView}
-            region={this.state.mapRegion}>
-            {this.state.mapMarkers.map(marker => (
-              <Marker
-                coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
-                title={marker.title}
-                description={marker.description}
-              />
-            ))}
-          </MapView>
-        </View>
+            <View style={styles.divider}></View>
+            <Text style={styles.sectionTitleText}>About</Text>
+            <Text style={styles.doctorDescriptionText}>{this.state.doctor.description}</Text>
+            { this.state.doctor.images && this.state.doctor.images.length > 0 &&
+              <>
+                <View style={styles.divider}></View>
+                <Text style={styles.sectionTitleText}>Images</Text>
+                <FlatList
+                  data={this.state.doctor.images}
+                  keyExtractor={item => item.id}
+                  style={styles.imagesList}
+                  horizontal={true}
+                  renderItem={({item}) => 
+                    <Image 
+                      style={styles.image}
+                      source={{
+                        uri: item.url
+                      }}
+                    />
+                  }
+                />
+              </>
+            }
+          </View>
+        </ScrollView>
       </>
     );
   }
@@ -186,13 +213,13 @@ const styles = StyleSheet.create({
     color: Colors.DARK_BLUE,
     fontSize: 20,
     fontFamily: Fonts.MEDIUM,
-    marginBottom: 10
+    marginBottom: 5
   },
   doctorEmailAddressText: {
     color: Colors.DARK_BLUE,
     fontSize: 15,
     fontFamily: Fonts.LIGHT,
-    marginBottom: 3
+    marginBottom: 5
   },
   doctorLocationText: {
     color: Colors.GRAY,
@@ -215,17 +242,24 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.NORMAL,
     lineHeight: 20
   },
+  doctorDescriptionText: {
+    color: Colors.DARK_GRAY,
+    fontSize: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 15
+  },
   divider: {
     alignSelf: 'stretch',
     borderBottomWidth: 2,
     borderBottomColor: Colors.LIGHT_GRAY,
-    marginBottom: 20
+    marginBottom: 10
   },
-  bookAnAppointmentText: {
+  sectionTitleText: {
     color: Colors.DARK_BLUE,
     fontSize: 17,
     fontFamily: Fonts.BOLD,
-    marginBottom: 10
+    marginBottom: 12
   },
   dateControl: {
     flexDirection: 'row',
@@ -263,7 +297,8 @@ const styles = StyleSheet.create({
   dateControlArrowIconHitSlop: {top: 10, bottom: 10, left: 10, right: 10},
   timesList: {
     maxHeight: 60,
-    paddingLeft: 20
+    paddingLeft: 20,
+    marginBottom: 15
   },
   timeButton: {
     color: Colors.WHITE,
@@ -287,6 +322,16 @@ const styles = StyleSheet.create({
   },
   mapView: {
     height: 150,
-    alignSelf: 'stretch'
+    alignSelf: 'stretch',
+    marginBottom: 10
+  },
+  imagesList: {
+    height: 165,
+    paddingLeft: 15
+  },
+  image: {
+    height: 150,
+    width: 150,
+    marginRight: 15
   }
 })
