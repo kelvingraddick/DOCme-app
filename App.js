@@ -9,6 +9,7 @@ import ResultsScreen from './Screens/ResultsScreen';
 import AppointmentsScreen from './Screens/AppointmentsScreen';
 import LoadingScreen from './Screens/LoadingScreen';
 import DoctorScreen from './Screens/DoctorScreen';
+import MyAccountScreen from './Screens/MyAccountScreen';
 import Icon from 'react-native-ionicons';
 
 const SearchScreenStackNavigator = createStackNavigator(
@@ -39,10 +40,24 @@ const AppointmentsScreenStackNavigator = createStackNavigator(
     }
   }
 );
+const MyAccountScreenStackNavigator = createStackNavigator(
+  {
+    MyAccountScreen: MyAccountScreen
+  },
+  {
+    navigationOptions: {
+      title: 'My Account',
+      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        return <Icon style={[styles.tabIcon, focused ? styles.tabIconFocused : styles.tabIconNormal ]} name="contact" />;
+      }
+    }
+  }
+);
 const BottomTabNavigator = createBottomTabNavigator(
   {
     SearchScreenStackNavigator: SearchScreenStackNavigator,
     AppointmentsScreenStackNavigator: AppointmentsScreenStackNavigator,
+    MyAccountScreenStackNavigator: MyAccountScreenStackNavigator
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
