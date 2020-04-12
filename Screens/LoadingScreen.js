@@ -6,8 +6,9 @@ export default class LoadingScreen extends Component {
   async componentDidMount() {
     var patient = await this.signIn('kelvingraddick@gmail.com', 'password');
     if (patient) {
-      this.props.navigation.navigate('BottomTabNavigator');
+      // store somewhere
     }
+    this.props.navigation.navigate('BottomTabNavigator');
   }
   
   render() {
