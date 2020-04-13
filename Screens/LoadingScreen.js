@@ -4,25 +4,11 @@ import { connect } from 'react-redux';
 import { SafeAreaView, StyleSheet, View, StatusBar, ActivityIndicator } from 'react-native';
 import Actions from '../Constants/Actions';
 
-const setPatient = patient => (
-  {
-    type: Actions.SET_PATIENT,
-    patient: patient
-  }
-);
-
-const setDoctor = doctor => (
-  {
-    type: Actions.SET_DOCTOR,
-    doctor: doctor
-  }
-);
-
 class LoadingScreen extends Component {
   async componentDidMount() {
     var patient = await this.signIn('kelvingraddick@gmail.com', 'password');
     if (patient) {
-      this.props.setPatient(patient);
+      this.props.dispatch({ type: Actions.SET_PATIENT, patient: patient });
       console.info(this.props.patient);
     }
     this.props.navigation.navigate('BottomTabNavigator');
@@ -83,8 +69,4 @@ const mapStateToProps = (state) => {
   return { patient, doctor };
 };
 
-const mapDispatchToProps = dispatch => (
-  bindActionCreators({ setPatient, setDoctor }, dispatch)
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoadingScreen);
+export default connect(mapStateToProps)(LoadingScreen);
