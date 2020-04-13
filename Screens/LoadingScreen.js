@@ -1,12 +1,29 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { SafeAreaView, StyleSheet, View, StatusBar, ActivityIndicator } from 'react-native';
-import { Buffer } from 'buffer'
+import Actions from '../Constants/Actions';
 
-export default class LoadingScreen extends Component {
+const setPatient = patient => (
+  {
+    type: Actions.SET_PATIENT,
+    patient: patient
+  }
+);
+
+const setDoctor = doctor => (
+  {
+    type: Actions.SET_DOCTOR,
+    doctor: doctor
+  }
+);
+
+class LoadingScreen extends Component {
   async componentDidMount() {
     var patient = await this.signIn('kelvingraddick@gmail.com', 'password');
     if (patient) {
-      // store somewhere
+      this.props.setPatient(patient);
+      console.info(this.props.patient);
     }
     this.props.navigation.navigate('BottomTabNavigator');
   }
@@ -23,12 +40,16 @@ export default class LoadingScreen extends Component {
   }
 
   async signIn(emailAddress, password) {
-    var base64 = new Buffer(emailAddress + ':' + password).toString('base64');
+    var body = {
+      identityType: 'docme',
+      userType: 'patient',
+      emailAddress: emailAddress,
+      password: password
+    };
     return fetch('http://www.docmeapp.com/patient/signin', {
-      method: 'GET',
-      headers: {
-        Authorization: 'Basic ' + base64,
-      }
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
     })
     .then((response) => { 
       if (response.status == 200) {
@@ -56,3 +77,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   }
 })
+
+const mapStateToProps = (state) => {
+  var { patient, doctor } = state;
+  return { patient, doctor };
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({ setPatient, setDoctor }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoadingScreen);

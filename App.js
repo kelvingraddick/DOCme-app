@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
+import { Provider } from 'react-redux';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import store from './store';
 import Colors from './Constants/Colors';
 import SearchScreen from './Screens/SearchScreen';
 import ResultsScreen from './Screens/ResultsScreen';
@@ -83,7 +85,9 @@ const AppContainer = createAppContainer(
 
 export default class App extends Component {
   render() {
-    return <AppContainer />;
+    return <Provider store={store}>
+      <AppContainer />
+    </Provider>;
   }
 };
 
