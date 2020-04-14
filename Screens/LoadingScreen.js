@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { SafeAreaView, StyleSheet, View, StatusBar, ActivityIndicator } from 'react-native';
+import { SafeAreaView, StyleSheet, View, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Actions from '../Constants/Actions';
 
 class LoadingScreen extends Component {
   async componentDidMount() {
-    var patient = await this.signIn('kelvingraddick@gmail.com', 'password');
-    if (patient) {
-      this.props.dispatch({ type: Actions.SET_PATIENT, patient: patient });
-      console.info(this.props.patient);
+    var token = await AsyncStorage.getItem('TOKEN');
+    if (token) { 
+      this.props.dispatch({ type: Actions.SET_TOKEN, token: token });
+      var response = await this.signIn(token);
+      if (response) {
+        this.props.dispatch({ type: Actions.SET_PATIENT, patient: response.patient });
+      }
     }
     this.props.navigation.navigate('BottomTabNavigator');
   }
@@ -25,24 +28,17 @@ class LoadingScreen extends Component {
     );
   }
 
-  async signIn(emailAddress, password) {
-    var body = {
-      identityType: 'docme',
-      userType: 'patient',
-      emailAddress: emailAddress,
-      password: password
-    };
-    return fetch('http://www.docmeapp.com/patient/signin', {
+  async signIn(token) {
+    return fetch('http://www.docmeapp.com/patient/authorize', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+      headers: { 'Authorization': 'Bearer ' + token }
     })
     .then((response) => { 
       if (response.status == 200) {
         return response.json()
         .then((responseJson) => {
           if (responseJson.isSuccess) {
-            return responseJson.patient;
+            return responseJson;
           }
         })
       }
@@ -65,8 +61,8 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-  var { patient, doctor } = state;
-  return { patient, doctor };
+  var { token, patient, doctor } = state;
+  return { token, patient, doctor };
 };
 
 export default connect(mapStateToProps)(LoadingScreen);

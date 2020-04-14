@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.9.0",
     "@react-native-community/datetimepicker": "^2.1.0",
     "buffer": "^5.4.3",
     "moment": "^2.24.0",

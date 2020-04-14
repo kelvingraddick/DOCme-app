@@ -1,21 +1,25 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar, Text, SectionList } from 'react-native';
+import { SafeAreaView, StyleSheet, View, StatusBar, Text, SectionList, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
+import Actions from '../Constants/Actions';
 import Icon from 'react-native-ionicons';
 
-export default class MyAccountScreen extends Component {
+class MyAccountScreen extends Component {
   static navigationOptions = {
     title: 'My Account'
   };
 
   options = {
-    'Sign In': 'log-in',
-    'Sign Up': 'clipboard',
-    'Terms of use': 'information-circle',
-    'Privacy Policy': 'eye-off',
-    'Give app feedback': 'ribbon',
-    'Share this app': 'share'
+    'Sign in': { icon: 'log-in', visible: 'logged-out', action: () => { this.props.navigation.navigate('SignInScreen'); } },
+    'Sign up': { icon: 'clipboard', visible: 'logged-out', action: () => {  } },
+    'Terms of use': { icon: 'information-circle', visible: 'always', action: () => {  } },
+    'Privacy Policy': { icon: 'eye-off', visible: 'always', action: () => {  } },
+    'Give app feedback': { icon: 'ribbon', visible: 'always', action: () => {  } },
+    'Share this app': { icon: 'share', visible: 'always', action: () => {  } },
+    'Log out': { icon: 'log-out', visible: 'signed-in', action: () => { this.signOut(); } }
   };
 
   render() {
@@ -23,28 +27,38 @@ export default class MyAccountScreen extends Component {
       <>
         <StatusBar barStyle="dark-content" />
         <SafeAreaView />
+        { this.props.patient &&
+          <View style={styles.headerView}>
+            <Text style={styles.nameText}>{this.props.patient.firstName} {this.props.patient.lastName}</Text>
+            <Text style={styles.emailAddressText}>{this.props.patient.emailAddress}</Text>
+          </View>
+        }
         <SectionList
           style={styles.optionsList}
           keyExtractor={(item, index) => index}
           sections={[{ data: Object.keys(this.options) }]}
-          renderItem={({item}) => (
-            <View style={styles.optionView}>
-              <Icon style={styles.optionIcon} name={this.options[item]} />
-              <Text style={styles.optionText}>{item}</Text>
-            </View>
-          )}
+          renderItem={({item}) =>
+            this.options[item].visible == 'always' || 
+            (this.options[item].visible == 'signed-in' && this.props.patient != null) ||
+            (this.options[item].visible == 'logged-out' && this.props.patient == null) ? 
+              (
+                <TouchableOpacity style={styles.optionView} onPress={this.options[item].action}>
+                  <Icon style={styles.optionIcon} name={this.options[item].icon} />
+                  <Text style={styles.optionText}>{item}</Text>
+                </TouchableOpacity>
+              ) :
+              null
+          }
           ListHeaderComponent={(<View style={styles.optionsListHeader}></View>)}
         />
       </>
     );
   }
 
-  getOptionIcon(title) {
-    var results = this.options.filter(obj => {
-      return obj.title === title
-    });
-    console.info(results[0]);
-    return results[0];
+  async signOut() {
+    this.props.dispatch({ type: Actions.SET_TOKEN, token: null });
+    this.props.dispatch({ type: Actions.SET_PATIENT, patient: null });
+    await AsyncStorage.removeItem('TOKEN');
   }
 };
 
@@ -54,6 +68,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     backgroundColor: Colors.LIGHT_GRAY
+  },
+  headerView: {
+    alignItems: 'center',
+    padding: 20
+  },
+  nameText: {
+    color: Colors.DARK_BLUE,
+    fontSize: 20,
+    fontFamily: Fonts.MEDIUM,
+    marginBottom: 5
+  },
+  emailAddressText: {
+    color: Colors.DARK_BLUE,
+    fontSize: 15,
+    fontFamily: Fonts.LIGHT,
+    marginBottom: 5
   },
   optionsList: {
     backgroundColor: Colors.LIGHT_GRAY
@@ -71,14 +101,21 @@ const styles = StyleSheet.create({
   optionIcon: {
     width: 50,
     fontSize: 25,
-    lineHeight: 45,
+    lineHeight: 55,
     textAlign: 'center',
     color: Colors.DARK_BLUE
   },
   optionText: {
     color: Colors.DARK_GRAY,
     fontSize: 17,
-    lineHeight: 45,
+    lineHeight: 55,
     fontFamily: Fonts.MEDIUM
   }
 })
+
+const mapStateToProps = (state) => {
+  var { token, patient, doctor } = state;
+  return { token, patient, doctor };
+};
+
+export default connect(mapStateToProps)(MyAccountScreen);

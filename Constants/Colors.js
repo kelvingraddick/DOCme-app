@@ -7,7 +7,8 @@ const Colors = {
     GREEN: '#00a79d',
     LIGHT_BLUE: '#0b75c1',
     MEDIUM_BLUE: '#114b79',
-    DARK_BLUE: '#213068'
+    DARK_BLUE: '#213068',
+    DARK_RED: '#c0392b'
 };
 
 export default Colors;
