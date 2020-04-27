@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, Modal, FlatList } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Moment from 'moment';
+import { GOOGLE_API_KEY } from 'react-native-dotenv';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import ModelHeader from '../Components/ModalHeader';
@@ -68,8 +69,7 @@ export default class SearchScreen extends Component {
 
   async onLocationSearchBoxChangeText(text) {
     var query = encodeURIComponent(text);
-    var apiKey = 'AIzaSyBxibHzVBhbWfOYekruViZrdWLZXbqKZ44';
-    var locations = await fetch('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + query + '&key=' + apiKey + '&types=geocode&components=country:us&language=en', { method: 'GET' })
+    var locations = await fetch('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + query + '&key=' + GOOGLE_API_KEY + '&types=geocode&components=country:us&language=en', { method: 'GET' })
     .then((response) => { 
       if (response.status == 200) {
         return response.json()
@@ -204,7 +204,6 @@ export default class SearchScreen extends Component {
                 placeholder='Insurance plan'
                 placeholderTextColor={Colors.MEDIUM_BLUE}
                 value={this.state.selectedInsurancePlanOption.name}
-                enab
                 onFocus={() => this.setState({isInsurancePlanSearchModalVisible: true})}
               />
             }
