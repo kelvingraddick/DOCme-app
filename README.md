@@ -23,6 +23,8 @@ Copy the file `.env.example` to a new file named `.env` and then edit it with th
 The variables you will need are:
 
 - Google API key (for geocoding)
+- AWS access key ID
+- AWS access key secret
 
 ## Running the project
     $ npx react-native run-ios

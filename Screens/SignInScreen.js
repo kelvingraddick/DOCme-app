@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SafeAreaView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
@@ -12,8 +12,8 @@ class SignInScreen extends Component {
   };
 
   state = {
-    emailAddress: 'test@test.com',
-    password: 'password'
+    emailAddress: null,
+    password: null
   };
 
   render() {
@@ -21,37 +21,39 @@ class SignInScreen extends Component {
       <>
         <StatusBar barStyle='dark-content' />
         <SafeAreaView />
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.titleText}>Welcome To DOCme!</Text>
-            <Text style={styles.subTitleText}>Sign in to manage your account and appointments.</Text>
-            <TextInput
-              style={styles.textBox}
-              placeholder='Email Address'
-              placeholderTextColor={Colors.MEDIUM_BLUE}
-              autoCompleteType='email'
-              autoCapitalize='none'
-              value={this.state.emailAddress}
-              onChangeText={text => this.setState({emailAddress: text})}
-            />
-            <TextInput
-              style={styles.textBox}
-              placeholder='Password'
-              placeholderTextColor={Colors.MEDIUM_BLUE}
-              autoCompleteType='password'
-              autoCapitalize='none'
-              value={this.state.password}
-              onChangeText={text => this.setState({password: text})}
-            />
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.onSignInButtonTapped()}
-              underlayColor='#fff'
-              disabled={!this.state.emailAddress || !this.state.password}>
-              <Text style={styles.buttonText}>Sign in with email</Text>
-            </TouchableOpacity>
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <Text style={styles.titleText}>Welcome back to DOCme!</Text>
+              <Text style={styles.subTitleText}>Sign in to manage your account and appointments.</Text>
+              <TextInput
+                style={styles.textBox}
+                placeholder='Email Address'
+                placeholderTextColor={Colors.MEDIUM_BLUE}
+                autoCompleteType='email'
+                autoCapitalize='none'
+                value={this.state.emailAddress}
+                onChangeText={text => this.setState({emailAddress: text})}
+              />
+              <TextInput
+                style={styles.textBox}
+                placeholder='Password'
+                placeholderTextColor={Colors.MEDIUM_BLUE}
+                autoCompleteType='password'
+                autoCapitalize='none'
+                value={this.state.password}
+                onChangeText={text => this.setState({password: text})}
+              />
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => this.onSignInButtonTapped()}
+                underlayColor='#fff'
+                disabled={!this.state.emailAddress || !this.state.password}>
+                <Text style={styles.buttonText}>Sign in with email</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </ScrollView>
       </>
     );
   }

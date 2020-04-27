@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar, Text, SectionList, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, View, StatusBar, Text, Image, SectionList, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import Colors from '../Constants/Colors';
@@ -14,7 +14,7 @@ class MyAccountScreen extends Component {
 
   options = {
     'Sign in': { icon: 'log-in', visible: 'logged-out', action: () => { this.props.navigation.navigate('SignInScreen'); } },
-    'Sign up': { icon: 'clipboard', visible: 'logged-out', action: () => {  } },
+    'Sign up': { icon: 'clipboard', visible: 'logged-out', action: () => { this.props.navigation.navigate('SignUpScreen'); } },
     'Terms of use': { icon: 'information-circle', visible: 'always', action: () => {  } },
     'Privacy Policy': { icon: 'eye-off', visible: 'always', action: () => {  } },
     'Give app feedback': { icon: 'ribbon', visible: 'always', action: () => {  } },
@@ -31,6 +31,12 @@ class MyAccountScreen extends Component {
           <View style={styles.headerView}>
             <Text style={styles.nameText}>{this.props.patient.firstName} {this.props.patient.lastName}</Text>
             <Text style={styles.emailAddressText}>{this.props.patient.emailAddress}</Text>
+            {this.props.patient.imageUrl && (
+              <Image
+                source={{ uri: this.props.patient.imageUrl ? this.props.patient.imageUrl : '' }}
+                style={styles.image}
+              />
+            )}
           </View>
         }
         <SectionList
@@ -84,6 +90,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: Fonts.LIGHT,
     marginBottom: 5
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginTop: 20,
+    marginBottom: 10
   },
   optionsList: {
     backgroundColor: Colors.LIGHT_GRAY
