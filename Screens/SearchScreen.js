@@ -172,7 +172,7 @@ export default class SearchScreen extends Component {
             <Text style={styles.titleText}>Welcome to DOCme!{'\n'}Tell us what you need below</Text>
             <TextInput
               style={styles.textBox}
-              placeholder='Illness'
+              placeholder='Speciality'
               placeholderTextColor={Colors.MEDIUM_BLUE}
               value={this.state.selectedSpecialtyOption.name}
               onFocus={() => this.setState({isSpecialtySearchModalVisible: true})}

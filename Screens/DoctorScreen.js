@@ -111,7 +111,8 @@ export default class DoctorScreen extends Component {
               renderItem={({item}) => 
                 <TouchableOpacity
                   style={styles.timeButton}
-                  underlayColor='#fff'>
+                  underlayColor='#fff'
+                  onPress={() => this.props.navigation.navigate('BookAppointmentScreen', { doctor: this.state.doctor, date: this.state.date, time: item })}>
                   <Text style={styles.timeButtonText}>{item.format('h:mma')}</Text>
                 </TouchableOpacity>
               }
