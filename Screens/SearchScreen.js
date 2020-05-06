@@ -148,7 +148,6 @@ export default class SearchScreen extends Component {
       return undefined;
     });
 
-    console.info(insurancePlans);
     this.setState({insurancePlanOptions: insurancePlans});
   }
 
@@ -167,8 +166,8 @@ export default class SearchScreen extends Component {
         <StatusBar barStyle='dark-content' />
         <SafeAreaView />
         <View style={styles.container}>
+          <Image style={styles.backgroundImage} source={require('../Images/background-1.jpg')} />
           <View style={styles.header}>
-            <Image style={styles.logoIcon} source={require('../Images/docme-logo-icon.png')} />
             <Text style={styles.titleText}>Welcome to DOCme!{'\n'}Tell us what you need below</Text>
             <TextInput
               style={styles.textBox}
@@ -370,17 +369,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.LIGHT_GRAY
   },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+    width: null
+  },
   header: {
     alignContent: 'center',
     padding: 20,
     backgroundColor: Colors.LIGHT_BLUE
-  },
-  logoIcon: {
-    height: 60,
-    width: 60,
-    alignSelf: 'center',
-    marginTop: 10,
-    marginBottom: 10
   },
   titleText: {
     color: Colors.WHITE,

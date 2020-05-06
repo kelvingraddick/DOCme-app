@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { SafeAreaView, ScrollView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, Alert, Modal, ActivityIndicator, FlatList, TouchableHighlight } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import DoctorRowView from '../Components/DoctorRowView';
 import ModelHeader from '../Components/ModalHeader';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
-import Actions from '../Constants/Actions';
 
 class BookAppointmentScreen extends Component {
   static navigationOptions = {
@@ -129,7 +127,14 @@ class BookAppointmentScreen extends Component {
     var response = await this.book();
     if (response) {
       if (response.isSuccess) {
-        // TODO
+        Alert.alert(
+          "Success!",
+          "The appointment has been booked!",
+          [{ text: "OK" }],
+          { cancelable: false }
+        );
+        this.props.navigation.popToTop();
+        this.props.navigation.navigate('AppointmentsScreenStackNavigator');
       } else {
         await this.setState({ errorMessage: response.errorMessage });
         this.setState({ isLoading: false });
@@ -137,18 +142,10 @@ class BookAppointmentScreen extends Component {
     } else {
       Alert.alert(
         "There was an error booking",
-        "This feature is not yet implemented.",
-        [{ text: "OK" }],
-        { cancelable: false }
-      );
-      /*
-      Alert.alert(
-        "There was an error booking",
         "Please update entries and try again",
         [{ text: "OK" }],
         { cancelable: false }
       );
-      */
       this.setState({ isLoading: false });
     }
   }
@@ -158,18 +155,27 @@ class BookAppointmentScreen extends Component {
     if (!this.state.selectedSpecialtyOption.id) {
       errorMessage = 'Must select a speciality.';
     }
+    if (!this.props.patient || !this.props.token) {
+      errorMessage = 'Must sign in or sign up to book.';
+    }
     await this.setState({ errorMessage: errorMessage });
   }
 
   async book() {
     var body = {
-
+      patientId: this.props.patient.id,
+      doctorId: this.props.navigation.state.params.doctor.id,
+      specialtyId: this.state.selectedSpecialtyOption.id,
+      timestamp: this.props.navigation.state.params.time.toJSON(),
+      isNewPatient: true,
+      notes: "These are notes."
     };
-    return undefined;
-    /*
-    return fetch('http://www.docmeapp.com/~', {
+    return await fetch('http://www.docmeapp.com/appointment/book', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.props.token
+      },
       body: JSON.stringify(body)
     })
     .then((response) => { 
@@ -187,7 +193,6 @@ class BookAppointmentScreen extends Component {
       console.error(error);
       return undefined;
     });
-    */
   }
 };
 
