@@ -28,10 +28,10 @@ class BookAppointmentScreen extends Component {
             <View style={styles.header}>
               <Text style={styles.titleText}>Date and Time</Text>
               <Text style={styles.subTitleText}>{this.props.navigation.state.params.date.format('dddd, MMMM Do') + ', ' + this.props.navigation.state.params.time.format('h:mma')}</Text>
-              <Text style={styles.titleText}>Speciality</Text>
+              <Text style={styles.titleText}>Reason / Speciality</Text>
               <TextInput
                 style={styles.textBox}
-                placeholder='Speciality'
+                placeholder='Reason / Speciality'
                 placeholderTextColor={Colors.MEDIUM_BLUE}
                 value={this.state.selectedSpecialtyOption.name}
                 onFocus={() => this.setState({isSpecialtySearchModalVisible: true})}
