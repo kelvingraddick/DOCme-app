@@ -215,7 +215,6 @@ class SignUpScreen extends Component {
           return responseJson;
         })
       } else {
-        console.error(response);
         return undefined;
       }
     })

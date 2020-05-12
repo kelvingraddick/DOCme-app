@@ -38,7 +38,6 @@ class EditAppointmentScreen extends Component {
       console.error(error);
       return undefined;
     });
-    console.info(appointment);
     this.setState({appointment: appointment});
   }
 
