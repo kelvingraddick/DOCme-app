@@ -28,7 +28,7 @@ class AppointmentsScreen extends Component {
         <StatusBar barStyle="dark-content" />
         <SafeAreaView />
         <View style={styles.container}>
-          { !this.props.patient &&
+          { (!this.props.patient || this.state.appointments.length == 0) &&
             <View>
               <Image style={styles.backgroundImage} source={require('../Images/background-2.jpg')} />
               <Text style={styles.titleText}>Search for a doctor to set an appointment</Text>
@@ -38,21 +38,25 @@ class AppointmentsScreen extends Component {
                 underlayColor='#fff'>
                 <Text style={styles.buttonText}>Search</Text>
               </TouchableOpacity>
-              <Text style={styles.titleText}>..or sign in/up to see your appointments</Text>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => this.props.navigation.navigate('MyAccountScreenStackNavigator')}
-                underlayColor='#fff'>
-                <Text style={styles.buttonText}>Sign In or Sign Up</Text>
-              </TouchableOpacity>
+              { !this.props.patient &&
+                <>
+                  <Text style={styles.titleText}>..or sign in/up to see your appointments</Text>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => this.props.navigation.navigate('MyAccountScreenStackNavigator')}
+                    underlayColor='#fff'>
+                    <Text style={styles.buttonText}>Sign In or Sign Up</Text>
+                  </TouchableOpacity>
+                </>
+              }
             </View>
           }
-          { this.props.patient &&
+          { this.props.patient && this.state.appointments.length > 0 &&
             <FlatList
                 data={this.state.appointments}
                 keyExtractor={item => item.id.toString()}
                 renderItem={({item}) => 
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate('EditAppointmentScreen', { id: item.id })}>
                     <View style={styles.doctorView}> 
                       <Image
                         style={styles.doctorImage}
