@@ -15,7 +15,8 @@ class EditAppointmentScreen extends Component {
   state = {
     appointment: null,
     isSpecialtySearchModalVisible: false,
-    specialtyOptions: []
+    specialtyOptions: [],
+    selectedSpecialtyOption: {}
   };
 
   async componentDidMount() {
@@ -39,6 +40,7 @@ class EditAppointmentScreen extends Component {
       return undefined;
     });
     this.setState({appointment: appointment});
+    this.setState({selectedSpecialtyOption: appointment.specialty});
   }
 
   render() {
@@ -60,7 +62,7 @@ class EditAppointmentScreen extends Component {
                   style={styles.textBox}
                   placeholder='Reason / Speciality'
                   placeholderTextColor={Colors.MEDIUM_BLUE}
-                  value={this.state.appointment.specialty.name}
+                  value={this.state.selectedSpecialtyOption.name}
                   onFocus={() => this.setState({isSpecialtySearchModalVisible: true})}
                 />
                 {!this.state.isLoading && (
@@ -229,8 +231,9 @@ class EditAppointmentScreen extends Component {
 
   async update() {
     var body = {
-      specialtyId: this.state.appointment.specialty,
+      specialtyId: this.state.selectedSpecialtyOption.id,
       timestamp: this.state.appointment.timestamp,
+      isNewPatient: true,
       notes: "These are notes."
     };
     return await fetch('http://www.docmeapp.com/appointment/' + this.state.appointment.id + '/update/', {
