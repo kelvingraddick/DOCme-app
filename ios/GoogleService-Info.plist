@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>728909994644-0a7ij2ou6mg8j68jh1a7q1bi4ph1jpfv.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.728909994644-0a7ij2ou6mg8j68jh1a7q1bi4ph1jpfv</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD1OQtFukZLjlcCZdmT1kMzmnut9r83ZZ0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>728909994644</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.wavelinkllc.docme</string>
+	<key>PROJECT_ID</key>
+	<string>docme-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>docme-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:728909994644:ios:44c404c3fc29de96c9f281</string>
+	<key>DATABASE_URL</key>
+	<string>https://docme-app.firebaseio.com</string>
+</dict>
+</plist>

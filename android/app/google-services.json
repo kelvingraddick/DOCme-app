@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "728909994644",
+    "firebase_url": "https://docme-app.firebaseio.com",
+    "project_id": "docme-app",
+    "storage_bucket": "docme-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728909994644:android:edb1b5beccfcc5a5c9f281",
+        "android_client_info": {
+          "package_name": "com.docmeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "728909994644-p1ce7sntj95vqkifqkgrom659suqdad7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.docmeapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "728909994644-bc0fc2eiuagn00mvj6hbfhkk8sf9k7mt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGIqpHEnOxf3aXxUGUOTSH1l0yjds66e4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "728909994644-bc0fc2eiuagn00mvj6hbfhkk8sf9k7mt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "728909994644-0a7ij2ou6mg8j68jh1a7q1bi4ph1jpfv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.wavelinkllc.docme",
+                "app_store_id": "1491689322"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
