@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, Modal, FlatList } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
+import { utils } from '@react-native-firebase/app';
+import vision from '@react-native-firebase/ml-vision';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Moment from 'moment';
 import { GOOGLE_API_KEY } from 'react-native-dotenv';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import ModelHeader from '../Components/ModalHeader';
+import Icon from 'react-native-ionicons';
 
 class LogoTitle extends React.Component {
   render() {
@@ -156,6 +160,78 @@ export default class SearchScreen extends Component {
     this.setState({isInsurancePlanSearchModalVisible: false});
   }
 
+  async onCameraButtonTapped() {
+    const options = {
+      mediaType: 'photo',
+      noData: true
+    };
+    ImagePicker.showImagePicker(options, async (response) => {
+      if (response.uri) {
+        this.setState({ isLoading: true });
+
+        var image = response;
+        const processed = await vision().textRecognizerProcessImage(image.uri);
+        var terms = [];
+        for (var i = 0; i < processed.blocks.length; i++) {
+          var term = processed.blocks[i].text;
+          if (isNaN(term) && term.length > 3 && term !== 'plan') {
+            term = term.replace(/\W/g, ',').replace(' ', '');
+            if (term && term != '') {
+              terms.push(term.replace(/\W/g, ',').replace(' ', ''));
+            }
+          }
+        }
+        var text = terms.filter(Boolean).join(',');
+
+        var insuranceCarriers = await fetch('http://www.docmeapp.com/insurance/carriers/card/?terms=' + encodeURIComponent(text), { method: 'GET' })
+        .then((response) => { 
+          if (response.status == 200) {
+            return response.json()
+            .then((responseJson) => {
+              if (responseJson.isSuccess) {
+                return responseJson.insuranceCarriers;
+              }
+            })
+          }
+          return undefined;
+        })
+        .catch((error) => {
+          console.error(error);
+          return undefined;
+        });
+
+        if (insuranceCarriers[0]) {
+          this.setState({insuranceCarrierOptions: insuranceCarriers});
+          this.setState({selectedInsuranceCarrierOption: insuranceCarriers[0]});
+
+          var insurancePlans = await fetch('http://www.docmeapp.com/insurance/carrier/' + (insuranceCarriers[0] && insuranceCarriers[0].id) + '/plans/card/?terms=' + encodeURIComponent(text), { method: 'GET' })
+          .then((response) => { 
+            if (response.status == 200) {
+              return response.json()
+              .then((responseJson) => {
+                if (responseJson.isSuccess) {
+                  return responseJson.insurancePlans;
+                }
+              })
+            }
+            return undefined;
+          })
+          .catch((error) => {
+            console.error(error);
+            return undefined;
+          });
+
+          if (insurancePlans[0]) {
+            this.setState({insurancePlanOptions: insurancePlans});
+            this.setState({selectedInsurancePlanOption: insurancePlans[0]});
+          }
+        }
+
+        this.setState({ isLoading: false });
+      }
+    });
+  }
+
   onFindButtonTapped() {
     this.props.navigation.navigate('ResultsScreen');
   }
@@ -190,13 +266,21 @@ export default class SearchScreen extends Component {
               value={this.state.selectedDate.display}
               onFocus={() => this.setState({isDatePickerModalVisible: true})}
             />
-            <TextInput
-              style={styles.textBox}
-              placeholder='Insurance carrier'
-              placeholderTextColor={Colors.MEDIUM_BLUE}
-              value={this.state.selectedInsuranceCarrierOption.name}
-              onFocus={() => this.setState({isInsuranceCarrierSearchModalVisible: true})}
-            />
+            <View style={styles.fieldContainer}>
+              <TextInput
+                style={[styles.textBox, {flex: 1, marginRight: 10}]}
+                placeholder='Insurance carrier'
+                placeholderTextColor={Colors.MEDIUM_BLUE}
+                value={this.state.selectedInsuranceCarrierOption.name}
+                onFocus={() => this.setState({isInsuranceCarrierSearchModalVisible: true})}
+              />
+              <TouchableOpacity
+                style={styles.fieldButton}
+                onPress={() => this.onCameraButtonTapped()}
+                underlayColor='#fff'>
+                <Text style={styles.fieldButtonText}><Icon name="camera" /></Text>
+              </TouchableOpacity>
+            </View>
             { this.state.selectedInsuranceCarrierOption.id &&
               <TextInput
                 style={styles.textBox}
@@ -405,6 +489,24 @@ const styles = StyleSheet.create({
   buttonText: {
     color: Colors.WHITE,
     fontSize: 20,
+    fontFamily: Fonts.MEDIUM,
+    textAlign: 'center'
+  },
+  fieldContainer: {
+    flexDirection: 'row'
+  },
+  fieldButton: {
+    color: Colors.WHITE,
+    fontSize: 15,
+    paddingHorizontal: 17,
+    backgroundColor: Colors.HIGH_LIGHT,
+    borderRadius: 5,
+    marginBottom: 10
+  },
+  fieldButtonText: {
+    color: Colors.DARK_BLUE,
+    fontSize: 20,
+    lineHeight: 55,
     fontFamily: Fonts.MEDIUM,
     textAlign: 'center'
   },
