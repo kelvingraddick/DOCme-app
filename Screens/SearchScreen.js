@@ -165,71 +165,82 @@ export default class SearchScreen extends Component {
       mediaType: 'photo',
       noData: true
     };
-    ImagePicker.showImagePicker(options, async (response) => {
-      if (response.uri) {
-        this.setState({ isLoading: true });
+    ImagePicker.showImagePicker(options, async (image) => {
+      this.setState({ isLoading: true });
 
-        var image = response;
-        const processed = await vision().textRecognizerProcessImage(image.uri);
-        var terms = [];
-        for (var i = 0; i < processed.blocks.length; i++) {
-          var term = processed.blocks[i].text;
-          if (isNaN(term) && term.length > 3 && term !== 'plan') {
-            term = term.replace(/\W/g, ',').replace(' ', '');
-            if (term && term != '') {
-              terms.push(term.replace(/\W/g, ',').replace(' ', ''));
-            }
-          }
-        }
-        var text = terms.filter(Boolean).join(',');
+      if (image.uri) {
+        const recognizedText = await vision().textRecognizerProcessImage(image.uri);
+        var terms = this.getTermsFromRecognizedText(recognizedText);
 
-        var insuranceCarriers = await fetch('http://www.docmeapp.com/insurance/carriers/card/?terms=' + encodeURIComponent(text), { method: 'GET' })
-        .then((response) => { 
-          if (response.status == 200) {
-            return response.json()
-            .then((responseJson) => {
-              if (responseJson.isSuccess) {
-                return responseJson.insuranceCarriers;
-              }
-            })
-          }
-          return undefined;
-        })
-        .catch((error) => {
-          console.error(error);
-          return undefined;
-        });
-
-        if (insuranceCarriers[0]) {
+        var insuranceCarriers = await this.getInsuranceCarriersFromTerms(terms);
+        var insuranceCarrier = insuranceCarriers[0];
+        if (insuranceCarrier) {
           this.setState({insuranceCarrierOptions: insuranceCarriers});
-          this.setState({selectedInsuranceCarrierOption: insuranceCarriers[0]});
+          this.setState({selectedInsuranceCarrierOption: insuranceCarrier});
 
-          var insurancePlans = await fetch('http://www.docmeapp.com/insurance/carrier/' + (insuranceCarriers[0] && insuranceCarriers[0].id) + '/plans/card/?terms=' + encodeURIComponent(text), { method: 'GET' })
-          .then((response) => { 
-            if (response.status == 200) {
-              return response.json()
-              .then((responseJson) => {
-                if (responseJson.isSuccess) {
-                  return responseJson.insurancePlans;
-                }
-              })
-            }
-            return undefined;
-          })
-          .catch((error) => {
-            console.error(error);
-            return undefined;
-          });
-
-          if (insurancePlans[0]) {
+          var insurancePlans = await this.getInsurancePlansFromTerms(insuranceCarrier,terms);
+          var insurancePlan = insurancePlans[0];
+          if (insurancePlan) {
             this.setState({insurancePlanOptions: insurancePlans});
-            this.setState({selectedInsurancePlanOption: insurancePlans[0]});
+            this.setState({selectedInsurancePlanOption: insurancePlan});
           }
         }
-
-        this.setState({ isLoading: false });
       }
+
+      this.setState({ isLoading: false });
     });
+  }
+
+  getTermsFromRecognizedText(recognizedText) {
+    var terms = [];
+    for (var i = 0; i < recognizedText.blocks.length; i++) {
+      var term = recognizedText.blocks[i].text;
+      if (isNaN(term) && term.length > 3 && term !== 'plan') {
+        term = term.replace(/\W/g, ',').replace(' ', '');
+        if (term && term != '') {
+          terms.push(term.replace(/\W/g, ',').replace(' ', ''));
+        }
+      }
+    }
+    return terms.filter(Boolean).join(',');
+  }
+
+  async getInsuranceCarriersFromTerms(terms) {
+    return await fetch('http://www.docmeapp.com/insurance/carriers/card/?terms=' + encodeURIComponent(terms), { method: 'GET' })
+      .then((response) => { 
+        if (response.status == 200) {
+          return response.json()
+          .then((responseJson) => {
+            if (responseJson.isSuccess) {
+              return responseJson.insuranceCarriers;
+            }
+          })
+        }
+        return undefined;
+      })
+      .catch((error) => {
+        console.error(error);
+        return undefined;
+      });
+  }
+
+  async getInsurancePlansFromTerms(insuranceCarrier, terms) {
+    return await fetch('http://www.docmeapp.com/insurance/carrier/' + (insuranceCarrier && insuranceCarrier.id) + '/plans/card/?terms=' + encodeURIComponent(terms), { method: 'GET' })
+      .then((response) => { 
+        if (response.status == 200) {
+          return response.json()
+          .then((responseJson) => {
+            if (responseJson.isSuccess) {
+              return responseJson.insurancePlans;
+            }
+          })
+        }
+        return undefined;
+      })
+      .catch((error) => {
+        console.error(error);
+        return undefined;
+      });
   }
 
   onFindButtonTapped() {
