@@ -323,6 +323,8 @@ PODS:
     - RNFBApp
   - RNGestureHandler (1.5.2):
     - React
+  - RNPdfScanner (1.4.2):
+    - React
   - RNReanimated (1.4.0):
     - React
   - RNScreens (2.0.0-alpha.19):
@@ -364,6 +366,7 @@ DEPENDENCIES:
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBMLVision (from `../node_modules/@react-native-firebase/ml-vision`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNPdfScanner (from `../node_modules/react-native-document-scanner/ios`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -453,6 +456,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/ml-vision"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNPdfScanner:
+    :path: "../node_modules/react-native-document-scanner/ios"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -511,6 +516,7 @@ SPEC CHECKSUMS:
   RNFBApp: 7025b9e7ed4e305f8a4e5ee15c79238c03dfb756
   RNFBMLVision: 13feaed3999365d907180952f1ba268d9de9d973
   RNGestureHandler: 946a7691e41df61e2c4b1884deab41a4cdc3afff
+  RNPdfScanner: 26380aeb5571cd6ff88bb93bab37162e17da9273
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNScreens: 62284de159bbddba268edd282337afdb8771aaed
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b

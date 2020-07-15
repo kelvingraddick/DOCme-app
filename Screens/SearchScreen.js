@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, Modal, FlatList } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
-import { utils } from '@react-native-firebase/app';
+import { SafeAreaView, StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, Modal, FlatList, ActivityIndicator } from 'react-native';
 import vision from '@react-native-firebase/ml-vision';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Moment from 'moment';
@@ -161,34 +159,33 @@ export default class SearchScreen extends Component {
   }
 
   async onCameraButtonTapped() {
-    const options = {
-      mediaType: 'photo',
-      noData: true
-    };
-    ImagePicker.showImagePicker(options, async (image) => {
-      this.setState({ isLoading: true });
+    var that = this;
+    this.props.navigation.navigate('DocumentScannerScreen', { onDocumentScanned: (document) => { that.onDocumentScanned(document); } });
+  }
 
-      if (image.uri) {
-        const recognizedText = await vision().textRecognizerProcessImage(image.uri);
-        var terms = this.getTermsFromRecognizedText(recognizedText);
+  async onDocumentScanned(document) {
+    this.setState({ isLoading: true });
 
-        var insuranceCarriers = await this.getInsuranceCarriersFromTerms(terms);
-        var insuranceCarrier = insuranceCarriers[0];
-        if (insuranceCarrier) {
-          this.setState({insuranceCarrierOptions: insuranceCarriers});
-          this.setState({selectedInsuranceCarrierOption: insuranceCarrier});
+    if (document.croppedImage) {
+      const recognizedText = await vision().textRecognizerProcessImage(document.croppedImage);
+      var terms = this.getTermsFromRecognizedText(recognizedText);
 
-          var insurancePlans = await this.getInsurancePlansFromTerms(insuranceCarrier,terms);
-          var insurancePlan = insurancePlans[0];
-          if (insurancePlan) {
-            this.setState({insurancePlanOptions: insurancePlans});
-            this.setState({selectedInsurancePlanOption: insurancePlan});
-          }
+      var insuranceCarriers = await this.getInsuranceCarriersFromTerms(terms);
+      var insuranceCarrier = insuranceCarriers[0];
+      if (insuranceCarrier) {
+        this.setState({insuranceCarrierOptions: insuranceCarriers});
+        this.setState({selectedInsuranceCarrierOption: insuranceCarrier});
+
+        var insurancePlans = await this.getInsurancePlansFromTerms(insuranceCarrier,terms);
+        var insurancePlan = insurancePlans[0];
+        if (insurancePlan) {
+          this.setState({insurancePlanOptions: insurancePlans});
+          this.setState({selectedInsurancePlanOption: insurancePlan});
         }
       }
+    }
 
-      this.setState({ isLoading: false });
-    });
+    this.setState({ isLoading: false });
   }
 
   getTermsFromRecognizedText(recognizedText) {
@@ -305,7 +302,12 @@ export default class SearchScreen extends Component {
               style={styles.button}
               onPress={() => this.onFindButtonTapped()}
               underlayColor='#fff'>
-              <Text style={styles.buttonText}>Find</Text>
+                {!this.state.isLoading && (
+                  <Text style={styles.buttonText}>Find</Text>
+                )}
+                {this.state.isLoading && (
+                  <ActivityIndicator size="small" color="#ffffff" />
+                )}
             </TouchableOpacity>
           </View>
           <Modal

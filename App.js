@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import store from './store';
 import Colors from './Constants/Colors';
 import SearchScreen from './Screens/SearchScreen';
+import DocumentScannerScreen from './Screens/DocumentScannerScreen';
 import ResultsScreen from './Screens/ResultsScreen';
 import AppointmentsScreen from './Screens/AppointmentsScreen';
 import LoadingScreen from './Screens/LoadingScreen';
@@ -21,6 +22,7 @@ import Icon from 'react-native-ionicons';
 const SearchScreenStackNavigator = createStackNavigator(
   {
     SearchScreen: SearchScreen,
+    DocumentScannerScreen: DocumentScannerScreen,
     ResultsScreen: ResultsScreen,
     DoctorScreen: DoctorScreen,
     BookAppointmentScreen: BookAppointmentScreen
