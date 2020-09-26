@@ -31,6 +31,7 @@ The variables you will need are:
 OR
     
     $ npx react-native run-android
+* A file called  **launchPackager.command** should be automatically opened in a command window to run Metro (if it gets opened in a text editor you'll need to run in manually).
 
 ## Build for production
 
