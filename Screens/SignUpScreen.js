@@ -117,7 +117,7 @@ class SignUpScreen extends Component {
                 disabled={this.state.isLoading}
                 underlayColor='#fff'>
                 {!this.state.isLoading && (
-                  <Text style={styles.buttonText}>Sign in with email</Text>
+                  <Text style={styles.buttonText}>Sign up</Text>
                 )}
                 {this.state.isLoading && (
                   <ActivityIndicator size="small" color="#ffffff" />
