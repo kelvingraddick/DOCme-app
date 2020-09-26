@@ -4,6 +4,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import MapView from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 import { Marker } from 'react-native-maps';
+import Genders from '../Constants/Genders';
+import Races from '../Constants/Races';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import Icon from 'react-native-ionicons';
@@ -155,6 +157,16 @@ export default class DoctorScreen extends Component {
                     />
                   }
                 />
+              </>
+            }
+            <View style={styles.divider}></View>
+            { this.state.doctor && (this.state.doctor.gender || this.state.doctor.race) &&
+              <>
+                <Text style={styles.sectionTitleText}>Additional Information</Text>
+                <Text style={[styles.doctorDescriptionText, { alignSelf: 'flex-start'}]}>
+                  Gender - { Genders.find(x => { return x.id === this.state.doctor.gender })?.name || 'Not set'}{'\n'}
+                  Race - { Races.find(x => { return x.id === this.state.doctor.race })?.name || 'Not set'}
+                </Text>
               </>
             }
           </View>

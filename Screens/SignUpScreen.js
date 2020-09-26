@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SafeAreaView, ScrollView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, Alert, Image, ActivityIndicator } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, View, StatusBar, Text, TextInput, Modal, TouchableOpacity, TouchableHighlight, Alert, Image, ActivityIndicator, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ImagePicker from 'react-native-image-picker';
 import { RNS3 } from 'react-native-s3-upload';
 import { AWS_ACCESS_KEY_ID, AWS_ACCESS_KEY_SECRET } from 'react-native-dotenv';
+import ModelHeader from '../Components/ModalHeader';
+import Genders from '../Constants/Genders';
+import Races from '../Constants/Races';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import Actions from '../Constants/Actions';
@@ -22,7 +25,11 @@ class SignUpScreen extends Component {
     passwordConfirm: null,
     image: null,
     errorMessage: null,
-    isLoading: false
+    isLoading: false,
+    isGenderSelectModalVisible: false,
+    selectedGenderOption: {},
+    isRaceSelectModalVisible: false,
+    selectedRaceOption: {}
   };
 
   render() {
@@ -76,6 +83,20 @@ class SignUpScreen extends Component {
                 value={this.state.passwordConfirm}
                 onChangeText={text => this.setState({passwordConfirm: text})}
               />
+              <TextInput
+                style={styles.textBox}
+                placeholder='Gender'
+                placeholderTextColor={Colors.MEDIUM_BLUE}
+                value={this.state.selectedGenderOption.name}
+                onFocus={() => this.setState({isGenderSelectModalVisible: true})}
+              />
+              <TextInput
+                style={styles.textBox}
+                placeholder='Race'
+                placeholderTextColor={Colors.MEDIUM_BLUE}
+                value={this.state.selectedRaceOption.name}
+                onFocus={() => this.setState({isRaceSelectModalVisible: true})}
+              />
               <TouchableOpacity
                 style={styles.textBox}
                 onPress={() => this.onChooseImage()}
@@ -107,9 +128,67 @@ class SignUpScreen extends Component {
               )}
             </View>
           </View>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.isGenderSelectModalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}>
+            <SafeAreaView />
+            <ModelHeader titleText="Select" onCancelButtonPress={() => this.setState({isGenderSelectModalVisible: false})} />
+            <FlatList
+              data={Genders}
+              keyExtractor={item => item.id}
+              renderItem={({item, index, separators}) => (
+                <TouchableHighlight
+                  style={styles.option}
+                  onPress={() => this.onGenderOptionSelected(item)}
+                  onShowUnderlay={separators.highlight}
+                  onHideUnderlay={separators.unhighlight}>
+                  <Text style={styles.optionText}>{item.name}</Text>
+                </TouchableHighlight>
+              )}
+              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+            />
+          </Modal>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.isRaceSelectModalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}>
+            <SafeAreaView />
+            <ModelHeader titleText="Select" onCancelButtonPress={() => this.setState({isRaceSelectModalVisible: false})} />
+            <FlatList
+              data={Races}
+              keyExtractor={item => item.id}
+              renderItem={({item, index, separators}) => (
+                <TouchableHighlight
+                  style={styles.option}
+                  onPress={() => this.onRaceOptionSelected(item)}
+                  onShowUnderlay={separators.highlight}
+                  onHideUnderlay={separators.unhighlight}>
+                  <Text style={styles.optionText}>{item.name}</Text>
+                </TouchableHighlight>
+              )}
+              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+            />
+          </Modal>
         </ScrollView>
       </>
     );
+  }
+
+  onGenderOptionSelected(option) {
+    this.setState({selectedGenderOption: option});
+    this.setState({isGenderSelectModalVisible: false});
+  }
+
+  onRaceOptionSelected(option) {
+    this.setState({selectedRaceOption: option});
+    this.setState({isRaceSelectModalVisible: false});
   }
 
   async onChooseImage() {
@@ -201,6 +280,8 @@ class SignUpScreen extends Component {
       lastName: this.state.lastName,
       emailAddress: this.state.emailAddress,
       password: this.state.password,
+      gender: this.state.selectedGenderOption.id,
+      race: this.state.selectedRaceOption.id,
       imageUrl: this.state.image && this.state.image.url
     };
     return fetch('http://www.docmeapp.com/patient/register', {
@@ -283,6 +364,23 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: Fonts.MEDIUM,
     marginBottom: 30
+  },
+  // TODO: refactor out modal
+  option: {
+    height: 55,
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center'
+  },
+  optionText: {
+    padding: 10,
+    color: Colors.DARK_BLUE,
+    fontSize: 15,
+    fontFamily: Fonts.NORMAL
+  },
+  optionSeparator: {
+    height: 1,
+    backgroundColor: Colors.LIGHT_GRAY
   }
 })
 
