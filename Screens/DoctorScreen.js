@@ -25,7 +25,12 @@ export default class DoctorScreen extends Component {
     doctor: {},
     date: Moment().startOf('date'),
     times: [],
-    mapRegion: {},
+    mapRegion: {
+      latitude: 37.78825,
+      longitude: -122.4324,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    },
     mapMarkers: []
   };
   
