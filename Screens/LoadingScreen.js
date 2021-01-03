@@ -9,9 +9,14 @@ class LoadingScreen extends Component {
     var token = await AsyncStorage.getItem('TOKEN');
     if (token) { 
       this.props.dispatch({ type: Actions.SET_TOKEN, token: token });
-      var response = await this.signIn(token);
+      var response = await this.trySignIn('patient', token);
       if (response) {
-        this.props.dispatch({ type: Actions.SET_PATIENT, patient: response.patient });
+        this.props.dispatch({ type: Actions.SET_PATIENT, patient: response.patient || null });
+      } else {
+        var response = await this.trySignIn('doctor', token);
+        if (response) {
+          this.props.dispatch({ type: Actions.SET_DOCTOR, doctor: response.doctor || null });
+        }
       }
     }
     this.props.navigation.navigate('BottomTabNavigator');
@@ -28,8 +33,8 @@ class LoadingScreen extends Component {
     );
   }
 
-  async signIn(token) {
-    return fetch('http://www.docmeapp.com/patient/authorize', {
+  async trySignIn(userType, token) {
+    return fetch('http://www.docmeapp.com/' + userType + '/authorize', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + token }
     })

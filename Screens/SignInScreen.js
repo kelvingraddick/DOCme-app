@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SafeAreaView, ScrollView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, TouchableHighlight, Alert, Modal, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import Actions from '../Constants/Actions';
+import ModelHeader from '../Components/ModalHeader';
+import UserTypes from '../Constants/UserTypes';
 
 class SignInScreen extends Component {
   static navigationOptions = {
@@ -12,6 +14,8 @@ class SignInScreen extends Component {
   };
 
   state = {
+    isUserTypeSelectModalVisible: false,
+    selectedUserTypeOption: {},
     emailAddress: null,
     password: null
   };
@@ -26,6 +30,13 @@ class SignInScreen extends Component {
             <View style={styles.header}>
               <Text style={styles.titleText}>Welcome back to DOCme!</Text>
               <Text style={styles.subTitleText}>Sign in to manage your account and appointments.</Text>
+              <TextInput
+                style={styles.textBox}
+                placeholder='Patient or doctor?'
+                placeholderTextColor={Colors.MEDIUM_BLUE}
+                value={this.state.selectedUserTypeOption.name}
+                onFocus={() => this.setState({isUserTypeSelectModalVisible: true})}
+              />
               <TextInput
                 style={styles.textBox}
                 placeholder='Email Address'
@@ -53,16 +64,46 @@ class SignInScreen extends Component {
               </TouchableOpacity>
             </View>
           </View>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.isUserTypeSelectModalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}>
+            <SafeAreaView />
+            <ModelHeader titleText="Select" onCancelButtonPress={() => this.setState({isUserTypeSelectModalVisible: false})} />
+            <FlatList
+              data={UserTypes}
+              keyExtractor={item => item.id}
+              renderItem={({item, index, separators}) => (
+                <TouchableHighlight
+                  style={styles.option}
+                  onPress={() => this.onUserTypeOptionSelected(item)}
+                  onShowUnderlay={separators.highlight}
+                  onHideUnderlay={separators.unhighlight}>
+                  <Text style={styles.optionText}>{item.name}</Text>
+                </TouchableHighlight>
+              )}
+              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+            />
+          </Modal>
         </ScrollView>
       </>
     );
   }
 
+  onUserTypeOptionSelected(option) {
+    this.setState({selectedUserTypeOption: option});
+    this.setState({isUserTypeSelectModalVisible: false});
+  }
+
   async onSignInButtonTapped() {
-    var response = await this.signIn(this.state.emailAddress, this.state.password);
+    var response = await this.signIn(this.state.selectedUserTypeOption.id, this.state.emailAddress, this.state.password);
     if (response) {
       this.props.dispatch({ type: Actions.SET_TOKEN, token: response.token });
-      this.props.dispatch({ type: Actions.SET_PATIENT, patient: response.patient });
+      this.props.dispatch({ type: Actions.SET_PATIENT, patient: response.patient || null });
+      this.props.dispatch({ type: Actions.SET_DOCTOR, doctor: response.doctor || null });
       await AsyncStorage.setItem('TOKEN', response.token);
       this.props.navigation.goBack();
     } else {
@@ -75,14 +116,14 @@ class SignInScreen extends Component {
     }
   }
 
-  async signIn(emailAddress, password) {
+  async signIn(userType, emailAddress, password) {
     var body = {
       identityType: 'docme',
-      userType: 'patient',
+      userType: userType,
       emailAddress: emailAddress,
       password: password
     };
-    return fetch('http://www.docmeapp.com/patient/authenticate', {
+    return fetch('http://www.docmeapp.com/' + userType + '/authenticate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
@@ -149,6 +190,23 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: Fonts.MEDIUM,
     textAlign: 'center'
+  },
+  // TODO: refactor out modal
+  option: {
+    height: 55,
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center'
+  },
+  optionText: {
+    padding: 10,
+    color: Colors.DARK_BLUE,
+    fontSize: 15,
+    fontFamily: Fonts.NORMAL
+  },
+  optionSeparator: {
+    height: 1,
+    backgroundColor: Colors.LIGHT_GRAY
   }
 })
 

@@ -6,6 +6,7 @@ import ImagePicker from 'react-native-image-picker';
 import { RNS3 } from 'react-native-s3-upload';
 import { AWS_ACCESS_KEY_ID, AWS_ACCESS_KEY_SECRET } from 'react-native-dotenv';
 import ModelHeader from '../Components/ModalHeader';
+import UserTypes from '../Constants/UserTypes';
 import Genders from '../Constants/Genders';
 import Races from '../Constants/Races';
 import Colors from '../Constants/Colors';
@@ -18,6 +19,8 @@ class SignUpScreen extends Component {
   };
 
   state = {
+    isUserTypeSelectModalVisible: false,
+    selectedUserTypeOption: {},
     firstName: null,
     lastName: null,
     emailAddress: null,
@@ -42,6 +45,13 @@ class SignUpScreen extends Component {
             <View style={styles.header}>
               <Text style={styles.titleText}>Welcome to DOCme!</Text>
               <Text style={styles.subTitleText}>Sign up to manage your account and appointments.</Text>
+              <TextInput
+                style={styles.textBox}
+                placeholder='Patient or doctor?'
+                placeholderTextColor={Colors.MEDIUM_BLUE}
+                value={this.state.selectedUserTypeOption.name}
+                onFocus={() => this.setState({isUserTypeSelectModalVisible: true})}
+              />
               <TextInput
                 style={styles.textBox}
                 placeholder='First Name'
@@ -131,6 +141,30 @@ class SignUpScreen extends Component {
           <Modal
             animationType="slide"
             transparent={false}
+            visible={this.state.isUserTypeSelectModalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}>
+            <SafeAreaView />
+            <ModelHeader titleText="Select" onCancelButtonPress={() => this.setState({isUserTypeSelectModalVisible: false})} />
+            <FlatList
+              data={UserTypes}
+              keyExtractor={item => item.id}
+              renderItem={({item, index, separators}) => (
+                <TouchableHighlight
+                  style={styles.option}
+                  onPress={() => this.onUserTypeOptionSelected(item)}
+                  onShowUnderlay={separators.highlight}
+                  onHideUnderlay={separators.unhighlight}>
+                  <Text style={styles.optionText}>{item.name}</Text>
+                </TouchableHighlight>
+              )}
+              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+            />
+          </Modal>
+          <Modal
+            animationType="slide"
+            transparent={false}
             visible={this.state.isGenderSelectModalVisible}
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
@@ -181,6 +215,11 @@ class SignUpScreen extends Component {
     );
   }
 
+  onUserTypeOptionSelected(option) {
+    this.setState({selectedUserTypeOption: option});
+    this.setState({isUserTypeSelectModalVisible: false});
+  }
+
   onGenderOptionSelected(option) {
     this.setState({selectedGenderOption: option});
     this.setState({isGenderSelectModalVisible: false});
@@ -200,12 +239,12 @@ class SignUpScreen extends Component {
       if (response.uri) {
         var image = response;
         var file = {
-          name: 'patient.' + Date.now() + '.' + Math.round(Math.random() * 1E9) + '.' + (/(?:\.([^.]+))?$/).exec(image.uri)[1],
+          name: 'user.' + Date.now() + '.' + Math.round(Math.random() * 1E9) + '.' + (/(?:\.([^.]+))?$/).exec(image.uri)[1],
           type: image.type,
           uri: image.uri
         };
         var options = {
-          keyPrefix: 'images/patient/',
+          keyPrefix: 'images/user/',
           bucket: 'wavelink-docme',
           region: 'us-east-1',
           accessKey: AWS_ACCESS_KEY_ID,
@@ -239,7 +278,8 @@ class SignUpScreen extends Component {
     if (response) {
       if (response.isSuccess) {
         this.props.dispatch({ type: Actions.SET_TOKEN, token: response.token });
-        this.props.dispatch({ type: Actions.SET_PATIENT, patient: response.patient });
+        this.props.dispatch({ type: Actions.SET_PATIENT, patient: response.patient || null });
+        this.props.dispatch({ type: Actions.SET_DOCTOR, doctor: response.doctor  || null });
         await AsyncStorage.setItem('TOKEN', response.token);
         this.props.navigation.goBack();
       } else {
@@ -260,7 +300,9 @@ class SignUpScreen extends Component {
   async validate() {
     var errorMessage = null;
     var emailAddressRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (!this.state.firstName || this.state.firstName.length <= 2 || this.state.firstName.length >= 30) {
+    if (!this.state.selectedUserTypeOption.id) {
+      errorMessage = 'User type (patient or doctor) must be selected.';
+    } else if (!this.state.firstName || this.state.firstName.length <= 2 || this.state.firstName.length >= 30) {
       errorMessage = 'First name must be between 2 and 30 characters.';
     } else if (!this.state.lastName || this.state.lastName.length <= 2 || this.state.lastName.length >= 30) {
       errorMessage = 'Last name must be between 2 and 30 characters.';
@@ -284,7 +326,7 @@ class SignUpScreen extends Component {
       race: this.state.selectedRaceOption.id,
       imageUrl: this.state.image && this.state.image.url
     };
-    return fetch('http://www.docmeapp.com/patient/register', {
+    return fetch('http://www.docmeapp.com/' + this.state.selectedUserTypeOption.id + '/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)

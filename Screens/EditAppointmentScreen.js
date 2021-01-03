@@ -223,7 +223,7 @@ class EditAppointmentScreen extends Component {
     if (!this.state.appointment.specialty.id) {
       errorMessage = 'Must select a speciality.';
     }
-    if (!this.props.patient || !this.props.token) {
+    if ((!this.props.patient && !this.props.doctor) || !this.props.token) {
       errorMessage = 'Must sign in or sign up to update.';
     }
     await this.setState({ errorMessage: errorMessage });

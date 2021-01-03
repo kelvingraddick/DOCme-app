@@ -39,14 +39,26 @@ class MyAccountScreen extends Component {
             )}
           </View>
         }
+        { this.props.doctor &&
+          <View style={styles.headerView}>
+            <Text style={styles.nameText}>{this.props.doctor.firstName} {this.props.doctor.lastName}</Text>
+            <Text style={styles.emailAddressText}>{this.props.doctor.emailAddress}</Text>
+            {this.props.doctor.imageUrl && (
+              <Image
+                source={{ uri: this.props.doctor.imageUrl ? this.props.doctor.imageUrl : '' }}
+                style={styles.image}
+              />
+            )}
+          </View>
+        }
         <SectionList
           style={styles.optionsList}
           keyExtractor={(item, index) => index}
           sections={[{ data: Object.keys(this.options) }]}
           renderItem={({item}) =>
             this.options[item].visible == 'always' || 
-            (this.options[item].visible == 'signed-in' && this.props.patient != null) ||
-            (this.options[item].visible == 'logged-out' && this.props.patient == null) ? 
+            (this.options[item].visible == 'signed-in' && (this.props.patient != null || this.props.doctor != null)) ||
+            (this.options[item].visible == 'logged-out' && (this.props.patient == null && this.props.doctor == null)) ? 
               (
                 <TouchableOpacity style={styles.optionView} onPress={this.options[item].action}>
                   <Icon style={styles.optionIcon} name={this.options[item].icon} />
@@ -64,6 +76,7 @@ class MyAccountScreen extends Component {
   async signOut() {
     this.props.dispatch({ type: Actions.SET_TOKEN, token: null });
     this.props.dispatch({ type: Actions.SET_PATIENT, patient: null });
+    this.props.dispatch({ type: Actions.SET_DOCTOR, doctor: null });
     await AsyncStorage.removeItem('TOKEN');
   }
 };

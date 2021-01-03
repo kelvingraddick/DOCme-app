@@ -18,8 +18,12 @@ class AppointmentsScreen extends Component {
     await this.getAppointments();
   }
   
-  async componentDidUpdate() {
-    await this.getAppointments();
+  async componentDidUpdate(newProps) {
+    if (newProps.patient !== this.props.patient ||
+        newProps.doctor !== this.props.doctor ||
+        newProps.token !== this.props.token) {
+      await this.getAppointments();
+    }
   }
   
   render() {
@@ -28,7 +32,7 @@ class AppointmentsScreen extends Component {
         <StatusBar barStyle="dark-content" />
         <SafeAreaView />
         <View style={styles.container}>
-          { (!this.props.patient || this.state.appointments.length == 0) &&
+          { ((!this.props.patient && !this.props.doctor) || this.state.appointments.length == 0) &&
             <View>
               <Image style={styles.backgroundImage} source={require('../Images/background-2.jpg')} />
               <Text style={styles.titleText}>Search for a doctor to set an appointment</Text>
@@ -38,7 +42,7 @@ class AppointmentsScreen extends Component {
                 underlayColor='#fff'>
                 <Text style={styles.buttonText}>Search</Text>
               </TouchableOpacity>
-              { !this.props.patient &&
+              { (!this.props.patient && !this.props.doctor) &&
                 <>
                   <Text style={styles.titleText}>..or sign in/up to see your appointments</Text>
                   <TouchableOpacity
@@ -51,7 +55,7 @@ class AppointmentsScreen extends Component {
               }
             </View>
           }
-          { this.props.patient && this.state.appointments.length > 0 &&
+          { (this.props.patient || this.props.doctor) && this.state.appointments.length > 0 &&
             <FlatList
                 data={this.state.appointments}
                 keyExtractor={item => item.id.toString()}
@@ -81,9 +85,10 @@ class AppointmentsScreen extends Component {
   }
 
   async getAppointments() {
-    if (!this.props.patient || !this.props.token) return;
+    if ((!this.props.patient && !this.props.doctor) || !this.props.token) return;
 
-    var appointments = await fetch('http://www.docmeapp.com/appointment/patient/' + this.props.patient.id + '/list', { 
+    var url = 'http://www.docmeapp.com/appointment/' + (this.props.patient ? ('patient/' + this.props.patient.id) : ('doctor/' + this.props.doctor.id)) + '/list';
+    var appointments = await fetch(url, { 
       method: 'GET',
       headers: { 'Authorization': 'Bearer ' + this.props.token }
     })
@@ -96,7 +101,7 @@ class AppointmentsScreen extends Component {
           }
         })
       }
-      return undefined;
+      return [];
     })
     .catch((error) => {
       console.error(error);
