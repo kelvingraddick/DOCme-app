@@ -85,6 +85,48 @@ class EditAccountScreen extends Component {
               }
               { this.props.doctor &&
                 <View>
+                  <TextInput
+                    style={styles.textBox}
+                    placeholder='First Name'
+                    placeholderTextColor={Colors.MEDIUM_BLUE}
+                    defaultValue={this.props.doctor.firstName}
+                    onChangeText={text => this.props.doctor.firstName = text}
+                  />
+                  <TextInput
+                    style={styles.textBox}
+                    placeholder='Last Name'
+                    placeholderTextColor={Colors.MEDIUM_BLUE}
+                    defaultValue={this.props.doctor.lastName}
+                    onChangeText={text => this.props.doctor.lastName = text}
+                  />
+                  <TextInput
+                    style={styles.textBox}
+                    placeholder='Gender'
+                    placeholderTextColor={Colors.MEDIUM_BLUE}
+                    defaultValue={Genders.find(x => x.id == this.props.doctor.gender)?.name}
+                    onFocus={() => this.setState({isGenderSelectModalVisible: true})}
+                  />
+                  <TextInput
+                    style={styles.textBox}
+                    placeholder='Race'
+                    placeholderTextColor={Colors.MEDIUM_BLUE}
+                    defaultValue={Races.find(x => x.id == this.props.doctor.race)?.name}
+                    onFocus={() => this.setState({isRaceSelectModalVisible: true})}
+                  />
+                  <TouchableOpacity
+                    style={styles.textBox}
+                    onPress={() => this.onChooseImage()}
+                    underlayColor='#fff'>
+                    {!this.props.doctor.imageUrl && (
+                      <Text style={styles.textBoxText}>Choose an account image</Text>
+                    )}
+                    {this.props.doctor.imageUrl && (
+                      <Image
+                        source={{ uri: this.props.doctor.imageUrl }}
+                        style={styles.image}
+                      />
+                    )}
+                  </TouchableOpacity>
                 </View>
               }
               <TouchableOpacity
