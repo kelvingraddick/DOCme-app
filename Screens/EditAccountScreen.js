@@ -55,6 +55,15 @@ class EditAccountScreen extends Component {
                   />
                   <TextInput
                     style={styles.textBox}
+                    placeholder='Email Address'
+                    placeholderTextColor={Colors.MEDIUM_BLUE}
+                    autoCompleteType='email'
+                    autoCapitalize='none'
+                    defaultValue={this.props.patient.emailAddress}
+                    onChangeText={text => this.props.patient.emailAddress = text}
+                  />
+                  <TextInput
+                    style={styles.textBox}
                     placeholder='Gender'
                     placeholderTextColor={Colors.MEDIUM_BLUE}
                     defaultValue={Genders.find(x => x.id == this.props.patient.gender)?.name}
@@ -98,6 +107,15 @@ class EditAccountScreen extends Component {
                     placeholderTextColor={Colors.MEDIUM_BLUE}
                     defaultValue={this.props.doctor.lastName}
                     onChangeText={text => this.props.doctor.lastName = text}
+                  />
+                  <TextInput
+                    style={styles.textBox}
+                    placeholder='Email Address'
+                    placeholderTextColor={Colors.MEDIUM_BLUE}
+                    autoCompleteType='email'
+                    autoCapitalize='none'
+                    defaultValue={this.props.doctor.emailAddress}
+                    onChangeText={text => this.props.doctor.emailAddress = text}
                   />
                   <TextInput
                     style={styles.textBox}
@@ -286,6 +304,8 @@ class EditAccountScreen extends Component {
         errorMessage = 'First name must be between 2 and 30 characters.';
       } else if (!patient.lastName || patient.lastName.length <= 2 || patient.lastName.length >= 30) {
         errorMessage = 'Last name must be between 2 and 30 characters.';
+      } else if (!emailAddressRegex.test(patient.emailAddress)) {
+        errorMessage = 'Valid email address is required.';
       }
     } else if (this.props.doctor) {
       var doctor = this.props.doctor;
@@ -293,6 +313,8 @@ class EditAccountScreen extends Component {
         errorMessage = 'First name must be between 2 and 30 characters.';
       } else if (!doctor.lastName || doctor.lastName.length <= 2 || doctor.lastName.length >= 30) {
         errorMessage = 'Last name must be between 2 and 30 characters.';
+      } else if (!emailAddressRegex.test(doctor.emailAddress)) {
+        errorMessage = 'Valid email address is required.';
       }
     }
     await this.setState({ errorMessage: errorMessage });
@@ -307,6 +329,7 @@ class EditAccountScreen extends Component {
       body.firstName = patient.firstName;
       body.lastName = patient.lastName;
       body.gender = patient.gender;
+      body.emailAddress = patient.emailAddress;
       body.race = patient.race;
       body.imageUrl = patient.imageUrl;
     } else if (this.props.doctor) {
@@ -314,6 +337,7 @@ class EditAccountScreen extends Component {
       url += '/doctor/' + doctor.id + '/update';
       body.firstName = doctor.firstName;
       body.lastName = doctor.lastName;
+      body.emailAddress = doctor.emailAddress;
       body.gender = doctor.gender;
       body.race = doctor.race;
       body.imageUrl = doctor.imageUrl;
