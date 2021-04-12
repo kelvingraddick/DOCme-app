@@ -16,6 +16,7 @@ class MyAccountScreen extends Component {
     'Sign in': { icon: 'log-in', visible: 'logged-out', action: () => { this.props.navigation.navigate('SignInScreen'); } },
     'Sign up': { icon: 'clipboard', visible: 'logged-out', action: () => { this.props.navigation.navigate('SignUpScreen'); } },
     'Edit Account': { icon: 'contact', visible: 'signed-in', action: () => { this.props.navigation.navigate('EditAccountScreen'); } },
+    'Change Password': { icon: 'lock', visible: 'signed-in', action: () => { this.props.navigation.navigate('ChangePasswordScreen'); } },
     'Terms of use': { icon: 'information-circle', visible: 'always', action: () => {  } },
     'Privacy Policy': { icon: 'eye-off', visible: 'always', action: () => {  } },
     'Give app feedback': { icon: 'ribbon', visible: 'always', action: () => {  } },
