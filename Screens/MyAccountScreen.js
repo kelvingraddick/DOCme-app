@@ -17,6 +17,7 @@ class MyAccountScreen extends Component {
     'Sign up': { icon: 'clipboard', visible: 'logged-out', action: () => { this.props.navigation.navigate('SignUpScreen'); } },
     'Edit Account': { icon: 'contact', visible: 'signed-in', action: () => { this.props.navigation.navigate('EditAccountScreen'); } },
     'Change Password': { icon: 'lock', visible: 'signed-in', action: () => { this.props.navigation.navigate('ChangePasswordScreen'); } },
+    'Edit Practice': { icon: 'business', visible: 'signed-in-doctor', action: () => { this.props.navigation.navigate('EditPracticeScreen'); } },
     'Terms of use': { icon: 'information-circle', visible: 'always', action: () => {  } },
     'Privacy Policy': { icon: 'eye-off', visible: 'always', action: () => {  } },
     'Give app feedback': { icon: 'ribbon', visible: 'always', action: () => {  } },
@@ -60,6 +61,7 @@ class MyAccountScreen extends Component {
           renderItem={({item}) =>
             this.options[item].visible == 'always' || 
             (this.options[item].visible == 'signed-in' && (this.props.patient != null || this.props.doctor != null)) ||
+            (this.options[item].visible == 'signed-in-doctor' && this.props.patient == null && this.props.doctor != null) ||
             (this.options[item].visible == 'logged-out' && (this.props.patient == null && this.props.doctor == null)) ? 
               (
                 <TouchableOpacity style={styles.optionView} onPress={this.options[item].action}>
