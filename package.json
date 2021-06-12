@@ -18,6 +18,7 @@
     "moment": "^2.24.0",
     "react": "16.9.0",
     "react-native": "0.61.5",
+    "react-native-date-picker": "^3.3.1",
     "react-native-document-scanner": "^1.4.2",
     "react-native-geocoding": "^0.4.0",
     "react-native-gesture-handler": "^1.5.2",
