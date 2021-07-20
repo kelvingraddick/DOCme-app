@@ -3,17 +3,18 @@ import { connect } from 'react-redux';
 import { SafeAreaView, StyleSheet, View, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Actions from '../Constants/Actions';
+import Login from '../Helpers/Login';
 
 class LoadingScreen extends Component {
   async componentDidMount() {
     var token = await AsyncStorage.getItem('TOKEN');
     if (token) { 
       this.props.dispatch({ type: Actions.SET_TOKEN, token: token });
-      var response = await this.trySignIn('patient', token);
+      var response = await Login('patient', token);
       if (response) {
         this.props.dispatch({ type: Actions.SET_PATIENT, patient: response.patient || null });
       } else {
-        var response = await this.trySignIn('doctor', token);
+        var response = await Login('doctor', token);
         if (response) {
           this.props.dispatch({ type: Actions.SET_DOCTOR, doctor: response.doctor || null });
         }
@@ -31,28 +32,6 @@ class LoadingScreen extends Component {
         </View> 
       </>
     );
-  }
-
-  async trySignIn(userType, token) {
-    return fetch('http://www.docmeapp.com/' + userType + '/authorize', {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + token }
-    })
-    .then((response) => { 
-      if (response.status == 200) {
-        return response.json()
-        .then((responseJson) => {
-          if (responseJson.isSuccess) {
-            return responseJson;
-          }
-        })
-      }
-      return undefined;
-    })
-    .catch((error) => {
-      console.error(error);
-      return undefined;
-    });
   }
 };
 

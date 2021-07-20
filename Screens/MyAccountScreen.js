@@ -12,6 +12,11 @@ class MyAccountScreen extends Component {
     title: 'My Account'
   };
 
+  state = {
+    errorMessage: null,
+    errorAction: null
+  };
+
   options = {
     'Sign in': { icon: 'log-in', visible: 'logged-out', action: () => { this.props.navigation.navigate('SignInScreen'); } },
     'Sign up': { icon: 'clipboard', visible: 'logged-out', action: () => { this.props.navigation.navigate('SignUpScreen'); } },
@@ -25,6 +30,18 @@ class MyAccountScreen extends Component {
     'Share this app': { icon: 'share', visible: 'always', action: () => {  } },
     'Log out': { icon: 'log-out', visible: 'signed-in', action: () => { this.signOut(); } }
   };
+
+  async componentDidMount() {
+    this.setErrorMessage();
+  }
+
+  async componentDidUpdate(newProps) {
+    if (newProps.patient !== this.props.patient ||
+        newProps.doctor !== this.props.doctor ||
+        newProps.token !== this.props.token) {
+      this.setErrorMessage();
+    }
+  }
 
   render() {
     return (
@@ -55,6 +72,12 @@ class MyAccountScreen extends Component {
             )}
           </View>
         }
+        { this.state.errorMessage &&
+          <TouchableOpacity style={styles.errorView} onPress={this.state.errorAction}>
+            <Icon style={styles.errorIcon} name='alert' />
+            <Text style={styles.errorText}>{this.state.errorMessage}</Text>
+          </TouchableOpacity>
+        }
         <SectionList
           style={styles.optionsList}
           keyExtractor={(item, index) => index}
@@ -83,6 +106,16 @@ class MyAccountScreen extends Component {
     this.props.dispatch({ type: Actions.SET_PATIENT, patient: null });
     this.props.dispatch({ type: Actions.SET_DOCTOR, doctor: null });
     await AsyncStorage.removeItem('TOKEN');
+  }
+
+  setErrorMessage() {
+    if (this.props.doctor != null && !['trialing', 'active'].includes(this.props.doctor.stripeSubscriptionStatus || '')) {
+      this.setState({ errorMessage: 'Doctor subscription inactive. Tap to add payment!' });
+      this.setState({ errorAction: () => this.props.navigation.navigate('CheckoutScreen') });
+    } else {
+      this.setState({ errorMessage: null });
+      this.setState({ errorAction: null });
+    }
   }
 };
 
@@ -115,6 +148,24 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginTop: 20,
     marginBottom: 10
+  },
+  errorView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    backgroundColor: Colors.RED
+  },
+  errorIcon: {
+    marginRight: 5,
+    fontSize: 15,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    color: Colors.WHITE
+  },
+  errorText: {
+    color: Colors.WHITE,
+    fontSize: 15,
+    fontFamily: Fonts.LIGHT
   },
   optionsList: {
     backgroundColor: Colors.LIGHT_GRAY

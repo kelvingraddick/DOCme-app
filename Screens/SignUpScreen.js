@@ -281,7 +281,11 @@ class SignUpScreen extends Component {
         this.props.dispatch({ type: Actions.SET_PATIENT, patient: response.patient || null });
         this.props.dispatch({ type: Actions.SET_DOCTOR, doctor: response.doctor  || null });
         await AsyncStorage.setItem('TOKEN', response.token);
-        this.props.navigation.goBack();
+        if (response.doctor) {
+          this.props.navigation.navigate('CheckoutScreen');
+        } else {
+          this.props.navigation.goBack();
+        }
       } else {
         await this.setState({ errorMessage: response.errorMessage });
         this.setState({ isLoading: false });
@@ -299,7 +303,7 @@ class SignUpScreen extends Component {
 
   async validate() {
     var errorMessage = null;
-    var emailAddressRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    var emailAddressRegex = /^\w+([\.\-\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (!this.state.selectedUserTypeOption.id) {
       errorMessage = 'User type (patient or doctor) must be selected.';
     } else if (!this.state.firstName || this.state.firstName.length <= 2 || this.state.firstName.length >= 30) {

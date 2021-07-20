@@ -21,6 +21,7 @@ import EditAccountScreen from './Screens/EditAccountScreen';
 import EditPracticeScreen from './Screens/EditPracticeScreen';
 import EditScheduleScreen from './Screens/EditScheduleScreen';
 import ChangePasswordScreen from './Screens/ChangePasswordScreen';
+import CheckoutScreen from './Screens/CheckoutScreen';
 import Icon from 'react-native-ionicons';
 
 const SearchScreenStackNavigator = createStackNavigator(
@@ -59,6 +60,7 @@ const MyAccountScreenStackNavigator = createStackNavigator(
     MyAccountScreen: MyAccountScreen,
     SignInScreen: SignInScreen,
     SignUpScreen: SignUpScreen,
+    CheckoutScreen: CheckoutScreen,
     EditAccountScreen: EditAccountScreen,
     EditPracticeScreen: EditPracticeScreen,
     EditScheduleScreen: EditScheduleScreen,
