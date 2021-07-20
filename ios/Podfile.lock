@@ -333,12 +333,6 @@ PODS:
     - React
   - RNScreens (2.0.0-alpha.19):
     - React
-  - Stripe (21.6.0):
-    - Stripe/Stripe3DS2 (= 21.6.0)
-  - stripe-react-native (0.1.4):
-    - React
-    - Stripe (~> 21.6.0)
-  - Stripe/Stripe3DS2 (21.6.0)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -381,7 +375,6 @@ DEPENDENCIES:
   - RNPdfScanner (from `../node_modules/react-native-document-scanner/ios`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
-  - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -405,7 +398,6 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - Protobuf
-    - Stripe
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -480,8 +472,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
-  stripe-react-native:
-    :path: "../node_modules/@stripe/stripe-react-native"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -541,10 +531,8 @@ SPEC CHECKSUMS:
   RNPdfScanner: 26380aeb5571cd6ff88bb93bab37162e17da9273
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNScreens: 62284de159bbddba268edd282337afdb8771aaed
-  Stripe: 6cc7bb348f4b1fad111129f6ee40eb6682deaefb
-  stripe-react-native: dbb9117864014d4c621e9152c25999264a63c9fb
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: d11c9b5ab0fe175574ef2d60ce6c37b32d9d4bc6
+PODFILE CHECKSUM: 7e518dc430fa7821b7e451f6aaf87641222b3134
 
 COCOAPODS: 1.10.1
