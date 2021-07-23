@@ -4,7 +4,8 @@ import Actions from './Constants/Actions';
 const initialState = {
   token: null,
   patient: null,
-  doctor: null
+  doctor: null,
+  appointments: []
 };
 
 function setToken(state = initialState.token, action) {
@@ -28,10 +29,18 @@ function setDoctor(state = initialState.doctor, action) {
   return state;
 };
 
+function setAppointments(state = initialState.appointments, action) {
+  if (action.type == Actions.SET_APPOINTMENTS) {
+    return action.appointments;
+  }
+  return state;
+};
+
 const reducers = combineReducers({
   token: setToken,
   patient: setPatient,
-  doctor: setDoctor
+  doctor: setDoctor,
+  appointments: setAppointments
 });
 
 const store = createStore(reducers);

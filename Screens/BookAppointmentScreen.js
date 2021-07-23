@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { SafeAreaView, ScrollView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, Alert, Modal, ActivityIndicator, FlatList, TouchableHighlight } from 'react-native';
 import DoctorRowView from '../Components/DoctorRowView';
 import ModelHeader from '../Components/ModalHeader';
+import Actions from '../Constants/Actions';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 
@@ -133,6 +134,7 @@ class BookAppointmentScreen extends Component {
           [{ text: "OK" }],
           { cancelable: false }
         );
+        this.props.dispatch({ type: Actions.SET_APPOINTMENTS, appointments: [] }); // will trigger refresh on AppointmentsScreen
         this.props.navigation.popToTop();
         this.props.navigation.navigate('AppointmentsScreenStackNavigator');
       } else {

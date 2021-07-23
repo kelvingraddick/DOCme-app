@@ -2,16 +2,13 @@ import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet, View, StatusBar, Text, Image, FlatList, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Moment from 'moment';
+import Actions from '../Constants/Actions';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 
 class AppointmentsScreen extends Component {
   static navigationOptions = {
     title: 'Appointments'
-  };
-  
-  state = {
-    appointments: []
   };
 
   async componentDidMount() {
@@ -21,7 +18,8 @@ class AppointmentsScreen extends Component {
   async componentDidUpdate(newProps) {
     if (newProps.patient !== this.props.patient ||
         newProps.doctor !== this.props.doctor ||
-        newProps.token !== this.props.token) {
+        newProps.token !== this.props.token ||
+        JSON.stringify(newProps.appointments) !== JSON.stringify(this.props.appointments)) {
       await this.getAppointments();
     }
   }
@@ -32,7 +30,7 @@ class AppointmentsScreen extends Component {
         <StatusBar barStyle="dark-content" />
         <SafeAreaView />
         <View style={styles.container}>
-          { ((!this.props.patient && !this.props.doctor) || this.state.appointments.length == 0) &&
+          { ((!this.props.patient && !this.props.doctor) || this.props.appointments.length == 0) &&
             <View>
               <Image style={styles.backgroundImage} source={require('../Images/background-2.jpg')} />
               <Text style={styles.titleText}>Search for a doctor to set an appointment</Text>
@@ -55,9 +53,9 @@ class AppointmentsScreen extends Component {
               }
             </View>
           }
-          { (this.props.patient || this.props.doctor) && this.state.appointments.length > 0 &&
+          { (this.props.patient || this.props.doctor) && this.props.appointments.length > 0 &&
             <FlatList
-                data={this.state.appointments}
+                data={this.props.appointments}
                 keyExtractor={item => item.id.toString()}
                 renderItem={({item}) => 
                   <TouchableOpacity onPress={() => this.props.navigation.navigate('EditAppointmentScreen', { id: item.id })}>
@@ -107,7 +105,7 @@ class AppointmentsScreen extends Component {
       console.error(error);
       return undefined;
     });
-    this.setState({appointments: appointments});
+    this.props.dispatch({ type: Actions.SET_APPOINTMENTS, appointments: appointments });
   }
 };
 
@@ -180,8 +178,8 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-  var { token, patient, doctor } = state;
-  return { token, patient, doctor };
+  var { token, patient, doctor, appointments } = state;
+  return { token, patient, doctor, appointments };
 };
 
 export default connect(mapStateToProps)(AppointmentsScreen);

@@ -4,6 +4,7 @@ import { SafeAreaView, ScrollView, StyleSheet, View, StatusBar, Text, TextInput,
 import Moment from 'moment';
 import DoctorRowView from '../Components/DoctorRowView';
 import ModelHeader from '../Components/ModalHeader';
+import Actions from '../Constants/Actions';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 
@@ -172,6 +173,7 @@ class EditAppointmentScreen extends Component {
           [{ text: "OK" }],
           { cancelable: false }
         );
+        this.props.dispatch({ type: Actions.SET_APPOINTMENTS, appointments: [] }); // will trigger refresh on AppointmentsScreen
         this.props.navigation.popToTop();
         this.props.navigation.navigate('AppointmentsScreenStackNavigator');
       } else {
@@ -201,6 +203,7 @@ class EditAppointmentScreen extends Component {
           [{ text: "OK" }],
           { cancelable: false }
         );
+        this.props.dispatch({ type: Actions.SET_APPOINTMENTS, appointments: [] }); // will trigger refresh on AppointmentsScreen
         this.props.navigation.popToTop();
         this.props.navigation.navigate('AppointmentsScreenStackNavigator');
       } else {
