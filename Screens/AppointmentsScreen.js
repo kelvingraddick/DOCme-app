@@ -16,10 +16,10 @@ class AppointmentsScreen extends Component {
   }
   
   async componentDidUpdate(newProps) {
-    if (newProps.patient !== this.props.patient ||
-        newProps.doctor !== this.props.doctor ||
-        newProps.token !== this.props.token ||
-        JSON.stringify(newProps.appointments) !== JSON.stringify(this.props.appointments)) {
+    if (!this.areObjectsEqual(newProps.patient, this.props.patient) ||
+        !this.areObjectsEqual(newProps.doctor, this.props.doctor) ||
+        !this.areObjectsEqual(newProps.token, this.props.token) ||
+        !this.areObjectsEqual(newProps.appointments), this.props.appointments) {
       await this.getAppointments();
     }
   }
@@ -106,6 +106,10 @@ class AppointmentsScreen extends Component {
       return undefined;
     });
     this.props.dispatch({ type: Actions.SET_APPOINTMENTS, appointments: appointments });
+  }
+
+  areObjectsEqual(object1, object2) {
+    return JSON.stringify(object1 || {}) == JSON.stringify(object2 || {});
   }
 };
 

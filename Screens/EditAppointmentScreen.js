@@ -66,6 +66,17 @@ class EditAppointmentScreen extends Component {
                   value={this.state.selectedSpecialtyOption.name}
                   onFocus={() => this.setState({isSpecialtySearchModalVisible: true})}
                 />
+                <Text style={styles.titleText}>Reason for visit / notes</Text>
+                <TextInput
+                  multiline={true}
+                  textAlignVertical='center'
+                  numberOfLines={10}
+                  style={[styles.textBox, { ...Platform.select({ ios: { lineHeight: 30 }, android: {} }) }]}
+                  placeholder='Reason for visit / notes'
+                  placeholderTextColor={Colors.MEDIUM_BLUE}
+                  defaultValue={this.state.appointment.notes}
+                  onChangeText={text => this.state.appointment.notes = text}
+                />
                 {!this.state.isLoading && (
                   <>
                     <TouchableOpacity
@@ -237,7 +248,7 @@ class EditAppointmentScreen extends Component {
       specialtyId: this.state.selectedSpecialtyOption.id,
       timestamp: this.state.appointment.timestamp,
       isNewPatient: true,
-      notes: "These are notes."
+      notes: this.state.appointment.notes
     };
     return await fetch('http://www.docmeapp.com/appointment/' + this.state.appointment.id + '/update/', {
       method: 'POST',

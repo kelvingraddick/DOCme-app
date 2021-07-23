@@ -15,7 +15,8 @@ class BookAppointmentScreen extends Component {
   state = {
     isSpecialtySearchModalVisible: false,
     specialtyOptions: [],
-    selectedSpecialtyOption: {}
+    selectedSpecialtyOption: {},
+    notes: ''
   };
 
   render() {
@@ -27,15 +28,26 @@ class BookAppointmentScreen extends Component {
           <View style={styles.container}>
             <DoctorRowView doctor={this.props.navigation.state.params.doctor} />
             <View style={styles.header}>
-              <Text style={styles.titleText}>Date and Time</Text>
+              <Text style={styles.titleText}>Date and time</Text>
               <Text style={styles.subTitleText}>{this.props.navigation.state.params.date.format('dddd, MMMM Do') + ', ' + this.props.navigation.state.params.time.format('h:mma')}</Text>
-              <Text style={styles.titleText}>Reason / Speciality</Text>
+              <Text style={styles.titleText}>Speciality</Text>
               <TextInput
                 style={styles.textBox}
-                placeholder='Reason / Speciality'
+                placeholder='Speciality'
                 placeholderTextColor={Colors.MEDIUM_BLUE}
                 value={this.state.selectedSpecialtyOption.name}
                 onFocus={() => this.setState({isSpecialtySearchModalVisible: true})}
+              />
+              <Text style={styles.titleText}>Reason for visit / notes</Text>
+              <TextInput
+                multiline={true}
+                textAlignVertical='center'
+                numberOfLines={10}
+                style={[styles.textBox, { ...Platform.select({ ios: { lineHeight: 30 }, android: {} }) }]}
+                placeholder='Reason for visit / notes'
+                placeholderTextColor={Colors.MEDIUM_BLUE}
+                defaultValue={this.state.notes}
+                onChangeText={text => this.state.notes = text}
               />
               <TouchableOpacity
                 style={styles.button}
@@ -170,7 +182,7 @@ class BookAppointmentScreen extends Component {
       specialtyId: this.state.selectedSpecialtyOption.id,
       timestamp: this.props.navigation.state.params.time.toJSON(),
       isNewPatient: true,
-      notes: "These are notes."
+      notes: this.state.notes
     };
     return await fetch('http://www.docmeapp.com/appointment/book', {
       method: 'POST',
