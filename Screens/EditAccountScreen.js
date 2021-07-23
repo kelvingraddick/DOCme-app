@@ -297,7 +297,7 @@ class EditAccountScreen extends Component {
 
   async validate() {
     var errorMessage = null;
-    var emailAddressRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    var emailAddressRegex = /^\w+([\.\-\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (this.props.patient) {
       var patient = this.props.patient;
       if (!patient.firstName || patient.firstName.length <= 2 || patient.firstName.length >= 30) {

@@ -319,7 +319,7 @@ class EditPracticeScreen extends Component {
 
   async validate() {
     var errorMessage = null;
-    var emailAddressRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    var emailAddressRegex = /^\w+([\.\-\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     var practice = this.props.doctor.practice;
     if (!practice.name || practice.name.length <= 2 || practice.name.length >= 30) {
       errorMessage = 'Name must be between 2 and 30 characters.';
