@@ -37,17 +37,21 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>DOCme would like to use your location to find doctors near you.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>DOCme would like access to the photo library so that you can select a photo.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>DOCme would like access to the camera so that you can take a photo.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>DOCme would like to use your location to find doctors near you.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>DOCme would like access to the photo library for saving your photos.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>DOCme would like access to the photo library so that you can select a photo.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Ionicons.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

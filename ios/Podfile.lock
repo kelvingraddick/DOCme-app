@@ -105,6 +105,8 @@ PODS:
     - nanopb/encode (= 1.30905.0)
   - nanopb/decode (1.30905.0)
   - nanopb/encode (1.30905.0)
+  - OneSignal (3.6.0)
+  - OneSignalXCFramework (3.5.3)
   - PromisesObjC (1.2.9)
   - Protobuf (3.12.0)
   - RCTRequired (0.61.5)
@@ -276,6 +278,9 @@ PODS:
     - React
   - react-native-maps (0.27.1):
     - React
+  - react-native-onesignal (4.2.0):
+    - OneSignalXCFramework (= 3.5.3)
+    - React (< 1.0.0, >= 0.13.0)
   - react-native-webview (11.6.5):
     - React-Core
   - React-RCTActionSheet (0.61.5):
@@ -341,6 +346,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - OneSignal (< 4.0, >= 3.0)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native/`)
@@ -355,6 +361,7 @@ DEPENDENCIES:
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
+  - react-native-onesignal (from `../node_modules/react-native-onesignal`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -396,6 +403,8 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMSessionFetcher
     - nanopb
+    - OneSignal
+    - OneSignalXCFramework
     - PromisesObjC
     - Protobuf
 
@@ -434,6 +443,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-onesignal:
+    :path: "../node_modules/react-native-onesignal"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-RCTActionSheet:
@@ -498,6 +509,8 @@ SPEC CHECKSUMS:
   GoogleUtilities: 39530bc0ad980530298e9c4af8549e991fd033b1
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
+  OneSignal: fba3971064be02510de1d8b9c90fabd749da2e52
+  OneSignalXCFramework: 4e08d8353adec161c3d9174e2572c849e1225c9f
   PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
   Protobuf: 2793fcd0622a00b546c60e7cbbcc493e043e9bb9
   RCTRequired: b153add4da6e7dbc44aebf93f3cf4fcae392ddf1
@@ -512,6 +525,7 @@ SPEC CHECKSUMS:
   react-native-date-picker: 2dfef0fcb6c36d078bc62f5de3ca79eff7f42486
   react-native-image-picker: 668e72d0277dc8c12ae90e835507c1eddd2e4f85
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
+  react-native-onesignal: e4b06931221ed13e85823849daa3ef7d768e869f
   react-native-webview: 9fef5edbbf9d03694c5fb513cc2e6d96694430af
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
@@ -533,6 +547,6 @@ SPEC CHECKSUMS:
   RNScreens: 62284de159bbddba268edd282337afdb8771aaed
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 7e518dc430fa7821b7e451f6aaf87641222b3134
+PODFILE CHECKSUM: 2a174e64a536b81bcdf4cb4478488d058d199238
 
 COCOAPODS: 1.10.1

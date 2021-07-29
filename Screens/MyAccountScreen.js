@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet, View, StatusBar, Text, Image, SectionList, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
+import OneSignal from 'react-native-onesignal';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import Actions from '../Constants/Actions';
@@ -106,6 +107,12 @@ class MyAccountScreen extends Component {
     this.props.dispatch({ type: Actions.SET_PATIENT, patient: null });
     this.props.dispatch({ type: Actions.SET_DOCTOR, doctor: null });
     await AsyncStorage.removeItem('TOKEN');
+    OneSignal.removeExternalUserId((results) => {
+      console.log('OneSignal: Results of removing external user id: ' + JSON.stringify(results));
+      if (results.push && results.push.success) {
+        console.log('OneSignal: Results of removing external user id push status: ' + results.push.success);
+      }
+    });
   }
 
   setErrorMessage() {
