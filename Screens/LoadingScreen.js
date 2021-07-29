@@ -10,13 +10,13 @@ class LoadingScreen extends Component {
     var token = await AsyncStorage.getItem('TOKEN');
     if (token) { 
       this.props.dispatch({ type: Actions.SET_TOKEN, token: token });
-      var response = await Login('patient', token);
-      if (response) {
-        this.props.dispatch({ type: Actions.SET_PATIENT, patient: response.patient || null });
+      var response = await Login.withToken('patient', token);
+      if (response?.patient) {
+        await this.props.dispatch({ type: Actions.SET_PATIENT, patient: response.patient || null });
       } else {
-        var response = await Login('doctor', token);
-        if (response) {
-          this.props.dispatch({ type: Actions.SET_DOCTOR, doctor: response.doctor || null });
+        var response = await Login.withToken('doctor', token);
+        if (response?.doctor) {
+          await this.props.dispatch({ type: Actions.SET_DOCTOR, doctor: response.doctor || null });
         }
       }
     }

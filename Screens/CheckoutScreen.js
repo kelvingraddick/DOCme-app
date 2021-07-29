@@ -88,7 +88,7 @@ class CheckoutScreen extends Component {
   onSuccessHandler = async () => {
     var token = await AsyncStorage.getItem('TOKEN');
     if (token) { 
-      var response = await Login('doctor', token);
+      var response = await Login.withToken('doctor', token);
       if (response) {
         await this.props.dispatch({ type: Actions.SET_DOCTOR, doctor: response.doctor || null });
       }

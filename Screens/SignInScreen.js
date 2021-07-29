@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { SafeAreaView, ScrollView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, TouchableHighlight, Alert, Modal, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import Login from '../Helpers/Login';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import Actions from '../Constants/Actions';
@@ -99,7 +100,7 @@ class SignInScreen extends Component {
   }
 
   async onSignInButtonTapped() {
-    var response = await this.signIn(this.state.selectedUserTypeOption.id, this.state.emailAddress, this.state.password);
+    var response = await Login.withEmailAddressAndPassword(this.state.selectedUserTypeOption.id, this.state.emailAddress, this.state.password);
     if (response) {
       this.props.dispatch({ type: Actions.SET_TOKEN, token: response.token });
       this.props.dispatch({ type: Actions.SET_PATIENT, patient: response.patient || null });
@@ -114,35 +115,6 @@ class SignInScreen extends Component {
         { cancelable: false }
       );
     }
-  }
-
-  async signIn(userType, emailAddress, password) {
-    var body = {
-      identityType: 'docme',
-      userType: userType,
-      emailAddress: emailAddress,
-      password: password
-    };
-    return fetch('http://www.docmeapp.com/' + userType + '/authenticate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    })
-    .then((response) => { 
-      if (response.status == 200) {
-        return response.json()
-        .then((responseJson) => {
-          if (responseJson.isSuccess) {
-            return responseJson;
-          }
-        })
-      }
-      return undefined;
-    })
-    .catch((error) => {
-      console.error(error);
-      return undefined;
-    });
   }
 };
 
