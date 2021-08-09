@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SafeAreaView, ScrollView, StyleSheet, View, StatusBar, Text, TextInput, Modal, TouchableOpacity, TouchableHighlight, Alert, Image, ActivityIndicator, FlatList } from 'react-native';
+import { ScrollView, StyleSheet, View, StatusBar, Text, TextInput, Modal, TouchableOpacity, TouchableHighlight, Alert, Image, ActivityIndicator, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
@@ -23,7 +23,6 @@ class ChangePasswordScreen extends Component {
     return (
       <>
         <StatusBar barStyle='dark-content' />
-        <SafeAreaView />
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.header}>

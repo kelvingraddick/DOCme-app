@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, StatusBar, FlatList, TouchableOpacity } from 'react-native';
 import DoctorRowView from '../Components/DoctorRowView';
 
 export default class ResultsScreen extends Component {
@@ -31,7 +31,6 @@ export default class ResultsScreen extends Component {
     return (
       <>
         <StatusBar barStyle="dark-content" />
-        <SafeAreaView />
         <View style={styles.container}>  
           <FlatList
             data={this.state.doctors}

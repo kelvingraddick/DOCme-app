@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SafeAreaView, ScrollView, StyleSheet, View, StatusBar, Text, TextInput, Switch, Modal, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { ScrollView, StyleSheet, View, StatusBar, Text, TextInput, Switch, Modal, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import ModelHeader from '../Components/ModalHeader';
+import CustomSafeAreaView from '../Components/CustomSafeAreaView';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import Actions from '../Constants/Actions';
@@ -81,7 +82,6 @@ class EditScheduleScreen extends Component {
     return (
       <>
         <StatusBar barStyle='dark-content' />
-        <SafeAreaView />
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.header}>
@@ -171,36 +171,37 @@ class EditScheduleScreen extends Component {
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
-            <SafeAreaView />
-            <ModelHeader titleText="Select" onCancelButtonPress={() => this.closeTimeSelectModal()} />
-            <View style={styles.modalContent}>
-              <DatePicker
-                date={
-                  this.state.timeSelectModalDayOfWeek &&
-                  this.getDateTimeFrom24HourTime(this.state.schedule[this.state.timeSelectModalDayOfWeek][this.state.timeSelectModalTimeProperty])
-                }
-                onDateChange={(dateTime) => this.onTimeSelect(dateTime)}
-                mode='time'
-                minuteInterval={30}
-              />
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => this.closeTimeSelectModal()}
-                disabled={this.state.isLoading}
-                underlayColor='#fff'>
-                <Text style={styles.buttonText}>Done</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.delelteButton}
-                onPress={() => { 
-                  this.onTimeSelect(null);
-                  this.closeTimeSelectModal();
-                }}
-                disabled={this.state.isLoading}
-                underlayColor='#fff'>
-                <Text style={styles.deleteButtonText}>Clear</Text>
-              </TouchableOpacity>
-            </View>
+            <CustomSafeAreaView>
+              <ModelHeader titleText="Select" onCancelButtonPress={() => this.closeTimeSelectModal()} />
+              <View style={styles.modalContent}>
+                <DatePicker
+                  date={
+                    this.state.timeSelectModalDayOfWeek &&
+                    this.getDateTimeFrom24HourTime(this.state.schedule[this.state.timeSelectModalDayOfWeek][this.state.timeSelectModalTimeProperty])
+                  }
+                  onDateChange={(dateTime) => this.onTimeSelect(dateTime)}
+                  mode='time'
+                  minuteInterval={30}
+                />
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => this.closeTimeSelectModal()}
+                  disabled={this.state.isLoading}
+                  underlayColor='#fff'>
+                  <Text style={styles.buttonText}>Done</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.delelteButton}
+                  onPress={() => { 
+                    this.onTimeSelect(null);
+                    this.closeTimeSelectModal();
+                  }}
+                  disabled={this.state.isLoading}
+                  underlayColor='#fff'>
+                  <Text style={styles.deleteButtonText}>Clear</Text>
+                </TouchableOpacity>
+              </View>
+            </CustomSafeAreaView>
           </Modal>
         </ScrollView>
       </>

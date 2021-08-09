@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SafeAreaView, ScrollView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, Alert, Modal, ActivityIndicator, FlatList, TouchableHighlight } from 'react-native';
+import { ScrollView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, Alert, Modal, ActivityIndicator, FlatList, TouchableHighlight } from 'react-native';
 import Moment from 'moment';
 import DoctorRowView from '../Components/DoctorRowView';
 import ModelHeader from '../Components/ModalHeader';
+import CustomSafeAreaView from '../Components/CustomSafeAreaView';
 import Actions from '../Constants/Actions';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
@@ -48,7 +49,6 @@ class EditAppointmentScreen extends Component {
     return (
       <>
         <StatusBar barStyle='dark-content' />
-        <SafeAreaView />
         <ScrollView>
           <View style={styles.container}>
             { this.state.appointment &&
@@ -111,28 +111,29 @@ class EditAppointmentScreen extends Component {
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
-            <SafeAreaView />
-            <ModelHeader titleText="Search" onCancelButtonPress={() => this.setState({isSpecialtySearchModalVisible: false})} />
-            <TextInput
-              style={styles.searchBox}
-              placeholder='Start typing in a specialty..'
-              placeholderTextColor={Colors.GRAY}
-              onChangeText={(text) => this.onSpecialtySearchBoxChangeText(text)}
-            />
-            <FlatList
-              data={this.state.specialtyOptions}
-              keyExtractor={item => item.id}
-              renderItem={({item, index, separators}) => (
-                <TouchableHighlight
-                  style={styles.option}
-                  onPress={() => this.onSpecialtyOptionSelected(item)}
-                  onShowUnderlay={separators.highlight}
-                  onHideUnderlay={separators.unhighlight}>
-                  <Text style={styles.optionText}>{item.name}</Text>
-                </TouchableHighlight>
-              )}
-              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
-            />
+            <CustomSafeAreaView>
+              <ModelHeader titleText="Search" onCancelButtonPress={() => this.setState({isSpecialtySearchModalVisible: false})} />
+              <TextInput
+                style={styles.searchBox}
+                placeholder='Start typing in a specialty..'
+                placeholderTextColor={Colors.GRAY}
+                onChangeText={(text) => this.onSpecialtySearchBoxChangeText(text)}
+              />
+              <FlatList
+                data={this.state.specialtyOptions}
+                keyExtractor={item => item.id}
+                renderItem={({item, index, separators}) => (
+                  <TouchableHighlight
+                    style={styles.option}
+                    onPress={() => this.onSpecialtyOptionSelected(item)}
+                    onShowUnderlay={separators.highlight}
+                    onHideUnderlay={separators.unhighlight}>
+                    <Text style={styles.optionText}>{item.name}</Text>
+                  </TouchableHighlight>
+                )}
+                ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+              />
+            </CustomSafeAreaView>
           </Modal>
         </ScrollView>
       </>

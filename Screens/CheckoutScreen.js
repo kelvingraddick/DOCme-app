@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SafeAreaView, StyleSheet, View, StatusBar } from 'react-native';
+import { StyleSheet, View, StatusBar } from 'react-native';
 import { STRIPE_PUBLIC_KEY, STRIPE_PRODUCT_ID, STRIPE_SUCCESS_URL, STRIPE_CANCELED_URL } from 'react-native-dotenv';
 import AsyncStorage from '@react-native-community/async-storage';
 import { WebView } from 'react-native-webview';
@@ -16,7 +16,6 @@ class CheckoutScreen extends Component {
     return (
       <>
         <StatusBar barStyle="dark-content" />
-        <SafeAreaView />
         <View style={styles.container}>  
           <WebView
             originWhitelist={['*']}

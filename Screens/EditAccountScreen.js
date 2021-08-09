@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SafeAreaView, ScrollView, StyleSheet, View, StatusBar, Text, TextInput, Modal, TouchableOpacity, TouchableHighlight, Alert, Image, ActivityIndicator, FlatList } from 'react-native';
+import { ScrollView, StyleSheet, View, StatusBar, Text, TextInput, Modal, TouchableOpacity, TouchableHighlight, Alert, Image, ActivityIndicator, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ImagePicker from 'react-native-image-picker';
 import { RNS3 } from 'react-native-s3-upload';
 import { AWS_ACCESS_KEY_ID, AWS_ACCESS_KEY_SECRET } from 'react-native-dotenv';
 import ModelHeader from '../Components/ModalHeader';
+import CustomSafeAreaView from '../Components/CustomSafeAreaView';
 import Genders from '../Constants/Genders';
 import Races from '../Constants/Races';
 import Colors from '../Constants/Colors';
@@ -32,7 +33,6 @@ class EditAccountScreen extends Component {
     return (
       <>
         <StatusBar barStyle='dark-content' />
-        <SafeAreaView />
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.header}>
@@ -171,22 +171,23 @@ class EditAccountScreen extends Component {
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
-            <SafeAreaView />
-            <ModelHeader titleText="Select" onCancelButtonPress={() => this.setState({isGenderSelectModalVisible: false})} />
-            <FlatList
-              data={Genders}
-              keyExtractor={item => item.id}
-              renderItem={({item, index, separators}) => (
-                <TouchableHighlight
-                  style={styles.option}
-                  onPress={() => this.onGenderOptionSelected(item)}
-                  onShowUnderlay={separators.highlight}
-                  onHideUnderlay={separators.unhighlight}>
-                  <Text style={styles.optionText}>{item.name}</Text>
-                </TouchableHighlight>
-              )}
-              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
-            />
+            <CustomSafeAreaView>
+              <ModelHeader titleText="Select" onCancelButtonPress={() => this.setState({isGenderSelectModalVisible: false})} />
+              <FlatList
+                data={Genders}
+                keyExtractor={item => item.id}
+                renderItem={({item, index, separators}) => (
+                  <TouchableHighlight
+                    style={styles.option}
+                    onPress={() => this.onGenderOptionSelected(item)}
+                    onShowUnderlay={separators.highlight}
+                    onHideUnderlay={separators.unhighlight}>
+                    <Text style={styles.optionText}>{item.name}</Text>
+                  </TouchableHighlight>
+                )}
+                ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+              />
+            </CustomSafeAreaView>
           </Modal>
           <Modal
             animationType="slide"
@@ -195,22 +196,23 @@ class EditAccountScreen extends Component {
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
-            <SafeAreaView />
-            <ModelHeader titleText="Select" onCancelButtonPress={() => this.setState({isRaceSelectModalVisible: false})} />
-            <FlatList
-              data={Races}
-              keyExtractor={item => item.id}
-              renderItem={({item, index, separators}) => (
-                <TouchableHighlight
-                  style={styles.option}
-                  onPress={() => this.onRaceOptionSelected(item)}
-                  onShowUnderlay={separators.highlight}
-                  onHideUnderlay={separators.unhighlight}>
-                  <Text style={styles.optionText}>{item.name}</Text>
-                </TouchableHighlight>
-              )}
-              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
-            />
+            <CustomSafeAreaView>
+              <ModelHeader titleText="Select" onCancelButtonPress={() => this.setState({isRaceSelectModalVisible: false})} />
+              <FlatList
+                data={Races}
+                keyExtractor={item => item.id}
+                renderItem={({item, index, separators}) => (
+                  <TouchableHighlight
+                    style={styles.option}
+                    onPress={() => this.onRaceOptionSelected(item)}
+                    onShowUnderlay={separators.highlight}
+                    onHideUnderlay={separators.unhighlight}>
+                    <Text style={styles.optionText}>{item.name}</Text>
+                  </TouchableHighlight>
+                )}
+                ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+              />
+            </CustomSafeAreaView>
           </Modal>
         </ScrollView>
       </>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SafeAreaView, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Actions from '../Constants/Actions';
 import Login from '../Helpers/Login';
@@ -26,7 +26,6 @@ class LoadingScreen extends Component {
   render() {
     return (
       <>
-        <SafeAreaView />
         <View style={styles.container}>  
           <ActivityIndicator size="large" color="gray" />
         </View> 

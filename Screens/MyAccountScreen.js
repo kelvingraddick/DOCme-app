@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar, Text, Image, SectionList, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, StatusBar, Text, Image, SectionList, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import OneSignal from 'react-native-onesignal';
@@ -48,7 +48,6 @@ class MyAccountScreen extends Component {
     return (
       <>
         <StatusBar barStyle="dark-content" />
-        <SafeAreaView />
         { this.props.patient &&
           <View style={styles.headerView}>
             <Text style={styles.nameText}>{this.props.patient.firstName} {this.props.patient.lastName}</Text>

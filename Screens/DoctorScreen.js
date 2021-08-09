@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, View, ScrollView, StatusBar, Image, Text, Button, FlatList } from 'react-native';
+import { StyleSheet, View, ScrollView, StatusBar, Image, Text, Button, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MapView from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
@@ -77,7 +77,6 @@ export default class DoctorScreen extends Component {
     return (
       <>
         <StatusBar barStyle="dark-content" />
-        <SafeAreaView />
         <ScrollView>
           <View style={styles.container}>  
             <Image

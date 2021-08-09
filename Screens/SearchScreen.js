@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, Modal, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, Modal, FlatList, ActivityIndicator } from 'react-native';
 import vision from '@react-native-firebase/ml-vision';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Moment from 'moment';
@@ -7,6 +7,7 @@ import { GOOGLE_API_KEY } from 'react-native-dotenv';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import ModelHeader from '../Components/ModalHeader';
+import CustomSafeAreaView from '../Components/CustomSafeAreaView';
 import Icon from 'react-native-ionicons';
 
 class LogoTitle extends React.Component {
@@ -248,7 +249,7 @@ export default class SearchScreen extends Component {
     return (
       <>
         <StatusBar barStyle='dark-content' />
-        <SafeAreaView />
+        <CustomSafeAreaView>
         <View style={styles.container}>
           <Image style={styles.backgroundImage} source={require('../Images/background-1.jpg')} />
           <View style={styles.header}>
@@ -317,28 +318,29 @@ export default class SearchScreen extends Component {
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
-            <SafeAreaView />
-            <ModelHeader titleText="Search" onCancelButtonPress={() => this.setState({isSpecialtySearchModalVisible: false})} />
-            <TextInput
-              style={styles.searchBox}
-              placeholder='Start typing in a specialty..'
-              placeholderTextColor={Colors.GRAY}
-              onChangeText={(text) => this.onSpecialtySearchBoxChangeText(text)}
-            />
-            <FlatList
-              data={this.state.specialtyOptions}
-              keyExtractor={item => item.id}
-              renderItem={({item, index, separators}) => (
-                <TouchableHighlight
-                  style={styles.option}
-                  onPress={() => this.onSpecialtyOptionSelected(item)}
-                  onShowUnderlay={separators.highlight}
-                  onHideUnderlay={separators.unhighlight}>
-                  <Text style={styles.optionText}>{item.name}</Text>
-                </TouchableHighlight>
-              )}
-              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
-            />
+            <CustomSafeAreaView>
+              <ModelHeader titleText="Search" onCancelButtonPress={() => this.setState({isSpecialtySearchModalVisible: false})} />
+              <TextInput
+                style={styles.searchBox}
+                placeholder='Start typing in a specialty..'
+                placeholderTextColor={Colors.GRAY}
+                onChangeText={(text) => this.onSpecialtySearchBoxChangeText(text)}
+              />
+              <FlatList
+                data={this.state.specialtyOptions}
+                keyExtractor={item => item.id}
+                renderItem={({item, index, separators}) => (
+                  <TouchableHighlight
+                    style={styles.option}
+                    onPress={() => this.onSpecialtyOptionSelected(item)}
+                    onShowUnderlay={separators.highlight}
+                    onHideUnderlay={separators.unhighlight}>
+                    <Text style={styles.optionText}>{item.name}</Text>
+                  </TouchableHighlight>
+                )}
+                ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+              />
+            </CustomSafeAreaView>
           </Modal>
           <Modal
             animationType="slide"
@@ -347,28 +349,29 @@ export default class SearchScreen extends Component {
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
-            <SafeAreaView />
-            <ModelHeader titleText="Search" onCancelButtonPress={() => this.setState({isLocationSearchModalVisible: false})} />
-            <TextInput
-              style={styles.searchBox}
-              placeholder='Start typing in a city or zip code..'
-              placeholderTextColor={Colors.GRAY}
-              onChangeText={(text) => this.onLocationSearchBoxChangeText(text)}
-            />
-            <FlatList
-              data={this.state.locationOptions}
-              keyExtractor={item => item.id}
-              renderItem={({item, index, separators}) => (
-                <TouchableHighlight
-                  style={styles.option}
-                  onPress={() => this.onLocationOptionSelected(item)}
-                  onShowUnderlay={separators.highlight}
-                  onHideUnderlay={separators.unhighlight}>
-                  <Text style={styles.optionText}>{item.description}</Text>
-                </TouchableHighlight>
-              )}
-              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
-            />
+            <CustomSafeAreaView>
+              <ModelHeader titleText="Search" onCancelButtonPress={() => this.setState({isLocationSearchModalVisible: false})} />
+              <TextInput
+                style={styles.searchBox}
+                placeholder='Start typing in a city or zip code..'
+                placeholderTextColor={Colors.GRAY}
+                onChangeText={(text) => this.onLocationSearchBoxChangeText(text)}
+              />
+              <FlatList
+                data={this.state.locationOptions}
+                keyExtractor={item => item.id}
+                renderItem={({item, index, separators}) => (
+                  <TouchableHighlight
+                    style={styles.option}
+                    onPress={() => this.onLocationOptionSelected(item)}
+                    onShowUnderlay={separators.highlight}
+                    onHideUnderlay={separators.unhighlight}>
+                    <Text style={styles.optionText}>{item.description}</Text>
+                  </TouchableHighlight>
+                )}
+                ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+              />
+            </CustomSafeAreaView>
           </Modal>
           <Modal
             animationType="slide"
@@ -377,23 +380,24 @@ export default class SearchScreen extends Component {
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
-            <SafeAreaView />
-            <ModelHeader titleText="Date" onCancelButtonPress={() => this.setState({isDatePickerModalVisible: false})} />
-            <View style={{margin: 20}}>
-              <DateTimePicker 
-                value={this.state.selectedDate.value}
-                minimumDate={new Date()}
-                mode='date'
-                is24Hour={true}
-                display='default'
-                onChange={(event, date) => this.onDateSelected(event, date)} />
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => this.setState({isDatePickerModalVisible: false})}
-                underlayColor='#fff'>
-                <Text style={styles.buttonText}>Done</Text>
-              </TouchableOpacity>
-            </View>
+            <CustomSafeAreaView>
+              <ModelHeader titleText="Date" onCancelButtonPress={() => this.setState({isDatePickerModalVisible: false})} />
+              <View style={{margin: 20}}>
+                <DateTimePicker 
+                  value={this.state.selectedDate.value}
+                  minimumDate={new Date()}
+                  mode='date'
+                  is24Hour={true}
+                  display='default'
+                  onChange={(event, date) => this.onDateSelected(event, date)} />
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => this.setState({isDatePickerModalVisible: false})}
+                  underlayColor='#fff'>
+                  <Text style={styles.buttonText}>Done</Text>
+                </TouchableOpacity>
+              </View>
+            </CustomSafeAreaView>
           </Modal>
           <Modal
             animationType="slide"
@@ -402,28 +406,29 @@ export default class SearchScreen extends Component {
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
-            <SafeAreaView />
-            <ModelHeader titleText="Search" onCancelButtonPress={() => this.setState({isInsuranceCarrierSearchModalVisible: false})} />
-            <TextInput
-              style={styles.searchBox}
-              placeholder='Start typing in an insurance carrier..'
-              placeholderTextColor={Colors.GRAY}
-              onChangeText={(text) => this.onInsuranceCarrierSearchBoxChangeText(text)}
-            />
-            <FlatList
-              data={this.state.insuranceCarrierOptions}
-              keyExtractor={item => item.id}
-              renderItem={({item, index, separators}) => (
-                <TouchableHighlight
-                  style={styles.option}
-                  onPress={() => this.onInsuranceCarrierOptionSelected(item)}
-                  onShowUnderlay={separators.highlight}
-                  onHideUnderlay={separators.unhighlight}>
-                  <Text style={styles.optionText}>{item.name}</Text>
-                </TouchableHighlight>
-              )}
-              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
-            />
+            <CustomSafeAreaView>
+              <ModelHeader titleText="Search" onCancelButtonPress={() => this.setState({isInsuranceCarrierSearchModalVisible: false})} />
+              <TextInput
+                style={styles.searchBox}
+                placeholder='Start typing in an insurance carrier..'
+                placeholderTextColor={Colors.GRAY}
+                onChangeText={(text) => this.onInsuranceCarrierSearchBoxChangeText(text)}
+              />
+              <FlatList
+                data={this.state.insuranceCarrierOptions}
+                keyExtractor={item => item.id}
+                renderItem={({item, index, separators}) => (
+                  <TouchableHighlight
+                    style={styles.option}
+                    onPress={() => this.onInsuranceCarrierOptionSelected(item)}
+                    onShowUnderlay={separators.highlight}
+                    onHideUnderlay={separators.unhighlight}>
+                    <Text style={styles.optionText}>{item.name}</Text>
+                  </TouchableHighlight>
+                )}
+                ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+              />
+            </CustomSafeAreaView>
           </Modal>
           <Modal
             animationType="slide"
@@ -432,24 +437,26 @@ export default class SearchScreen extends Component {
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
-            <SafeAreaView />
-            <ModelHeader titleText="Search" onCancelButtonPress={() => this.setState({isInsurancePlanSearchModalVisible: false})} />
-            <FlatList
-              data={this.state.insurancePlanOptions}
-              keyExtractor={item => item.id}
-              renderItem={({item, index, separators}) => (
-                <TouchableHighlight
-                  style={styles.option}
-                  onPress={() => this.onInsurancePlanOptionSelected(item)}
-                  onShowUnderlay={separators.highlight}
-                  onHideUnderlay={separators.unhighlight}>
-                  <Text style={styles.optionText}>{item.name}</Text>
-                </TouchableHighlight>
-              )}
-              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
-            />
+            <CustomSafeAreaView>
+              <ModelHeader titleText="Search" onCancelButtonPress={() => this.setState({isInsurancePlanSearchModalVisible: false})} />
+              <FlatList
+                data={this.state.insurancePlanOptions}
+                keyExtractor={item => item.id}
+                renderItem={({item, index, separators}) => (
+                  <TouchableHighlight
+                    style={styles.option}
+                    onPress={() => this.onInsurancePlanOptionSelected(item)}
+                    onShowUnderlay={separators.highlight}
+                    onHideUnderlay={separators.unhighlight}>
+                    <Text style={styles.optionText}>{item.name}</Text>
+                  </TouchableHighlight>
+                )}
+                ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+              />
+            </CustomSafeAreaView>
           </Modal>
         </View>
+        </CustomSafeAreaView>
       </>
     );
   }

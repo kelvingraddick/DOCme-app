@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SafeAreaView, ScrollView, StyleSheet, View, StatusBar, Text, TextInput, Modal, TouchableOpacity, TouchableHighlight, Alert, Image, ActivityIndicator, FlatList } from 'react-native';
+import { ScrollView, StyleSheet, View, StatusBar, Text, TextInput, Modal, TouchableOpacity, TouchableHighlight, Alert, Image, ActivityIndicator, FlatList } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { RNS3 } from 'react-native-s3-upload';
 import { AWS_ACCESS_KEY_ID, AWS_ACCESS_KEY_SECRET } from 'react-native-dotenv';
 import ModelHeader from '../Components/ModalHeader';
+import CustomSafeAreaView from '../Components/CustomSafeAreaView';
 import Cities from '../Constants/Cities';
 import States from '../Constants/States';
 import Countries from '../Constants/Countries';
@@ -33,7 +34,6 @@ class EditPracticeScreen extends Component {
     return (
       <>
         <StatusBar barStyle='dark-content' />
-        <SafeAreaView />
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.header}>
@@ -168,22 +168,23 @@ class EditPracticeScreen extends Component {
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
-            <SafeAreaView />
-            <ModelHeader titleText="Select" onCancelButtonPress={() => this.setState({isCitySelectModalVisible: false})} />
-            <FlatList
-              data={Cities}
-              keyExtractor={item => item.id}
-              renderItem={({item, index, separators}) => (
-                <TouchableHighlight
-                  style={styles.option}
-                  onPress={() => this.onCityOptionSelected(item)}
-                  onShowUnderlay={separators.highlight}
-                  onHideUnderlay={separators.unhighlight}>
-                  <Text style={styles.optionText}>{item.name}</Text>
-                </TouchableHighlight>
-              )}
-              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
-            />
+            <CustomSafeAreaView>
+              <ModelHeader titleText="Select" onCancelButtonPress={() => this.setState({isCitySelectModalVisible: false})} />
+              <FlatList
+                data={Cities}
+                keyExtractor={item => item.id}
+                renderItem={({item, index, separators}) => (
+                  <TouchableHighlight
+                    style={styles.option}
+                    onPress={() => this.onCityOptionSelected(item)}
+                    onShowUnderlay={separators.highlight}
+                    onHideUnderlay={separators.unhighlight}>
+                    <Text style={styles.optionText}>{item.name}</Text>
+                  </TouchableHighlight>
+                )}
+                ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+              />
+            </CustomSafeAreaView>
           </Modal>
           <Modal
             animationType="slide"
@@ -192,22 +193,23 @@ class EditPracticeScreen extends Component {
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
-            <SafeAreaView />
-            <ModelHeader titleText="Select" onCancelButtonPress={() => this.setState({isStateSelectModalVisible: false})} />
-            <FlatList
-              data={States}
-              keyExtractor={item => item.id}
-              renderItem={({item, index, separators}) => (
-                <TouchableHighlight
-                  style={styles.option}
-                  onPress={() => this.onStateOptionSelected(item)}
-                  onShowUnderlay={separators.highlight}
-                  onHideUnderlay={separators.unhighlight}>
-                  <Text style={styles.optionText}>{item.name}</Text>
-                </TouchableHighlight>
-              )}
-              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
-            />
+            <CustomSafeAreaView>
+              <ModelHeader titleText="Select" onCancelButtonPress={() => this.setState({isStateSelectModalVisible: false})} />
+              <FlatList
+                data={States}
+                keyExtractor={item => item.id}
+                renderItem={({item, index, separators}) => (
+                  <TouchableHighlight
+                    style={styles.option}
+                    onPress={() => this.onStateOptionSelected(item)}
+                    onShowUnderlay={separators.highlight}
+                    onHideUnderlay={separators.unhighlight}>
+                    <Text style={styles.optionText}>{item.name}</Text>
+                  </TouchableHighlight>
+                )}
+                ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+              />
+            </CustomSafeAreaView>
           </Modal>
           <Modal
             animationType="slide"
@@ -216,22 +218,23 @@ class EditPracticeScreen extends Component {
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
-            <SafeAreaView />
-            <ModelHeader titleText="Select" onCancelButtonPress={() => this.setState({isCountrySelectModalVisible: false})} />
-            <FlatList
-              data={Countries}
-              keyExtractor={item => item.id}
-              renderItem={({item, index, separators}) => (
-                <TouchableHighlight
-                  style={styles.option}
-                  onPress={() => this.onCountryOptionSelected(item)}
-                  onShowUnderlay={separators.highlight}
-                  onHideUnderlay={separators.unhighlight}>
-                  <Text style={styles.optionText}>{item.name}</Text>
-                </TouchableHighlight>
-              )}
-              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
-            />
+            <CustomSafeAreaView>
+              <ModelHeader titleText="Select" onCancelButtonPress={() => this.setState({isCountrySelectModalVisible: false})} />
+              <FlatList
+                data={Countries}
+                keyExtractor={item => item.id}
+                renderItem={({item, index, separators}) => (
+                  <TouchableHighlight
+                    style={styles.option}
+                    onPress={() => this.onCountryOptionSelected(item)}
+                    onShowUnderlay={separators.highlight}
+                    onHideUnderlay={separators.unhighlight}>
+                    <Text style={styles.optionText}>{item.name}</Text>
+                  </TouchableHighlight>
+                )}
+                ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+              />
+            </CustomSafeAreaView>
           </Modal>
         </ScrollView>
       </>

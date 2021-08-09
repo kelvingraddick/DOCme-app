@@ -6,6 +6,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import store from './store';
 import Colors from './Constants/Colors';
+import CustomSafeAreaView from './Components/CustomSafeAreaView';
 import SearchScreen from './Screens/SearchScreen';
 import DocumentScannerScreen from './Screens/DocumentScannerScreen';
 import ResultsScreen from './Screens/ResultsScreen';
@@ -106,7 +107,9 @@ const AppContainer = createAppContainer(
 export default class App extends Component {
   render() {
     return <Provider store={store}>
-      <AppContainer />
+      <CustomSafeAreaView>
+        <AppContainer />
+      </CustomSafeAreaView>
     </Provider>;
   }
 };
@@ -120,10 +123,5 @@ const styles = StyleSheet.create({
   },
   tabIconFocused: {
     color: Colors.LIGHT_BLUE
-  },
-  logoText: {
-    width: 200,
-    alignSelf: 'center',
-    resizeMode: 'contain'
   }
 });

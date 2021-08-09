@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar, Text, Image, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, StatusBar, Text, Image, FlatList, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Moment from 'moment';
 import Actions from '../Constants/Actions';
@@ -28,7 +28,6 @@ class AppointmentsScreen extends Component {
     return (
       <>
         <StatusBar barStyle="dark-content" />
-        <SafeAreaView />
         <View style={styles.container}>
           { ((!this.props.patient && !this.props.doctor) || this.props.appointments.length == 0) &&
             <View>

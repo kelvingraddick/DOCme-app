@@ -35,6 +35,7 @@ export default class ModelHeader extends Component {
 const styles = StyleSheet.create({
   container: {
     height: 50,
+    marginTop: 10,
     flexDirection: 'row',
     borderBottomColor: Colors.LIGHT_GRAY,
     borderBottomWidth: 1

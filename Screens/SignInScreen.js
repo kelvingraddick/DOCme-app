@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SafeAreaView, ScrollView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, TouchableHighlight, Alert, Modal, FlatList } from 'react-native';
+import { ScrollView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, TouchableHighlight, Alert, Modal, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Login from '../Helpers/Login';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import Actions from '../Constants/Actions';
 import ModelHeader from '../Components/ModalHeader';
+import CustomSafeAreaView from '../Components/CustomSafeAreaView';
 import UserTypes from '../Constants/UserTypes';
 
 class SignInScreen extends Component {
@@ -25,7 +26,6 @@ class SignInScreen extends Component {
     return (
       <>
         <StatusBar barStyle='dark-content' />
-        <SafeAreaView />
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.header}>
@@ -72,22 +72,23 @@ class SignInScreen extends Component {
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}>
-            <SafeAreaView />
-            <ModelHeader titleText="Select" onCancelButtonPress={() => this.setState({isUserTypeSelectModalVisible: false})} />
-            <FlatList
-              data={UserTypes}
-              keyExtractor={item => item.id}
-              renderItem={({item, index, separators}) => (
-                <TouchableHighlight
-                  style={styles.option}
-                  onPress={() => this.onUserTypeOptionSelected(item)}
-                  onShowUnderlay={separators.highlight}
-                  onHideUnderlay={separators.unhighlight}>
-                  <Text style={styles.optionText}>{item.name}</Text>
-                </TouchableHighlight>
-              )}
-              ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
-            />
+            <CustomSafeAreaView>
+              <ModelHeader titleText="Select" onCancelButtonPress={() => this.setState({isUserTypeSelectModalVisible: false})} />
+              <FlatList
+                data={UserTypes}
+                keyExtractor={item => item.id}
+                renderItem={({item, index, separators}) => (
+                  <TouchableHighlight
+                    style={styles.option}
+                    onPress={() => this.onUserTypeOptionSelected(item)}
+                    onShowUnderlay={separators.highlight}
+                    onHideUnderlay={separators.unhighlight}>
+                    <Text style={styles.optionText}>{item.name}</Text>
+                  </TouchableHighlight>
+                )}
+                ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
+              />
+            </CustomSafeAreaView>
           </Modal>
         </ScrollView>
       </>

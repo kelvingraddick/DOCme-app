@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar } from 'react-native';
+import { StyleSheet, View, StatusBar } from 'react-native';
 import DocumentScanner from "react-native-document-scanner";
 import Colors from '../Constants/Colors';
 
@@ -19,7 +19,6 @@ export default class DocumentScannerScreen extends Component {
     return (
       <>
         <StatusBar barStyle='dark-content' />
-        <SafeAreaView />
         <View style={styles.container}>
           <DocumentScanner
             style={styles.documentScanner}
