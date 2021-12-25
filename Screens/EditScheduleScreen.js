@@ -21,59 +21,59 @@ class EditScheduleScreen extends Component {
     schedule: {
       sunday: {
         name: 'Sunday',
-        isEnabled: this.props.doctor.schedule.sundayAvailabilityStartTime !== null,
-        availabilityStartTime: this.props.doctor.schedule.sundayAvailabilityStartTime,
-        availabilityEndTime: this.props.doctor.schedule.sundayAvailabilityEndTime,
-        breakStartTime: this.props.doctor.schedule.sundayBreakStartTime,
-        breakEndTime: this.props.doctor.schedule.sundayBreakEndTime
+        isEnabled: this.props.doctor.schedule?.sundayAvailabilityStartTime !== null,
+        availabilityStartTime: this.props.doctor.schedule?.sundayAvailabilityStartTime,
+        availabilityEndTime: this.props.doctor.schedule?.sundayAvailabilityEndTime,
+        breakStartTime: this.props.doctor.schedule?.sundayBreakStartTime,
+        breakEndTime: this.props.doctor.schedule?.sundayBreakEndTime
       },
       monday: {
         name: 'Monday',
-        isEnabled: this.props.doctor.schedule.mondayAvailabilityStartTime !== null,
-        availabilityStartTime: this.props.doctor.schedule.mondayAvailabilityStartTime,
-        availabilityEndTime: this.props.doctor.schedule.mondayAvailabilityEndTime,
-        breakStartTime: this.props.doctor.schedule.mondayBreakStartTime,
-        breakEndTime: this.props.doctor.schedule.mondayBreakEndTime
+        isEnabled: this.props.doctor.schedule?.mondayAvailabilityStartTime !== null,
+        availabilityStartTime: this.props.doctor.schedule?.mondayAvailabilityStartTime,
+        availabilityEndTime: this.props.doctor.schedule?.mondayAvailabilityEndTime,
+        breakStartTime: this.props.doctor.schedule?.mondayBreakStartTime,
+        breakEndTime: this.props.doctor.schedule?.mondayBreakEndTime
       },
       tuesday: {
         name: 'Tuesday',
-        isEnabled: this.props.doctor.schedule.tuesdayAvailabilityStartTime !== null,
-        availabilityStartTime: this.props.doctor.schedule.tuesdayAvailabilityStartTime,
-        availabilityEndTime: this.props.doctor.schedule.tuesdayAvailabilityEndTime,
-        breakStartTime: this.props.doctor.schedule.tuesdayBreakStartTime,
-        breakEndTime: this.props.doctor.schedule.tuesdayBreakEndTime
+        isEnabled: this.props.doctor.schedule?.tuesdayAvailabilityStartTime !== null,
+        availabilityStartTime: this.props.doctor.schedule?.tuesdayAvailabilityStartTime,
+        availabilityEndTime: this.props.doctor.schedule?.tuesdayAvailabilityEndTime,
+        breakStartTime: this.props.doctor.schedule?.tuesdayBreakStartTime,
+        breakEndTime: this.props.doctor.schedule?.tuesdayBreakEndTime
       },
       wednesday: {
         name: 'Wednesday',
-        isEnabled: this.props.doctor.schedule.wednesdayAvailabilityStartTime !== null,
-        availabilityStartTime: this.props.doctor.schedule.wednesdayAvailabilityStartTime,
-        availabilityEndTime: this.props.doctor.schedule.wednesdayAvailabilityEndTime,
-        breakStartTime: this.props.doctor.schedule.wednesdayBreakStartTime,
-        breakEndTime: this.props.doctor.schedule.wednesdayBreakEndTime
+        isEnabled: this.props.doctor.schedule?.wednesdayAvailabilityStartTime !== null,
+        availabilityStartTime: this.props.doctor.schedule?.wednesdayAvailabilityStartTime,
+        availabilityEndTime: this.props.doctor.schedule?.wednesdayAvailabilityEndTime,
+        breakStartTime: this.props.doctor.schedule?.wednesdayBreakStartTime,
+        breakEndTime: this.props.doctor.schedule?.wednesdayBreakEndTime
       },
       thursday: {
         name: 'Thursday',
-        isEnabled: this.props.doctor.schedule.thursdayAvailabilityStartTime !== null,
-        availabilityStartTime: this.props.doctor.schedule.thursdayAvailabilityStartTime,
-        availabilityEndTime: this.props.doctor.schedule.thursdayAvailabilityEndTime,
-        breakStartTime: this.props.doctor.schedule.thursdayBreakStartTime,
-        breakEndTime: this.props.doctor.schedule.thursdayBreakEndTime
+        isEnabled: this.props.doctor.schedule?.thursdayAvailabilityStartTime !== null,
+        availabilityStartTime: this.props.doctor.schedule?.thursdayAvailabilityStartTime,
+        availabilityEndTime: this.props.doctor.schedule?.thursdayAvailabilityEndTime,
+        breakStartTime: this.props.doctor.schedule?.thursdayBreakStartTime,
+        breakEndTime: this.props.doctor.schedule?.thursdayBreakEndTime
       },
       friday: {
         name: 'Friday',
-        isEnabled: this.props.doctor.schedule.fridayAvailabilityStartTime !== null,
-        availabilityStartTime: this.props.doctor.schedule.fridayAvailabilityStartTime,
-        availabilityEndTime: this.props.doctor.schedule.fridayAvailabilityEndTime,
-        breakStartTime: this.props.doctor.schedule.fridayBreakStartTime,
-        breakEndTime: this.props.doctor.schedule.fridayBreakEndTime
+        isEnabled: this.props.doctor.schedule?.fridayAvailabilityStartTime !== null,
+        availabilityStartTime: this.props.doctor.schedule?.fridayAvailabilityStartTime,
+        availabilityEndTime: this.props.doctor.schedule?.fridayAvailabilityEndTime,
+        breakStartTime: this.props.doctor.schedule?.fridayBreakStartTime,
+        breakEndTime: this.props.doctor.schedule?.fridayBreakEndTime
       },
       saturday: {
         name: 'Saturday',
-        isEnabled: this.props.doctor.schedule.saturdayAvailabilityStartTime !== null,
-        availabilityStartTime: this.props.doctor.schedule.saturdayAvailabilityStartTime,
-        availabilityEndTime: this.props.doctor.schedule.saturdayAvailabilityEndTime,
-        breakStartTime: this.props.doctor.schedule.saturdayBreakStartTime,
-        breakEndTime: this.props.doctor.schedule.saturdayBreakEndTime
+        isEnabled: this.props.doctor.schedule?.saturdayAvailabilityStartTime !== null,
+        availabilityStartTime: this.props.doctor.schedule?.saturdayAvailabilityStartTime,
+        availabilityEndTime: this.props.doctor.schedule?.saturdayAvailabilityEndTime,
+        breakStartTime: this.props.doctor.schedule?.saturdayBreakStartTime,
+        breakEndTime: this.props.doctor.schedule?.saturdayBreakEndTime
       }
     }
   };
@@ -287,7 +287,6 @@ class EditScheduleScreen extends Component {
       requestBody[dayOfWeek + 'BreakStartTime'] = schedule[dayOfWeek].isEnabled ? schedule[dayOfWeek].breakStartTime : null;
       requestBody[dayOfWeek + 'BreakEndTime'] = schedule[dayOfWeek].isEnabled ? schedule[dayOfWeek].breakEndTime : null;
     }
-    console.info(requestBody);
 
     return fetch('http://www.docmeapp.com/doctor/' + this.props.doctor.id + '/update/schedule', {
       method: 'POST',
