@@ -3,7 +3,6 @@ import { StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, 
 import vision from '@react-native-firebase/ml-vision';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Moment from 'moment';
-import { GOOGLE_API_KEY } from 'react-native-dotenv';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import ModelHeader from '../Components/ModalHeader';
@@ -27,14 +26,7 @@ export default class SearchScreen extends Component {
     isSpecialtySearchModalVisible: false,
     specialtyOptions: [],
     selectedSpecialtyOption: {},
-    isLocationSearchModalVisible: false,
-    locationOptions: [],
-    selectedLocationOption: {},
-    isDatePickerModalVisible: false,
-    selectedDate: {
-      value: new Date(),
-      display: Moment(new Date()).format("dddd, MMMM Do YYYY")
-    },
+    postalCode: null,
     isInsuranceCarrierSearchModalVisible: false,
     insuranceCarrierOptions: [],
     selectedInsuranceCarrierOption: {},
@@ -68,38 +60,6 @@ export default class SearchScreen extends Component {
     this.setState({selectedSpecialtyOption: option});
     this.setState({isSpecialtySearchModalVisible: false});
     this.setState({specialtyOptions: []});
-  }
-
-  async onLocationSearchBoxChangeText(text) {
-    var query = encodeURIComponent(text);
-    var locations = await fetch('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=' + query + '&key=' + GOOGLE_API_KEY + '&types=geocode&components=country:us&language=en', { method: 'GET' })
-    .then((response) => { 
-      if (response.status == 200) {
-        return response.json()
-        .then((responseJson) => {
-          if (responseJson.status == 'OK') {
-            return responseJson.predictions;
-          }
-        })
-      }
-      return undefined;
-    })
-    .catch((error) => {
-      console.error(error);
-      return undefined;
-    });
-
-    this.setState({locationOptions: locations});
-  }
-
-  onLocationOptionSelected(option) {
-    this.setState({selectedLocationOption: option});
-    this.setState({isLocationSearchModalVisible: false});
-    this.setState({locationOptions: []});
-  }
-
-  onDateSelected(event, date) {
-    this.setState({selectedDate: { value: date, display: Moment(date).format("dddd, MMMM Do YYYY") }});
   }
 
   async onInsuranceCarrierSearchBoxChangeText(text) {
@@ -242,7 +202,7 @@ export default class SearchScreen extends Component {
   }
 
   onFindButtonTapped() {
-    this.props.navigation.navigate('ResultsScreen');
+    this.props.navigation.navigate('ResultsScreen', { specialtyId: this.state.selectedSpecialtyOption.id, postalCode: this.state.postalCode, insurancePlanId: this.state.selectedInsurancePlanOption.id });
   }
 
   render() {
@@ -263,17 +223,10 @@ export default class SearchScreen extends Component {
             />
             <TextInput
               style={styles.textBox}
-              placeholder='Location'
+              placeholder='Postal code'
               placeholderTextColor={Colors.MEDIUM_BLUE}
-              value={this.state.selectedLocationOption.description}
-              onFocus={() => this.setState({isLocationSearchModalVisible: true})}
-            />
-            <TextInput
-              style={styles.textBox}
-              placeholder='Date'
-              placeholderTextColor={Colors.MEDIUM_BLUE}
-              value={this.state.selectedDate.display}
-              onFocus={() => this.setState({isDatePickerModalVisible: true})}
+              defaultValue={this.state.postalCode}
+              onChangeText={text => this.state.postalCode = text}
             />
             <View style={styles.fieldContainer}>
               <TextInput
@@ -340,63 +293,6 @@ export default class SearchScreen extends Component {
                 )}
                 ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
               />
-            </CustomSafeAreaView>
-          </Modal>
-          <Modal
-            animationType="slide"
-            transparent={false}
-            visible={this.state.isLocationSearchModalVisible}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
-            }}>
-            <CustomSafeAreaView>
-              <ModelHeader titleText="Search" onCancelButtonPress={() => this.setState({isLocationSearchModalVisible: false})} />
-              <TextInput
-                style={styles.searchBox}
-                placeholder='Start typing in a city or zip code..'
-                placeholderTextColor={Colors.GRAY}
-                onChangeText={(text) => this.onLocationSearchBoxChangeText(text)}
-              />
-              <FlatList
-                data={this.state.locationOptions}
-                keyExtractor={item => item.id}
-                renderItem={({item, index, separators}) => (
-                  <TouchableHighlight
-                    style={styles.option}
-                    onPress={() => this.onLocationOptionSelected(item)}
-                    onShowUnderlay={separators.highlight}
-                    onHideUnderlay={separators.unhighlight}>
-                    <Text style={styles.optionText}>{item.description}</Text>
-                  </TouchableHighlight>
-                )}
-                ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
-              />
-            </CustomSafeAreaView>
-          </Modal>
-          <Modal
-            animationType="slide"
-            transparent={false}
-            visible={this.state.isDatePickerModalVisible}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
-            }}>
-            <CustomSafeAreaView>
-              <ModelHeader titleText="Date" onCancelButtonPress={() => this.setState({isDatePickerModalVisible: false})} />
-              <View style={{margin: 20}}>
-                <DateTimePicker 
-                  value={this.state.selectedDate.value}
-                  minimumDate={new Date()}
-                  mode='date'
-                  is24Hour={true}
-                  display='default'
-                  onChange={(event, date) => this.onDateSelected(event, date)} />
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => this.setState({isDatePickerModalVisible: false})}
-                  underlayColor='#fff'>
-                  <Text style={styles.buttonText}>Done</Text>
-                </TouchableOpacity>
-              </View>
             </CustomSafeAreaView>
           </Modal>
           <Modal
