@@ -171,7 +171,7 @@ class BookAppointmentScreen extends Component {
       errorMessage = 'Must select a speciality.';
     }
     if (!this.props.patient || !this.props.token) {
-      errorMessage = 'Must sign in or sign up to book.';
+      errorMessage = 'Must sign in or sign up as a patient to book.';
     }
     await this.setState({ errorMessage: errorMessage });
   }
