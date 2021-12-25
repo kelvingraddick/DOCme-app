@@ -13,8 +13,6 @@ export default class ResultsScreen extends Component {
     if (this.props.navigation.state.params.postalCode) { parameters.push({ key: 'postalCode', value: this.props.navigation.state.params.postalCode }) }
     if (this.props.navigation.state.params.insurancePlanId) { parameters.push({ key: 'insurancePlanId', value: this.props.navigation.state.params.insurancePlanId }) }
 
-    console.log(parameters);
-
     var doctors = await fetch('http://www.docmeapp.com/doctor/search' + (parameters.length > 0 ? '?' + parameters.map((parameter) => { return parameter.key + '=' + parameter.value }).join('&') : ''), { method: 'GET' })
     .then((response) => { 
       if (response.status == 200) {
