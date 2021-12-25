@@ -333,7 +333,7 @@ class EditPracticeScreen extends Component {
     } else if (isNaN(practice.phoneNumber)) {
       errorMessage = 'A fully numberic phone number is required.';
     } else if (!practice.addressLine1 || practice.addressLine1.length <= 2 || practice.addressLine1.length >= 50) {
-      errorMessage = 'Description must be between 2 and 50 characters.';
+      errorMessage = 'Address line 1 must be between 2 and 50 characters.';
     } else if (!practice.city) {
       errorMessage = 'City is required.';
     } else if (!practice.state) {
