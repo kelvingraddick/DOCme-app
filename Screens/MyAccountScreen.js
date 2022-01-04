@@ -25,8 +25,8 @@ class MyAccountScreen extends Component {
     'Change Password': { icon: 'lock', visible: 'signed-in', action: () => { this.props.navigation.navigate('ChangePasswordScreen'); } },
     'Edit Practice': { icon: 'business', visible: 'signed-in-doctor', action: () => { this.props.navigation.navigate('EditPracticeScreen'); } },
     'Edit Schedule': { icon: 'calendar', visible: 'signed-in-doctor', action: () => { this.props.navigation.navigate('EditScheduleScreen'); } },
-    'Terms of use': { icon: 'information-circle', visible: 'always', action: () => {  } },
-    'Privacy Policy': { icon: 'eye-off', visible: 'always', action: () => {  } },
+    'Terms of use': { icon: 'information-circle', visible: 'always', action: () => { this.props.navigation.navigate('WebViewScreen', { title: 'Terms of use', url: 'http://app.docmeapp.com/termsofuse/' }); } },
+    'Privacy Policy': { icon: 'eye-off', visible: 'always', action: () => { this.props.navigation.navigate('WebViewScreen', { title: 'Privacy Policy', url: 'http://app.docmeapp.com/privacypolicy/' }); } },
     'Give app feedback': { icon: 'ribbon', visible: 'always', action: () => {  } },
     'Share this app': { icon: 'share', visible: 'always', action: () => {  } },
     'Log out': { icon: 'log-out', visible: 'signed-in', action: () => { this.signOut(); } }
