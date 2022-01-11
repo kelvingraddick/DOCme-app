@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, StatusBar, Text, Image, SectionList, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, StatusBar, Text, Image, SectionList, TouchableOpacity, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import OneSignal from 'react-native-onesignal';
@@ -27,7 +27,7 @@ class MyAccountScreen extends Component {
     'Edit Schedule': { icon: 'calendar', visible: 'signed-in-doctor', action: () => { this.props.navigation.navigate('EditScheduleScreen'); } },
     'Terms of use': { icon: 'information-circle', visible: 'always', action: () => { this.props.navigation.navigate('WebViewScreen', { title: 'Terms of use', url: 'http://app.docmeapp.com/termsofuse/' }); } },
     'Privacy Policy': { icon: 'eye-off', visible: 'always', action: () => { this.props.navigation.navigate('WebViewScreen', { title: 'Privacy Policy', url: 'http://app.docmeapp.com/privacypolicy/' }); } },
-    'Give app feedback': { icon: 'ribbon', visible: 'always', action: () => {  } },
+    'Give app feedback': { icon: 'ribbon', visible: 'always', action: () => { Linking.openURL('mailto:faguebor@gmail.com?subject=DOCme%20-%20Give%20app%20feedback%21&body=Please%20share%20your%20feedback%20-%20be%20sure%20to%20include%20your%20account%20info%2C%20screenshots%2C%20and%2For%20any%20other%20information%20that%20could%20be%20useful.'); } },
     'Share this app': { icon: 'share', visible: 'always', action: () => {  } },
     'Log out': { icon: 'log-out', visible: 'signed-in', action: () => { this.signOut(); } }
   };
