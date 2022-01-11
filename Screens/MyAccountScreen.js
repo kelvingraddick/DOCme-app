@@ -78,6 +78,12 @@ class MyAccountScreen extends Component {
             <Text style={styles.errorText}>{this.state.errorMessage}</Text>
           </TouchableOpacity>
         }
+        { (this.props.doctor != null && ['trialing', 'active'].includes(this.props.doctor.stripeSubscriptionStatus || '')) &&
+          <TouchableOpacity style={styles.subscriptionView} onPress={this.state.errorAction}>
+            <Icon style={styles.subscriptionIcon} name='checkmark' />
+            <Text style={styles.subscriptionText}>Doctor subscription is <Text style={{fontWeight: "bold"}}>{this.props.doctor.stripeSubscriptionStatus}</Text></Text>
+          </TouchableOpacity>
+        }
         <SectionList
           style={styles.optionsList}
           keyExtractor={(item, index) => index}
@@ -169,6 +175,24 @@ const styles = StyleSheet.create({
     color: Colors.WHITE
   },
   errorText: {
+    color: Colors.WHITE,
+    fontSize: 15,
+    fontFamily: Fonts.LIGHT
+  },
+  subscriptionView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    backgroundColor: Colors.GREEN
+  },
+  subscriptionIcon: {
+    marginRight: 5,
+    fontSize: 15,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    color: Colors.WHITE
+  },
+  subscriptionText: {
     color: Colors.WHITE,
     fontSize: 15,
     fontFamily: Fonts.LIGHT
