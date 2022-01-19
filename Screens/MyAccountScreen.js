@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, StatusBar, Text, Image, SectionList, TouchableOpacity, Linking } from 'react-native';
+import { StyleSheet, View, StatusBar, Text, Image, SectionList, TouchableOpacity, Linking, Alert, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import OneSignal from 'react-native-onesignal';
@@ -15,7 +15,7 @@ class MyAccountScreen extends Component {
 
   state = {
     errorMessage: null,
-    errorAction: null
+    isLoading: false
   };
 
   options = {
@@ -72,17 +72,22 @@ class MyAccountScreen extends Component {
             )}
           </View>
         }
-        { this.state.errorMessage &&
-          <TouchableOpacity style={styles.errorView} onPress={this.state.errorAction}>
+        { !this.state.isLoading && this.state.errorMessage &&
+          <TouchableOpacity style={styles.errorView} onPress={() => this.props.navigation.navigate('CheckoutScreen')}>
             <Icon style={styles.errorIcon} name='alert' />
             <Text style={styles.errorText}>{this.state.errorMessage}</Text>
           </TouchableOpacity>
         }
-        { (this.props.doctor != null && ['trialing', 'active'].includes(this.props.doctor.stripeSubscriptionStatus || '')) &&
-          <TouchableOpacity style={styles.subscriptionView} onPress={this.state.errorAction}>
-            <Icon style={styles.subscriptionIcon} name='checkmark' />
-            <Text style={styles.subscriptionText}>Doctor subscription is <Text style={{fontWeight: "bold"}}>{this.props.doctor.stripeSubscriptionStatus}</Text></Text>
+        { !this.state.isLoading && (this.props.doctor != null && ['trialing', 'active'].includes(this.props.doctor.stripeSubscriptionStatus || '')) &&
+          <TouchableOpacity style={styles.subscriptionView} onPress={() => this.confirmCancelSubscription()}>
+            <Text style={styles.subscriptionText}>Doctor subscription is <Text style={{fontWeight: "bold"}}>{this.props.doctor.stripeSubscriptionStatus}</Text> <Icon style={styles.subscriptionIcon} name='checkmark-circle' /> - </Text>
+            <Text style={[styles.subscriptionText, { alignSelf: 'flex-end' }]}><Text style={{ textDecorationLine: "underline", fontStyle: "italic" }}>Cancel?</Text></Text>
           </TouchableOpacity>
+        }
+        { this.state.isLoading &&
+          <View style={styles.subscriptionView}>
+            <ActivityIndicator size="small" color="#ffffff" />
+          </View>
         }
         <SectionList
           style={styles.optionsList}
@@ -120,13 +125,80 @@ class MyAccountScreen extends Component {
     });
   }
 
+  async confirmCancelSubscription() {
+    let that = this;
+    Alert.alert(
+      "Cancel doctor subscription?",
+      "Your account won't show up for potential patients in this app anymore. Are you sure? ",
+      [
+        {
+          text: "No",
+          onPress: () => {},
+          style: "cancel"
+        },
+        {
+          text: "Yes",
+          onPress: async () => {
+            that.setState({ isLoading: true });
+            var response = await that.cancelSubscription();
+            if (response) {
+              if (response.isSuccess) {
+                Alert.alert(
+                  "Subscription cancelled.",
+                  "You can activate a new subscription at any time on the My Account tab.",
+                  [{ text: "OK" }],
+                  { cancelable: false }
+                );
+                console.log(response.doctor);
+                that.props.dispatch({ type: Actions.SET_DOCTOR, doctor: response.doctor || null });
+              } else {
+                that.setState({ errorMessage: response.errorMessage });
+              }
+              that.setState({ isLoading: false });
+            } else {
+              Alert.alert(
+                "There was an error saving changes",
+                "Please update entries and try again",
+                [{ text: "OK" }],
+                { cancelable: false }
+              );
+              that.setState({ isLoading: false });
+            }
+          }
+        }
+      ]
+    );
+  }
+
+  async cancelSubscription() {
+    return fetch('http://www.docmeapp.com/doctor/' + this.props.doctor.id + '/cancel/subscription', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.props.token
+      }
+    })
+    .then((response) => { 
+      if (response.status == 200) {
+        return response.json()
+        .then((responseJson) => {
+          return responseJson;
+        })
+      } else {
+        return undefined;
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      return undefined;
+    });
+  }
+
   setErrorMessage() {
     if (this.props.doctor != null && !['trialing', 'active'].includes(this.props.doctor.stripeSubscriptionStatus || '')) {
       this.setState({ errorMessage: 'Doctor subscription inactive. Tap to add payment!' });
-      this.setState({ errorAction: () => this.props.navigation.navigate('CheckoutScreen') });
     } else {
       this.setState({ errorMessage: null });
-      this.setState({ errorAction: null });
     }
   }
 };
