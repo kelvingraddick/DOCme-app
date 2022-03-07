@@ -129,7 +129,7 @@ class MyAccountScreen extends Component {
     let that = this;
     Alert.alert(
       "Cancel doctor subscription?",
-      "Your account won't show up for potential patients in this app anymore. Are you sure? ",
+      "Your account won't show up for potential patients in this app anymore. Are you sure?",
       [
         {
           text: "No",
@@ -149,7 +149,6 @@ class MyAccountScreen extends Component {
                   [{ text: "OK" }],
                   { cancelable: false }
                 );
-                console.log(response.doctor);
                 that.props.dispatch({ type: Actions.SET_DOCTOR, doctor: response.doctor || null });
               } else {
                 that.setState({ errorMessage: response.errorMessage });
