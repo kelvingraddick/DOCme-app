@@ -57,7 +57,7 @@ class AppointmentsScreen extends Component {
                 data={this.props.appointments}
                 keyExtractor={item => item.id.toString()}
                 renderItem={({item}) => 
-                  <TouchableOpacity onPress={() => this.props.navigation.navigate('EditAppointmentScreen', { id: item.id })}>
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate(Moment(item.timestamp).isAfter(Moment()) ? 'EditAppointmentScreen' : 'RateAppointmentScreen', { id: item.id })}>
                     <View style={styles.doctorView}> 
                       <Image
                         style={styles.doctorImage}
@@ -68,7 +68,7 @@ class AppointmentsScreen extends Component {
                         { item.doctor.practice &&
                           <Text style={styles.doctorLocationText}>{item.doctor.practice.addressLine1} {item.doctor.practice.addressLine2} {item.doctor.practice.city}, {item.doctor.practice.state} {item.doctor.practice.postalCode}</Text>
                         }
-                        <Text style={styles.doctorEmailAddressText}>{Moment(item.timestamp).format('dddd, MMMM Do') + ', ' + Moment(item.timestamp).format('h:mma')}</Text>
+                        <Text style={styles.doctorEmailAddressText}>{Moment(item.timestamp).isBefore(Moment()) ? '(Past)' : '' } {Moment(item.timestamp).format('dddd, MMMM Do') + ', ' + Moment(item.timestamp).format('h:mma')}</Text>
                         <Text style={styles.doctorEmailAddressText}>{item.specialty.name}</Text>
                       </View>
                     </View>

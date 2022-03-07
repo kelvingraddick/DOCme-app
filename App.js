@@ -15,6 +15,7 @@ import LoadingScreen from './Screens/LoadingScreen';
 import DoctorScreen from './Screens/DoctorScreen';
 import BookAppointmentScreen from './Screens/BookAppointmentScreen';
 import EditAppointmentScreen from './Screens/EditAppointmentScreen';
+import RateAppointmentScreen from './Screens/RateAppointmentScreen';
 import MyAccountScreen from './Screens/MyAccountScreen';
 import SignInScreen from './Screens/SignInScreen';
 import SignUpScreen from './Screens/SignUpScreen';
@@ -46,7 +47,8 @@ const SearchScreenStackNavigator = createStackNavigator(
 const AppointmentsScreenStackNavigator = createStackNavigator(
   {
     AppointmentsScreen: AppointmentsScreen,
-    EditAppointmentScreen: EditAppointmentScreen
+    EditAppointmentScreen: EditAppointmentScreen,
+    RateAppointmentScreen: RateAppointmentScreen
   },
   {
     navigationOptions: {
