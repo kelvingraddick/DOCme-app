@@ -86,12 +86,14 @@ export default class DoctorScreen extends Component {
             <Text style={styles.doctorNameText}>{this.state.doctor.firstName} {this.state.doctor.lastName}</Text>
             <Text style={styles.doctorEmailAddressText}>{this.state.doctor.emailAddress}</Text>
             <View style={styles.doctorStarsView}>  
-              <Icon style={styles.starIcon} name="star" />
-              <Icon style={styles.starIcon} name="star" />
-              <Icon style={styles.starIcon} name="star" />
-              <Icon style={styles.starIcon} name="star" />
-              <Icon style={styles.starIcon} name="star" />
-              <Text style={styles.doctorStarText}>(471)</Text>
+              {
+                [1, 2, 3, 4, 5].map((rating) => {
+                    let style = this.state.doctor.averageRating && this.state.doctor.averageRating >= rating ? styles.greenStarIcon : styles.grayStarIcon;
+                    return <Icon style={style} name="star" />
+                  }
+                )
+              } 
+              <Text style={styles.doctorStarText}>({this.state.doctor.numberOfRatings})</Text>
             </View>
             <View style={styles.divider}></View>
             <Text style={styles.sectionTitleText}>Book an appointment</Text>
@@ -248,8 +250,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 20
   },
-  starIcon: {
+  greenStarIcon: {
     color: Colors.GREEN,
+    fontSize: 20,
+    marginRight: 2
+  },
+  grayStarIcon: {
+    color: Colors.LIGHT_GRAY,
     fontSize: 20,
     marginRight: 2
   },

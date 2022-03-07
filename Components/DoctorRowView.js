@@ -19,12 +19,14 @@ export default class DoctorRowView extends Component {
             <Text style={styles.doctorLocationText}>{this.props.doctor.practice.addressLine1} {this.props.doctor.practice.addressLine2} {this.props.doctor.practice.city}, {this.props.doctor.practice.state} {this.props.doctor.practice.postalCode}</Text>
           }
           <View style={styles.doctorStarsView}>  
-            <Icon style={styles.doctorStarIcon} name="star" />
-            <Icon style={styles.doctorStarIcon} name="star" />
-            <Icon style={styles.doctorStarIcon} name="star" />
-            <Icon style={styles.doctorStarIcon} name="star" />
-            <Icon style={styles.doctorStarIcon} name="star" />
-            <Text style={styles.doctorStarText}>(471)</Text>
+            {
+              [1, 2, 3, 4, 5].map((rating) => {
+                  let style = this.props.doctor.averageRating && this.props.doctor.averageRating >= rating ? styles.doctorGreenStarIcon : styles.doctorGrayStarIcon;
+                  return <Icon style={style} name="star" />
+                }
+              )
+            } 
+            <Text style={styles.doctorStarText}>({this.props.doctor.numberOfRatings})</Text>
           </View>
         </View>
       </View>
@@ -67,8 +69,13 @@ const styles = StyleSheet.create({
   doctorStarsView: {
     flexDirection: 'row'
   },
-  doctorStarIcon: {
+  doctorGreenStarIcon: {
     color: Colors.GREEN,
+    fontSize: 20,
+    marginRight: 2
+  },
+  doctorGrayStarIcon: {
+    color: Colors.LIGHT_GRAY,
     fontSize: 20,
     marginRight: 2
   },
