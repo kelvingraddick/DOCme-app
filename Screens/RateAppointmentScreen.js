@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ScrollView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, Alert, Modal, ActivityIndicator, FlatList, TouchableHighlight } from 'react-native';
+import InputScrollView from 'react-native-input-scroll-view';
 import Moment from 'moment';
 import DoctorRowView from '../Components/DoctorRowView';
 import ModelHeader from '../Components/ModalHeader';
@@ -51,7 +52,7 @@ class RateAppointmentScreen extends Component {
     return (
       <>
         <StatusBar barStyle='dark-content' />
-        <ScrollView>
+        <InputScrollView>
           <View style={styles.container}>
             { this.state.appointment &&
               <DoctorRowView doctor={this.state.appointment.doctor} />
@@ -122,7 +123,7 @@ class RateAppointmentScreen extends Component {
               />
             </CustomSafeAreaView>
           </Modal>
-        </ScrollView>
+        </InputScrollView>
       </>
     );
   }
@@ -214,7 +215,8 @@ class RateAppointmentScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    marginBottom: 300
   },
   header: {
     alignContent: 'center',

@@ -23,6 +23,7 @@
     "react-native-geocoding": "^0.4.0",
     "react-native-gesture-handler": "^1.5.2",
     "react-native-image-picker": "^2.3.1",
+    "react-native-input-scroll-view": "^1.11.0",
     "react-native-ionicons": "^4.6.3",
     "react-native-maps": "0.27.1",
     "react-native-onesignal": "^4.2.0",
