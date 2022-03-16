@@ -60,21 +60,21 @@ class RateAppointmentScreen extends Component {
               <View style={styles.header}>
                 <Text style={styles.titleText}>Date and Time</Text>
                 <Text style={styles.subTitleText}>{Moment(this.state.appointment.timestamp).format('dddd, MMMM Do') + ', ' + Moment(this.state.appointment.timestamp).format('h:mma')}</Text>
-                <Text style={styles.titleText}>Select Rating Value</Text>
+                <Text style={styles.titleText}>Rate your experience from 1 (lowest) to 5 (highest)</Text>
                 <TextInput
                   style={styles.textBox}
-                  placeholder='Rating value'
+                  placeholder='Select rating value'
                   placeholderTextColor={Colors.MEDIUM_BLUE}
                   value={this.state.selectedValueOption.name}
                   onFocus={() => this.setState({isValueSelectModalVisible: true})}
                 />
-                <Text style={styles.titleText}>How did it go?</Text>
+                <Text style={styles.titleText}>Any comments about your experience?</Text>
                 <TextInput
                   multiline={true}
                   textAlignVertical='center'
                   numberOfLines={10}
                   style={[styles.textBox, { ...Platform.select({ ios: { lineHeight: 30 }, android: {} }) }]}
-                  placeholder='Rating notes'
+                  placeholder='Enter comments'
                   placeholderTextColor={Colors.MEDIUM_BLUE}
                   defaultValue={this.state.notes}
                   onChangeText={text => this.state.notes = text}
