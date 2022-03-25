@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
+import RatingStarsView from '../Components/RatingStarsView';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
-import Icon from 'react-native-ionicons';
 
 export default class DoctorRowView extends Component {
   render() {
@@ -19,14 +19,7 @@ export default class DoctorRowView extends Component {
             <Text style={styles.doctorLocationText}>{this.props.doctor.practice.addressLine1} {this.props.doctor.practice.addressLine2} {this.props.doctor.practice.city}, {this.props.doctor.practice.state} {this.props.doctor.practice.postalCode}</Text>
           }
           <View style={styles.doctorStarsView}>  
-            {
-              [1, 2, 3, 4, 5].map((rating) => {
-                  let style = this.props.doctor.averageRating && this.props.doctor.averageRating >= rating ? styles.doctorGreenStarIcon : styles.doctorGrayStarIcon;
-                  return <Icon style={style} name="star" />
-                }
-              )
-            } 
-            <Text style={styles.doctorStarText}>({this.props.doctor.numberOfRatings})</Text>
+            <RatingStarsView doctor={this.props.doctor} />
           </View>
         </View>
       </View>
@@ -68,21 +61,5 @@ const styles = StyleSheet.create({
   },
   doctorStarsView: {
     flexDirection: 'row'
-  },
-  doctorGreenStarIcon: {
-    color: Colors.GREEN,
-    fontSize: 20,
-    marginRight: 2
-  },
-  doctorGrayStarIcon: {
-    color: Colors.LIGHT_GRAY,
-    fontSize: 20,
-    marginRight: 2
-  },
-  doctorStarText: {
-    color: Colors.GRAY,
-    fontSize: 13,
-    fontFamily: Fonts.NORMAL,
-    lineHeight: 20
   }
 })

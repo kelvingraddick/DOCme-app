@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import MapView from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 import { Marker } from 'react-native-maps';
+import RatingStarsView from '../Components/RatingStarsView';
 import Genders from '../Constants/Genders';
 import Races from '../Constants/Races';
 import Colors from '../Constants/Colors';
@@ -86,14 +87,7 @@ export default class DoctorScreen extends Component {
             <Text style={styles.doctorNameText}>{this.state.doctor.firstName} {this.state.doctor.lastName}</Text>
             <Text style={styles.doctorEmailAddressText}>{this.state.doctor.emailAddress}</Text>
             <View style={styles.doctorStarsView}>  
-              {
-                [1, 2, 3, 4, 5].map((rating) => {
-                    let style = this.state.doctor.averageRating && this.state.doctor.averageRating >= rating ? styles.greenStarIcon : styles.grayStarIcon;
-                    return <Icon style={style} name="star" />
-                  }
-                )
-              } 
-              <Text style={styles.doctorStarText}>({this.state.doctor.numberOfRatings})</Text>
+              <RatingStarsView doctor={this.state.doctor} />  
             </View>
             <View style={styles.divider}></View>
             <Text style={styles.sectionTitleText}>Book an appointment</Text>
@@ -249,22 +243,6 @@ const styles = StyleSheet.create({
   doctorStarsView: {
     flexDirection: 'row',
     marginBottom: 20
-  },
-  greenStarIcon: {
-    color: Colors.GREEN,
-    fontSize: 20,
-    marginRight: 2
-  },
-  grayStarIcon: {
-    color: Colors.LIGHT_GRAY,
-    fontSize: 20,
-    marginRight: 2
-  },
-  doctorStarText: {
-    color: Colors.GRAY,
-    fontSize: 15,
-    fontFamily: Fonts.NORMAL,
-    lineHeight: 20
   },
   doctorDescriptionText: {
     color: Colors.DARK_GRAY,
