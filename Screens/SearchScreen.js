@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, Modal, FlatList, ActivityIndicator } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import vision from '@react-native-firebase/ml-vision';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Moment from 'moment';
@@ -210,7 +211,7 @@ export default class SearchScreen extends Component {
       <>
         <StatusBar barStyle='dark-content' />
         <CustomSafeAreaView>
-        <View style={styles.container}>
+        <KeyboardAwareScrollView style={styles.container}>
           <Image style={styles.backgroundImage} source={require('../Images/background-1.jpg')} />
           <View style={styles.header}>
             <Text style={styles.titleText}>Welcome to DOCme!{'\n'}Tell us what you need below</Text>
@@ -351,7 +352,7 @@ export default class SearchScreen extends Component {
               />
             </CustomSafeAreaView>
           </Modal>
-        </View>
+        </KeyboardAwareScrollView>
         </CustomSafeAreaView>
       </>
     );
@@ -372,6 +373,7 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: "cover",
+    height: 300,
     width: null
   },
   header: {
