@@ -1,25 +1,21 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { ScrollView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, TouchableHighlight, Alert, Modal, FlatList } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import Login from '../Helpers/Login';
+import { ScrollView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, TouchableHighlight, Alert, Modal, FlatList, ActivityIndicator } from 'react-native';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
-import Actions from '../Constants/Actions';
 import ModelHeader from '../Components/ModalHeader';
 import CustomSafeAreaView from '../Components/CustomSafeAreaView';
 import UserTypes from '../Constants/UserTypes';
+import Icon from 'react-native-ionicons';
 
-class SignInScreen extends Component {
+class ForgotPasswordScreen extends Component {
   static navigationOptions = {
-    title: 'Sign In'
+    title: 'Forgot Password'
   };
 
   state = {
     isUserTypeSelectModalVisible: false,
     selectedUserTypeOption: {},
-    emailAddress: null,
-    password: null
+    emailAddress: null
   };
 
   render() {
@@ -29,8 +25,8 @@ class SignInScreen extends Component {
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.header}>
-              <Text style={styles.titleText}>Welcome back to DOCme!</Text>
-              <Text style={styles.subTitleText}>Sign in to manage your account and appointments.</Text>
+              <Text style={styles.titleText}>Forgot Password</Text>
+              <Text style={styles.subTitleText}>Select your <Text style={{fontWeight: 'bold'}}>account type</Text> and enter your <Text style={{fontWeight: 'bold'}}>email address</Text> below to begin <Text style={{ textDecorationLine: 'underline' }}>resetting your password</Text>:</Text>
               <TextInput
                 style={styles.textBox}
                 placeholder='Patient or doctor?'
@@ -47,28 +43,21 @@ class SignInScreen extends Component {
                 value={this.state.emailAddress}
                 onChangeText={text => this.setState({emailAddress: text})}
               />
-              <TextInput
-                style={styles.textBox}
-                placeholder='Password'
-                placeholderTextColor={Colors.MEDIUM_BLUE}
-                autoCompleteType='password'
-                autoCapitalize='none'
-                value={this.state.password}
-                onChangeText={text => this.setState({password: text})}
-              />
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => this.onSignInButtonTapped()}
+                onPress={() => this.onSubmitButtonTapped()}
                 underlayColor='#fff'
-                disabled={!this.state.emailAddress || !this.state.password}>
-                <Text style={styles.buttonText}>Sign in with email</Text>
+                disabled={this.state.isLoading}>
+                {!this.state.isLoading && (
+                  <Text style={styles.buttonText}>Submit</Text>
+                )}
+                {this.state.isLoading && (
+                  <ActivityIndicator size="small" color="#ffffff" />
+                )}
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.link}
-                onPress={() => this.props.navigation.navigate('ForgotPasswordScreen')}
-                underlayColor='#fff'>
-                <Text style={styles.linkText}>Forgot password?</Text>
-              </TouchableOpacity>
+              {this.state.errorMessage && (
+                <Text style={styles.errorText}><Icon name="warning" style={{color:'red'}} />  {this.state.errorMessage}</Text>
+              )}
             </View>
           </View>
           <Modal
@@ -106,22 +95,74 @@ class SignInScreen extends Component {
     this.setState({isUserTypeSelectModalVisible: false});
   }
 
-  async onSignInButtonTapped() {
-    var response = await Login.withEmailAddressAndPassword(this.state.selectedUserTypeOption.id, this.state.emailAddress, this.state.password);
+  async onSubmitButtonTapped() {
+    this.setState({ isLoading: true });
+
+    await this.validate();
+    if (this.state.errorMessage) {
+      this.setState({ isLoading: false });
+      return;
+    }
+
+    var response = await this.submit();
     if (response) {
-      this.props.dispatch({ type: Actions.SET_TOKEN, token: response.token });
-      this.props.dispatch({ type: Actions.SET_PATIENT, patient: response.patient || null });
-      this.props.dispatch({ type: Actions.SET_DOCTOR, doctor: response.doctor || null });
-      await AsyncStorage.setItem('TOKEN', response.token);
-      this.props.navigation.goBack();
+      if (response.isSuccess) {
+        Alert.alert(
+          "Success! Check your email to reset your password.",
+          "Password reset instructions were sent to the email entered.",
+          [{ text: "OK" }],
+          { cancelable: false }
+        );
+        this.props.navigation.goBack();
+      } else {
+        await this.setState({ errorMessage: response.errorMessage });
+        this.setState({ isLoading: false });
+      }
     } else {
       Alert.alert(
-        "There was an error signing in",
-        "Please update credentials and try again",
+        "There was an error requested a password reset.",
+        "Please update entries and try again",
         [{ text: "OK" }],
         { cancelable: false }
       );
+      this.setState({ isLoading: false });
     }
+  }
+
+  async validate() {
+    var errorMessage = null;
+    var emailAddressRegex = /^\w+([\.\-\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!this.state.selectedUserTypeOption.id) {
+      errorMessage = 'User type (patient or doctor) must be selected.';
+    } else if (!emailAddressRegex.test(this.state.emailAddress)) {
+      errorMessage = 'Valid email address is required.';
+    }
+    await this.setState({ errorMessage: errorMessage });
+  }
+
+  async submit() {
+    var body = {
+      emailAddress: this.state.emailAddress
+    };
+    return fetch('http://www.docmeapp.com/' + this.state.selectedUserTypeOption.id + '/reset/password/request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    .then((response) => { 
+      if (response.status == 200) {
+        return response.json()
+        .then((responseJson) => {
+          return responseJson;
+        })
+      } else {
+        return undefined;
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      return undefined;
+    });
   }
 };
 
@@ -170,14 +211,11 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.MEDIUM,
     textAlign: 'center'
   },
-  link: {
-    paddingBottom: 20
-  },
-  linkText: {
-    color: Colors.DARK_BLUE,
+  errorText: {
+    color: Colors.WHITE,
     fontSize: 15,
     fontFamily: Fonts.MEDIUM,
-    textDecorationLine: 'underline'
+    marginBottom: 30
   },
   // TODO: refactor out modal
   option: {
@@ -198,9 +236,4 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state) => {
-  var { token, patient, doctor } = state;
-  return { token, patient, doctor };
-};
-
-export default connect(mapStateToProps)(SignInScreen);
+export default ForgotPasswordScreen;
