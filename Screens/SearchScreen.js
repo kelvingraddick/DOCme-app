@@ -122,9 +122,8 @@ export default class SearchScreen extends Component {
   async onCameraButtonTapped() {
     this.setState({ isLoading: true });
 
-    const { scannedImages } = await DocumentScanner.scanDocument();
-    if (scannedImages.length > 0) {
-      try {
+    const { scannedImages } = await DocumentScanner.scanDocument({ maxNumDocuments: 2 });
+    if (scannedImages && scannedImages.length > 0) {
       const recognizedText = await vision().textRecognizerProcessImage(scannedImages[0]);
       var terms = this.getTermsFromRecognizedText(recognizedText);
 
@@ -140,9 +139,6 @@ export default class SearchScreen extends Component {
           this.setState({insurancePlanOptions: insurancePlans});
           this.setState({selectedInsurancePlanOption: insurancePlan});
         }
-      }
-      } catch (error) {
-        console.log(error.message);
       }
     }
 
