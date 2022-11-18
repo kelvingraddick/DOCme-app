@@ -281,6 +281,8 @@ PODS:
   - React-jsinspector (0.61.5)
   - react-native-date-picker (3.3.1):
     - React-Core
+  - react-native-document-scanner-plugin (0.2.1):
+    - React-Core
   - react-native-image-picker (2.3.1):
     - React
   - react-native-maps (0.27.1):
@@ -366,6 +368,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
+  - react-native-document-scanner-plugin (from `../node_modules/react-native-document-scanner-plugin`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-onesignal (from `../node_modules/react-native-onesignal`)
@@ -445,6 +448,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-date-picker:
     :path: "../node_modules/react-native-date-picker"
+  react-native-document-scanner-plugin:
+    :path: "../node_modules/react-native-document-scanner-plugin"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-maps:
@@ -528,6 +533,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
   react-native-date-picker: 2dfef0fcb6c36d078bc62f5de3ca79eff7f42486
+  react-native-document-scanner-plugin: cb883b2671889eeb400dfc9c6b6ab9dcf081b68f
   react-native-image-picker: 6a850c41f57f0848d918c2a77aedd7aa272ffa30
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-onesignal: a7e433eec906c928954de4f124b6886418386bb4
@@ -552,6 +558,6 @@ SPEC CHECKSUMS:
   RNScreens: 62284de159bbddba268edd282337afdb8771aaed
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 2a174e64a536b81bcdf4cb4478488d058d199238
+PODFILE CHECKSUM: c556d6846c346696f204a4ec3da5c9e728361ba2
 
 COCOAPODS: 1.11.3

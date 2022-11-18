@@ -1,4 +1,4 @@
-platform :ios, '9.0'
+platform :ios, '13.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 target 'DOCmeApp' do
@@ -8,7 +8,7 @@ target 'DOCmeApp' do
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
   pod 'RCTTypeSafety', :path => "../node_modules/react-native/Libraries/TypeSafety"
   pod 'React', :path => '../node_modules/react-native/'
-  pod 'React-Core', :path => '../node_modules/react-native/'
+  pod 'React-Core', :path => '../node_modules/react-native/',:modular_headers => true
   pod 'React-CoreModules', :path => '../node_modules/react-native/React/CoreModules'
   pod 'React-Core/DevSupport', :path => '../node_modules/react-native/'
   pod 'React-RCTActionSheet', :path => '../node_modules/react-native/Libraries/ActionSheetIOS'
@@ -31,9 +31,10 @@ target 'DOCmeApp' do
   pod 'Yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
 
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
-  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
+  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec',:modular_headers => false
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
+  pod 'react-native-document-scanner-plugin',:path => '../node_modules/react-native-document-scanner-plugin',:modular_headers => true
 
   target 'DOCmeAppTests' do
     inherit! :search_paths
