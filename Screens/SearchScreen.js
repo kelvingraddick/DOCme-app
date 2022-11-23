@@ -175,11 +175,11 @@ export default class SearchScreen extends Component {
             }
           })
         }
-        return [];
+        return undefined;
       })
       .catch((error) => {
         console.error(error);
-        return [];
+        return undefined;
       });
   }
 
@@ -194,11 +194,11 @@ export default class SearchScreen extends Component {
             }
           })
         }
-        return [];
+        return undefined;
       })
       .catch((error) => {
         console.error(error);
-        return [];
+        return undefined;
       });
   }
 
