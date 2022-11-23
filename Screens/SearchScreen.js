@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, Modal, FlatList, ActivityIndicator } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import vision from '@react-native-firebase/ml-vision';
-import DocumentScanner from 'react-native-document-scanner-plugin';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import Moment from 'moment';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import ModelHeader from '../Components/ModalHeader';
@@ -120,12 +121,15 @@ export default class SearchScreen extends Component {
   }
 
   async onCameraButtonTapped() {
+    var that = this;
+    this.props.navigation.navigate('DocumentScannerScreen', { onDocumentScanned: (document) => { that.onDocumentScanned(document); } });
+  }
+
+  async onDocumentScanned(document) {
     this.setState({ isLoading: true });
 
-    const { scannedImages } = await DocumentScanner.scanDocument();
-    if (scannedImages.length > 0) {
-      try {
-      const recognizedText = await vision().textRecognizerProcessImage(scannedImages[0]);
+    if (document.croppedImage) {
+      const recognizedText = await vision().textRecognizerProcessImage(document.croppedImage);
       var terms = this.getTermsFromRecognizedText(recognizedText);
 
       var insuranceCarriers = await this.getInsuranceCarriersFromTerms(terms);
@@ -140,9 +144,6 @@ export default class SearchScreen extends Component {
           this.setState({insurancePlanOptions: insurancePlans});
           this.setState({selectedInsurancePlanOption: insurancePlan});
         }
-      }
-      } catch (error) {
-        console.log(error.message);
       }
     }
 

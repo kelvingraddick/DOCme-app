@@ -5461,11 +5461,6 @@
   "resolved" "https://registry.npmjs.org/react-native-date-picker/-/react-native-date-picker-3.3.1.tgz"
   "version" "3.3.1"
 
-"react-native-document-scanner-plugin@^0.2.1":
-  "integrity" "sha512-odBvj9j/Xsd0QRsnyRohWaeb3jQeTdf16BF1eqW4xGJXbaBYXhg+YcrmZMlYxAjLfWdQVpzy3LvKd1CEyaPtOw=="
-  "resolved" "https://registry.npmjs.org/react-native-document-scanner-plugin/-/react-native-document-scanner-plugin-0.2.1.tgz"
-  "version" "0.2.1"
-
 "react-native-document-scanner@^1.4.2":
   "integrity" "sha512-gh4WnZRBWk4CJApp2iaV8SW6SvV4wi2hA9ikwpNbDvpAFles8bWGSnjmOeOoy15KZgbIVaRjvCRRfFxaLVgJhg=="
   "resolved" "https://registry.npmjs.org/react-native-document-scanner/-/react-native-document-scanner-1.4.2.tgz"
