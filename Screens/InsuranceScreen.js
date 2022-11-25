@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, Modal, FlatList, ActivityIndicator } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import DocumentScanner from 'react-native-document-scanner-plugin';
 import vision from '@react-native-firebase/ml-vision';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
@@ -83,22 +84,21 @@ export default class InsuranceScreen extends Component {
   }
 
   async onCameraButtonTapped(isFrontImage) {
-    var that = this;
-    this.props.navigation.navigate('DocumentScannerScreen', { onDocumentScanned: async (document) => { await that.onDocumentScanned(document, isFrontImage); } });
-  }
-
-  async onDocumentScanned(document, isFrontImage) {
     this.setState({ isLoading: true });
 
-    if (document.croppedImage) {
-      console.log(document.croppedImage);
+    const { scannedImages } = await DocumentScanner.scanDocument({
+      maxNumDocuments: 1
+    });
+    if (scannedImages.length > 0) {
+      let imageSource = scannedImages[0];
+      
       if (isFrontImage) {
-        this.setState({insuranceCardFrontImageSource: document.croppedImage});
+        this.setState({insuranceCardFrontImageSource: imageSource});
       } else {
-        this.setState({insuranceCardBackImageSource: document.croppedImage});
+        this.setState({insuranceCardBackImageSource: imageSource});
       }
 
-      const recognizedText = await vision().textRecognizerProcessImage(document.croppedImage);
+      const recognizedText = await vision().textRecognizerProcessImage(imageSource);
       var terms = this.getTermsFromRecognizedText(recognizedText);
 
       var insuranceCarriers = await this.getInsuranceCarriersFromTerms(terms);
