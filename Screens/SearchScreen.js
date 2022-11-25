@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, Modal, FlatList, ActivityIndicator } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import vision from '@react-native-firebase/ml-vision';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import Moment from 'moment';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
 import ModelHeader from '../Components/ModalHeader';
@@ -28,11 +25,7 @@ export default class SearchScreen extends Component {
     specialtyOptions: [],
     selectedSpecialtyOption: {},
     postalCode: null,
-    isInsuranceCarrierSearchModalVisible: false,
-    insuranceCarrierOptions: [],
     selectedInsuranceCarrierOption: {},
-    isInsurancePlanSearchModalVisible: false,
-    insurancePlanOptions: [],
     selectedInsurancePlanOption: {}
   };
 
@@ -63,147 +56,34 @@ export default class SearchScreen extends Component {
     this.setState({specialtyOptions: []});
   }
 
-  async onInsuranceCarrierSearchBoxChangeText(text) {
-    var insuranceCarriers = await fetch('http://www.docmeapp.com/insurance/carriers/search/' + encodeURIComponent(text), { method: 'GET' })
-    .then((response) => { 
-      if (response.status == 200) {
-        return response.json()
-        .then((responseJson) => {
-          if (responseJson.isSuccess) {
-            return responseJson.insuranceCarriers;
-          }
-        })
-      }
-      return undefined;
-    })
-    .catch((error) => {
-      console.error(error);
-      return undefined;
-    });
-
-    this.setState({insuranceCarrierOptions: insuranceCarriers});
+  onInsuranceSelected(options) {
+    if (options) {
+      this.setState({selectedInsuranceCarrierOption: options.insuranceCarrierOption});
+      this.setState({selectedInsurancePlanOption: options.insurancePlanOption});
+    }
   }
 
-  async onInsuranceCarrierOptionSelected(option) {
-    this.setState({selectedInsuranceCarrierOption: option});
-    this.setState({isInsuranceCarrierSearchModalVisible: false});
-    this.setState({insuranceCarrierOptions: []});
-    this.setState({selectedInsurancePlanOption: {}});
-    this.setState({isInsurancePlanSearchModalVisible: false});
-    this.setState({insurancePlanOptions: []});
-
-    this.setState({insurancePlanOptions: []});
-    this.setState({selectedInsurancePlanOption: []});
-
-    var insurancePlans = await fetch('http://www.docmeapp.com/insurance/carrier/' + option.id + '/plans', { method: 'GET' })
-    .then((response) => { 
-      if (response.status == 200) {
-        return response.json()
-        .then((responseJson) => {
-          if (responseJson.isSuccess) {
-            return responseJson.insurancePlans;
-          }
-        })
-      }
-      return undefined;
-    })
-    .catch((error) => {
-      console.error(error);
-      return undefined;
-    });
-
-    this.setState({insurancePlanOptions: insurancePlans});
-  }
-
-  onInsurancePlanOptionSelected(option) {
-    this.setState({selectedInsurancePlanOption: option});
-    this.setState({isInsurancePlanSearchModalVisible: false});
-  }
-
-  async onCameraButtonTapped() {
+  async onInsuranceTextBoxFocused() {
     var that = this;
-    this.props.navigation.navigate('DocumentScannerScreen', { onDocumentScanned: (document) => { that.onDocumentScanned(document); } });
-  }
-
-  async onDocumentScanned(document) {
-    this.setState({ isLoading: true });
-
-    if (document.croppedImage) {
-      const recognizedText = await vision().textRecognizerProcessImage(document.croppedImage);
-      var terms = this.getTermsFromRecognizedText(recognizedText);
-
-      var insuranceCarriers = await this.getInsuranceCarriersFromTerms(terms);
-      var insuranceCarrier = insuranceCarriers[0];
-      if (insuranceCarrier) {
-        this.setState({insuranceCarrierOptions: insuranceCarriers});
-        this.setState({selectedInsuranceCarrierOption: insuranceCarrier});
-
-        var insurancePlans = await this.getInsurancePlansFromTerms(insuranceCarrier,terms);
-        var insurancePlan = insurancePlans[0];
-        if (insurancePlan) {
-          this.setState({insurancePlanOptions: insurancePlans});
-          this.setState({selectedInsurancePlanOption: insurancePlan});
-        }
+    this.props.navigation.navigate(
+      'InsuranceScreen',
+      {
+        insuranceCarrierOption: this.state.selectedInsuranceCarrierOption,
+        insurancePlanOption: this.state.selectedInsurancePlanOption,
+        onInsuranceSelected: (options) => { that.onInsuranceSelected(options); }
       }
-    }
-
-    this.setState({ isLoading: false });
-  }
-
-  getTermsFromRecognizedText(recognizedText) {
-    var terms = [];
-    for (var i = 0; i < recognizedText.blocks.length; i++) {
-      var term = recognizedText.blocks[i].text;
-      if (isNaN(term) && term.length > 3 && term !== 'plan') {
-        term = term.replace(/\W/g, ',').replace(' ', '');
-        if (term && term != '') {
-          terms.push(term.replace(/\W/g, ',').replace(' ', ''));
-        }
-      }
-    }
-    return terms.filter(Boolean).join(',');
-  }
-
-  async getInsuranceCarriersFromTerms(terms) {
-    return await fetch('http://www.docmeapp.com/insurance/carriers/card/?terms=' + encodeURIComponent(terms), { method: 'GET' })
-      .then((response) => { 
-        if (response.status == 200) {
-          return response.json()
-          .then((responseJson) => {
-            if (responseJson.isSuccess) {
-              return responseJson.insuranceCarriers;
-            }
-          })
-        }
-        return undefined;
-      })
-      .catch((error) => {
-        console.error(error);
-        return undefined;
-      });
-  }
-
-  async getInsurancePlansFromTerms(insuranceCarrier, terms) {
-    return await fetch('http://www.docmeapp.com/insurance/carrier/' + (insuranceCarrier && insuranceCarrier.id) + '/plans/card/?terms=' + encodeURIComponent(terms), { method: 'GET' })
-      .then((response) => { 
-        if (response.status == 200) {
-          return response.json()
-          .then((responseJson) => {
-            if (responseJson.isSuccess) {
-              return responseJson.insurancePlans;
-            }
-          })
-        }
-        return undefined;
-      })
-      .catch((error) => {
-        console.error(error);
-        return undefined;
-      });
+    );
   }
 
   onFindButtonTapped() {
-    this.props.navigation.navigate('ResultsScreen', { specialtyId: this.state.selectedSpecialtyOption.id, postalCode: this.state.postalCode, insurancePlanId: this.state.selectedInsurancePlanOption.id });
+    this.props.navigation.navigate(
+      'ResultsScreen',
+      {
+        specialtyId: this.state.selectedSpecialtyOption.id,
+        postalCode: this.state.postalCode,
+        insurancePlanId: this.state.selectedInsurancePlanOption.id
+      }
+    );
   }
 
   render() {
@@ -229,30 +109,24 @@ export default class SearchScreen extends Component {
               defaultValue={this.state.postalCode}
               onChangeText={text => this.state.postalCode = text}
             />
-            <View style={styles.fieldContainer}>
+            <TouchableOpacity style={styles.fieldContainer} onPress={() => this.onInsuranceTextBoxFocused()}>
               <TextInput
                 style={[styles.textBox, {flex: 1, marginRight: 10}]}
-                placeholder='Insurance carrier'
+                placeholder='Insurance carrier and plan'
                 placeholderTextColor={Colors.MEDIUM_BLUE}
-                value={this.state.selectedInsuranceCarrierOption.name}
-                onFocus={() => this.setState({isInsuranceCarrierSearchModalVisible: true})}
+                value={
+                  this.state.selectedInsuranceCarrierOption.name && this.state.selectedInsurancePlanOption.name ? 
+                    this.state.selectedInsuranceCarrierOption.name + ' · ' + this.state.selectedInsurancePlanOption.name :
+                    ''
+                }
+                onFocus={() => this.onInsuranceTextBoxFocused()}
               />
-              <TouchableOpacity
+              <View
                 style={styles.fieldButton}
-                onPress={() => this.onCameraButtonTapped()}
                 underlayColor='#fff'>
                 <Text style={styles.fieldButtonText}><Icon name="camera" /></Text>
-              </TouchableOpacity>
-            </View>
-            { this.state.selectedInsuranceCarrierOption.id &&
-              <TextInput
-                style={styles.textBox}
-                placeholder='Insurance plan'
-                placeholderTextColor={Colors.MEDIUM_BLUE}
-                value={this.state.selectedInsurancePlanOption.name}
-                onFocus={() => this.setState({isInsurancePlanSearchModalVisible: true})}
-              />
-            }
+              </View>
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.button}
               onPress={() => this.onFindButtonTapped()}
@@ -287,62 +161,6 @@ export default class SearchScreen extends Component {
                   <TouchableHighlight
                     style={styles.option}
                     onPress={() => this.onSpecialtyOptionSelected(item)}
-                    onShowUnderlay={separators.highlight}
-                    onHideUnderlay={separators.unhighlight}>
-                    <Text style={styles.optionText}>{item.name}</Text>
-                  </TouchableHighlight>
-                )}
-                ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
-              />
-            </CustomSafeAreaView>
-          </Modal>
-          <Modal
-            animationType="slide"
-            transparent={false}
-            visible={this.state.isInsuranceCarrierSearchModalVisible}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
-            }}>
-            <CustomSafeAreaView>
-              <ModelHeader titleText="Search" onCancelButtonPress={() => this.setState({isInsuranceCarrierSearchModalVisible: false})} />
-              <TextInput
-                style={styles.searchBox}
-                placeholder='Start typing in an insurance carrier..'
-                placeholderTextColor={Colors.GRAY}
-                onChangeText={(text) => this.onInsuranceCarrierSearchBoxChangeText(text)}
-              />
-              <FlatList
-                data={this.state.insuranceCarrierOptions}
-                keyExtractor={item => item.id}
-                renderItem={({item, index, separators}) => (
-                  <TouchableHighlight
-                    style={styles.option}
-                    onPress={() => this.onInsuranceCarrierOptionSelected(item)}
-                    onShowUnderlay={separators.highlight}
-                    onHideUnderlay={separators.unhighlight}>
-                    <Text style={styles.optionText}>{item.name}</Text>
-                  </TouchableHighlight>
-                )}
-                ItemSeparatorComponent={({highlighted}) => (<View style={styles.optionSeparator} />)}
-              />
-            </CustomSafeAreaView>
-          </Modal>
-          <Modal
-            animationType="slide"
-            transparent={false}
-            visible={this.state.isInsurancePlanSearchModalVisible}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
-            }}>
-            <CustomSafeAreaView>
-              <ModelHeader titleText="Search" onCancelButtonPress={() => this.setState({isInsurancePlanSearchModalVisible: false})} />
-              <FlatList
-                data={this.state.insurancePlanOptions}
-                keyExtractor={item => item.id}
-                renderItem={({item, index, separators}) => (
-                  <TouchableHighlight
-                    style={styles.option}
-                    onPress={() => this.onInsurancePlanOptionSelected(item)}
                     onShowUnderlay={separators.highlight}
                     onHideUnderlay={separators.unhighlight}>
                     <Text style={styles.optionText}>{item.name}</Text>

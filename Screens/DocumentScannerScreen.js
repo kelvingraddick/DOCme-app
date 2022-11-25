@@ -11,7 +11,7 @@ export default class DocumentScannerScreen extends Component {
   };
 
   state = {
-    isLoading: true
+    isLoading: false // true to start with camera button off
   };
 
   async onDocumentDetected(stableCounter, lastDetectionType) {
@@ -19,9 +19,10 @@ export default class DocumentScannerScreen extends Component {
   }
 
   async onDocumentScanned(document) {
-    if (document && document.rectangleCoordinates) {
-      this.props.navigation.state.params.onDocumentScanned(document);
-    }
+    // if (document && document.rectangleCoordinates) {
+    //  this.props.navigation.state.params.onDocumentScanned(document);
+    // }
+    await this.props.navigation.state.params.onDocumentScanned(document);
     this.props.navigation.goBack();
   }
 
@@ -46,7 +47,7 @@ export default class DocumentScannerScreen extends Component {
             saveInAppDocument={true}
             detectionCountBeforeCapture={30}
             overlayColor="rgba(11,117,193,0.7)"
-            onRectangleDetect={({ stableCounter, lastDetectionType }) => this.onDocumentDetected(stableCounter, lastDetectionType)}
+            // onRectangleDetect={({ stableCounter, lastDetectionType }) => this.onDocumentDetected(stableCounter, lastDetectionType)}
             onPictureTaken={(document) => this.onDocumentScanned(document)}
             onPermissionsDenied={() => this.onPermissionsDenied()}
           />

@@ -8,6 +8,7 @@ import store from './store';
 import Colors from './Constants/Colors';
 import CustomSafeAreaView from './Components/CustomSafeAreaView';
 import SearchScreen from './Screens/SearchScreen';
+import InsuranceScreen from './Screens/InsuranceScreen';
 import DocumentScannerScreen from './Screens/DocumentScannerScreen';
 import ResultsScreen from './Screens/ResultsScreen';
 import AppointmentsScreen from './Screens/AppointmentsScreen';
@@ -31,6 +32,7 @@ import Icon from 'react-native-ionicons';
 const SearchScreenStackNavigator = createStackNavigator(
   {
     SearchScreen: SearchScreen,
+    InsuranceScreen: InsuranceScreen,
     DocumentScannerScreen: DocumentScannerScreen,
     ResultsScreen: ResultsScreen,
     DoctorScreen: DoctorScreen,
