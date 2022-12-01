@@ -86,9 +86,9 @@ export default class DoctorScreen extends Component {
             />
             <Text style={styles.doctorNameText}>{this.state.doctor.firstName} {this.state.doctor.lastName}</Text>
             <Text style={styles.doctorEmailAddressText}>{this.state.doctor.emailAddress}</Text>
-            <View style={styles.doctorStarsView}>  
+            <TouchableOpacity style={styles.doctorStarsView} onPress={() => this.props.navigation.navigate('DoctorRatingsScreen', { doctor: this.state.doctor })}>  
               <RatingStarsView doctor={this.state.doctor} />  
-            </View>
+            </TouchableOpacity >
             <View style={styles.divider}></View>
             <Text style={styles.sectionTitleText}>Book an appointment</Text>
             <View style={styles.dateControl}>

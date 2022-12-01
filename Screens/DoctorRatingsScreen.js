@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, StatusBar, Text, Image, FlatList, TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
+import { StyleSheet, View, StatusBar, Text, Image, FlatList } from 'react-native';
+import DoctorRowView from '../Components/DoctorRowView';
 import Moment from 'moment';
-import Actions from '../Constants/Actions';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
+import Icon from 'react-native-ionicons';
 
-class DoctorRatingsScreen extends Component {
+export default class DoctorRatingsScreen extends Component {
   static navigationOptions = {
     title: 'Doctor Ratings'
   };
@@ -24,32 +24,42 @@ class DoctorRatingsScreen extends Component {
       <>
         <StatusBar barStyle="dark-content" />
         <View style={styles.container}>
-          { ratings.length > 0 &&
+          { this.state.ratings.length > 0 &&
             <View>
-              <DoctorRowView doctor={ratings[0].doctor} />
+              <DoctorRowView doctor={this.state.ratings[0].doctor} />
+              <View style={styles.divider}></View>
             </View>
           }
-          { ratings.length > 0 &&
+          { this.state.ratings.length > 0 &&
             <FlatList
-                data={ratings}
-                keyExtractor={item => item.id.toString()}
-                renderItem={({item}) => 
-                  <View style={styles.doctorView}> 
-                    <Image
-                      style={styles.doctorImage}
-                      source={{uri: item.doctor.imageUrl ? item.doctor.imageUrl : ''}}
-                    />
-                    <View style={styles.doctorDetailsView}>  
-                      <Text style={styles.doctorNameText}>{item.doctor.firstName} {item.doctor.lastName}</Text>
-                      { item.doctor.practice &&
-                        <Text style={styles.doctorLocationText}>{item.doctor.practice.addressLine1} {item.doctor.practice.addressLine2} {item.doctor.practice.city}, {item.doctor.practice.state} {item.doctor.practice.postalCode}</Text>
-                      }
-                      <Text style={styles.doctorEmailAddressText}>{Moment(item.timestamp).isBefore(Moment()) ? '(Past)' : '' } {Moment(item.timestamp).format('dddd, MMMM Do') + ', ' + Moment(item.timestamp).format('h:mma')}</Text>
-                      <Text style={styles.doctorEmailAddressText}>{item.specialty.name}</Text>
+              data={this.state.ratings}
+              keyExtractor={item => item.id.toString()}
+              renderItem={({item}) => 
+                <View style={styles.doctorView}> 
+                  <Image
+                    style={styles.doctorImage}
+                    source={{uri: item.patient.imageUrl ? item.patient.imageUrl : ''}}
+                  />
+                  <View style={styles.doctorDetailsView}>  
+                    <Text style={styles.doctorNameText}>{item.patient.firstName} {item.patient.lastName}</Text>
+                    <Text style={styles.doctorEmailAddressText}>{Moment(item.timestamp).format('dddd, MMMM Do') + ', ' + Moment(item.timestamp).format('h:mma')}</Text>
+                    <View style={styles.doctorStarsView}>  
+                      {
+                        [1, 2, 3, 4, 5].map((value) =>
+                          {
+                            let style = item.value && item.value >= value ? styles.greenStarIcon : styles.grayStarIcon;
+                            return <Icon style={style} name="star" />
+                          }
+                        )
+                      } 
                     </View>
+                    { item.notes &&
+                      <Text style={styles.notesText}>"{item.notes && item.notes.trim()}"</Text>
+                    }
                   </View>
-                }
-              />
+                </View>
+              }
+            />
           }
         </View>
       </>
@@ -57,7 +67,7 @@ class DoctorRatingsScreen extends Component {
   }
 
   async getRatings() {
-    var ratings = await fetch('http://www.docmeapp.com/rating/doctor/' + this.props.doctor.id + '/list/', { method: 'GET' })
+    var ratings = await fetch('http://www.docmeapp.com/rating/doctor/' + this.props.navigation.state.params.doctor.id + '/list/', { method: 'GET' })
     .then((response) => { 
       if (response.status == 200) {
         return response.json()
@@ -81,40 +91,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignContent: 'center',
-    backgroundColor: Colors.LIGHT_GRAY
   },
-  backgroundImage: {
-    resizeMode: "cover",
-    height: 400,
-    width: null
-  },
-  titleText: {
-    color: Colors.DARK_GRAY,
-    fontSize: 17,
-    lineHeight: 55,
-    fontFamily: Fonts.MEDIUM,
-    textAlign: 'center'
-  },
-  button: {
-    color: Colors.WHITE,
-    fontSize: 15,
-    padding: 17,
-    backgroundColor: Colors.DARK_BLUE,
-    borderRadius: 5,
-    marginBottom: 20,
-    marginLeft: 20,
-    marginRight: 20
-  },
-  buttonText: {
-    color: Colors.WHITE,
-    fontSize: 20,
-    fontFamily: Fonts.MEDIUM,
-    textAlign: 'center'
+  divider: {
+    alignSelf: 'stretch',
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.LIGHT_GRAY,
+    marginBottom: 10
   },
   doctorView: {
     flexDirection: 'row',
-    padding: 20,
-    backgroundColor: Colors.WHITE
+    paddingVertical: 10,
+    paddingHorizontal: 20
   },
   doctorImage: {
     width: 70,
@@ -142,12 +129,25 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: Fonts.LIGHT,
     marginBottom: 3
+  },
+  doctorStarsView: {
+    flexDirection: 'row',
+    marginBottom: 3
+  },
+  notesText: {
+    color: Colors.DARK_GRAY,
+    fontSize: 13,
+    fontFamily: Fonts.LIGHT,
+    marginBottom: 3
+  },
+  greenStarIcon: {
+    color: Colors.GREEN,
+    fontSize: 20,
+    marginRight: 2
+  },
+  grayStarIcon: {
+    color: Colors.LIGHT_GRAY,
+    fontSize: 20,
+    marginRight: 2
   }
 })
-
-const mapStateToProps = (state) => {
-  var { token, patient, doctor, appointments } = state;
-  return { token, patient, doctor, appointments };
-};
-
-export default connect(mapStateToProps)(DoctorRatingsScreen);
