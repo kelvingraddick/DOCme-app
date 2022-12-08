@@ -499,7 +499,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
+  DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: aaeaf388755e4f29cd74acbc9e3b8da6d807c37f
   FBReactNativeSpec: 118d0d177724c2d67f08a59136eb29ef5943ec75
   Firebase: 5719b4f965f76643241a1bb8244483ff6117db39
@@ -512,7 +512,7 @@ SPEC CHECKSUMS:
   FirebaseMLVision: 3cf6158ab38b2059ccf8bf785041086bfa06da14
   FirebaseMLVisionTextModel: addde256cfe0ba6b6e5626ebcef13932dbd811bc
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
-  glog: 1f3da668190260b06b429bb211bfbee5cd790c28
+  glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   GoogleAPIClientForREST: 2d4140915e2ec6d1bcb39c9df4a534c75706c595
   GoogleDataTransport: f56af7caa4ed338dc8e138a5d7c5973e66440833
   GoogleToolboxForMac: 8bef7c7c5cf7291c687cf5354f39f9db6399ad34
