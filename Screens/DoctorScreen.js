@@ -187,7 +187,10 @@ export default class DoctorScreen extends Component {
       if (availabilityStartTime && availabilityEndTime) {
         var time = Moment(availabilityStartTime);
         while(time.isBefore(availabilityEndTime)) {
-          if (!breakStartTime || !breakEndTime || (!time.isSame(breakStartTime) && !time.isBetween(breakStartTime, breakEndTime))) { 
+          if (
+              (Moment(time).isAfter(Moment())) && // check if time has not already passed
+              (!breakStartTime || !breakEndTime || (!time.isSame(breakStartTime) && !time.isBetween(breakStartTime, breakEndTime)))  // check if outside of break time
+            ) { 
             times.push(Moment(time)); 
           }
           time.add(30, 'minutes');
