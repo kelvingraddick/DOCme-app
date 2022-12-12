@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import ImagePicker from 'react-native-image-picker';
 import { RNS3 } from 'react-native-s3-upload';
 import { AWS_ACCESS_KEY_ID, AWS_ACCESS_KEY_SECRET } from 'react-native-dotenv';
+import Logout from '../Helpers/Logout';
 import ModelHeader from '../Components/ModalHeader';
 import CustomSafeAreaView from '../Components/CustomSafeAreaView';
 import Genders from '../Constants/Genders';
@@ -147,20 +148,29 @@ class EditAccountScreen extends Component {
                   </TouchableOpacity>
                 </View>
               }
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => this.onSaveButtonTapped()}
-                disabled={this.state.isLoading}
-                underlayColor='#fff'>
-                {!this.state.isLoading && (
-                  <Text style={styles.buttonText}>Save Changes</Text>
-                )}
-                {this.state.isLoading && (
-                  <ActivityIndicator size="small" color="#ffffff" />
-                )}
-              </TouchableOpacity>
+              {!this.state.isLoading && (
+                <>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => this.onSaveButtonTapped()}
+                    disabled={this.state.isLoading}
+                    underlayColor='#fff'>
+                    <Text style={styles.buttonText}>Save Changes</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.deleteButton]}
+                    onPress={() => this.onDeleteButtonTapped()}
+                    disabled={this.state.isLoading}
+                    underlayColor='#fff'>
+                    <Text style={styles.deleteButtonText}>Delete Account</Text>
+                  </TouchableOpacity>
+                </>
+              )}
               {this.state.errorMessage && (
                 <Text style={styles.errorText}>{this.state.errorMessage}</Text>
+              )}
+              {this.state.isLoading && (
+                <ActivityIndicator size="small" color="#ffffff" />
               )}
             </View>
           </View>
@@ -297,6 +307,52 @@ class EditAccountScreen extends Component {
     }
   }
 
+  async onDeleteButtonTapped() {
+    let that = this;
+    Alert.alert(
+      "Delete account?",
+      (that.props.patient ? 'This cannot be undone. Are you sure?' : 'Your account won\'t show up for potential patients in this app anymore. This cannot be undone. Are you sure?'),
+      [
+        {
+          text: "No",
+          onPress: () => {},
+          style: "cancel"
+        },
+        {
+          text: "Yes",
+          onPress: async () => {
+            that.setState({ isLoading: true });
+
+            var response = await that.delete();
+            if (response) {
+              if (response.isSuccess) {
+                Alert.alert(
+                  "Success!",
+                  "The account was deleted.",
+                  [{ text: "OK" }],
+                  { cancelable: false }
+                );
+                await Logout.logoutWithDispatch(that.props.dispatch);
+                that.props.navigation.goBack();
+              } else {
+                that.setState({ errorMessage: response.errorMessage });
+              }
+              that.setState({ isLoading: false });
+            } else {
+              Alert.alert(
+                "There was an error deleting",
+                "Please update entries and try again",
+                [{ text: "OK" }],
+                { cancelable: false }
+              );
+              that.setState({ isLoading: false });
+            }
+          }
+        }
+      ]
+    );
+  }
+
   async validate() {
     var errorMessage = null;
     var emailAddressRegex = /^\w+([\.\-\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -367,6 +423,31 @@ class EditAccountScreen extends Component {
       return undefined;
     });
   }
+
+  async delete() {
+    var url = 'http://www.docmeapp.com/' + (this.props.patient ? ('patient/' + this.props.patient.id) : ('doctor/' + this.props.doctor.id));
+    return fetch(url, {
+      method: 'DELETE',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.props.token
+      }
+    })
+    .then((response) => { 
+      if (response.status == 200) {
+        return response.json()
+        .then((responseJson) => {
+          return responseJson;
+        })
+      } else {
+        return undefined;
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      return undefined;
+    });
+  }
 };
 
 const styles = StyleSheet.create({
@@ -411,6 +492,20 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: Colors.WHITE,
+    fontSize: 20,
+    fontFamily: Fonts.MEDIUM,
+    textAlign: 'center'
+  },
+  deleteButton: {
+    fontSize: 15,
+    padding: 17,
+    backgroundColor: Colors.DARK_BLUE,
+    borderRadius: 5,
+    marginTop: 10,
+    marginBottom: 10
+  },
+  deleteButtonText: {
+    color: Colors.RED,
     fontSize: 20,
     fontFamily: Fonts.MEDIUM,
     textAlign: 'center'
