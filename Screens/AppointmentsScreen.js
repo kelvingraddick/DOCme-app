@@ -52,8 +52,9 @@ class AppointmentsScreen extends Component {
               }
             </View>
           }
-          { (this.props.patient || this.props.doctor) && this.props.appointments.length > 0 &&
+          { this.props.patient && this.props.appointments.length > 0 &&
             <FlatList
+                ListHeaderComponent={<Image style={styles.backgroundImage} source={require('../Images/background-2.jpg')} />}
                 data={this.props.appointments}
                 keyExtractor={item => item.id.toString()}
                 renderItem={({item}) => 
@@ -70,6 +71,28 @@ class AppointmentsScreen extends Component {
                         }
                         <Text style={styles.doctorEmailAddressText}>{Moment(item.timestamp).isBefore(Moment()) ? '(Past)' : '' } {Moment(item.timestamp).format('dddd, MMMM Do') + ', ' + Moment(item.timestamp).format('h:mma')}</Text>
                         <Text style={styles.doctorEmailAddressText}>{item.specialty.name}</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                }
+              />
+          }
+          { this.props.doctor && this.props.appointments.length > 0 &&
+            <FlatList
+                ListHeaderComponent={<Image style={styles.backgroundImage} source={require('../Images/background-2.jpg')} />}
+                data={this.props.appointments}
+                keyExtractor={item => item.id.toString()}
+                renderItem={({item}) => 
+                  <TouchableOpacity onPress={() => Moment(item.timestamp).isAfter(Moment()) ? this.props.navigation.navigate( 'EditAppointmentScreen', { id: item.id }) : null}>
+                    <View style={styles.doctorView}> 
+                      <Image
+                        style={styles.doctorImage}
+                        source={{uri: item.patient.imageUrl ? item.patient.imageUrl : ''}}
+                      />
+                      <View style={styles.doctorDetailsView}>  
+                        <Text style={styles.doctorNameText}>{item.patient.firstName} {item.patient.lastName}</Text>
+                        <Text style={styles.doctorEmailAddressText}>{Moment(item.timestamp).isBefore(Moment()) ? '(Past)' : '' } {Moment(item.timestamp).format('dddd, MMMM Do') + ', ' + Moment(item.timestamp).format('h:mma')}</Text>
+                        <Text style={styles.doctorEmailAddressText}>Speciality: {item.specialty.name}</Text>
                       </View>
                     </View>
                   </TouchableOpacity>
