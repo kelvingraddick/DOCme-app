@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ScrollView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, Alert, Modal, ActivityIndicator, FlatList, TouchableHighlight } from 'react-native';
+import { ScrollView, StyleSheet, View, StatusBar, Text, TextInput, TouchableOpacity, Alert, Modal, ActivityIndicator, FlatList, TouchableHighlight, Image } from 'react-native';
 import Moment from 'moment';
 import DoctorRowView from '../Components/DoctorRowView';
 import ModelHeader from '../Components/ModalHeader';
 import CustomSafeAreaView from '../Components/CustomSafeAreaView';
+import Genders from '../Constants/Genders';
+import Races from '../Constants/Races';
 import Actions from '../Constants/Actions';
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
@@ -51,8 +53,32 @@ class EditAppointmentScreen extends Component {
         <StatusBar barStyle='dark-content' />
         <ScrollView>
           <View style={styles.container}>
-            { this.state.appointment &&
+            { this.props.patient && this.state.appointment &&
               <DoctorRowView doctor={this.state.appointment.doctor} />
+            }
+            { this.props.doctor && this.state.appointment &&
+              <>
+                <View style={styles.doctorView}> 
+                  <Image
+                    style={styles.doctorImage}
+                    source={{uri: this.state.appointment.patient.imageUrl ? this.state.appointment.patient.imageUrl : ''}}
+                  />
+                  <View style={styles.doctorDetailsView}>  
+                    <Text style={styles.doctorNameText}>{this.state.appointment.patient.firstName} {this.state.appointment.patient.lastName}</Text>
+                    <Text style={styles.doctorEmailAddressText}>{this.state.appointment.patient.emailAddress} {this.state.appointment.patient.phoneNumber}</Text>
+                  </View>
+                </View>
+                <View style={styles.divider}></View>
+                { (this.state.appointment.patient.gender || this.state.appointment.patient.race) &&
+                  <>
+                    <Text style={styles.sectionTitleText}>Additional Information</Text>
+                    <Text style={[styles.doctorDescriptionText, { alignSelf: 'flex-start'}]}>
+                      Gender - { Genders.find(x => { return x.id === this.state.appointment.patient.gender })?.name || 'Not set'}{'\n'}
+                      Race - { Races.find(x => { return x.id === this.state.appointment.patient.race })?.name || 'Not set'}
+                    </Text>
+                  </>
+                }
+              </>
             }
             { this.state.appointment &&
               <View style={styles.header}>
@@ -395,6 +421,51 @@ const styles = StyleSheet.create({
     fontSize: 15,
     borderBottomColor: Colors.LIGHT_GRAY,
     borderBottomWidth: 1
+  },
+  doctorView: {
+    flexDirection: 'row',
+    padding: 20
+  },
+  doctorImage: {
+    width: 70,
+    height: 70,
+    borderRadius: 35
+  },
+  doctorDetailsView: {
+    paddingLeft: 15,
+    justifyContent: 'center'
+  },
+  doctorNameText: {
+    color: Colors.DARK_BLUE,
+    fontSize: 15,
+    fontFamily: Fonts.MEDIUM,
+    marginBottom: 3
+  },
+  doctorEmailAddressText: {
+    color: Colors.DARK_BLUE,
+    fontSize: 13,
+    fontFamily: Fonts.LIGHT,
+    marginBottom: 3
+  },
+  doctorDescriptionText: {
+    color: Colors.DARK_GRAY,
+    fontSize: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 15
+  },
+  divider: {
+    alignSelf: 'stretch',
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.LIGHT_GRAY,
+    marginBottom: 10
+  },
+  sectionTitleText: {
+    color: Colors.DARK_BLUE,
+    fontSize: 17,
+    fontFamily: Fonts.BOLD,
+    marginBottom: 12,
+    alignSelf: 'center'
   }
 })
 
