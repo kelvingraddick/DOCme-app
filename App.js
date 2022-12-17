@@ -24,6 +24,7 @@ import SignUpScreen from './Screens/SignUpScreen';
 import EditAccountScreen from './Screens/EditAccountScreen';
 import EditPracticeScreen from './Screens/EditPracticeScreen';
 import EditScheduleScreen from './Screens/EditScheduleScreen';
+import EditSpecialtiesScreen from './Screens/EditSpecialtiesScreen';
 import ChangePasswordScreen from './Screens/ChangePasswordScreen';
 import CheckoutScreen from './Screens/CheckoutScreen';
 import WebViewScreen from './Screens/WebViewScreen';
@@ -73,6 +74,7 @@ const MyAccountScreenStackNavigator = createStackNavigator(
     EditAccountScreen: EditAccountScreen,
     EditPracticeScreen: EditPracticeScreen,
     EditScheduleScreen: EditScheduleScreen,
+    EditSpecialtiesScreen: EditSpecialtiesScreen,
     ChangePasswordScreen: ChangePasswordScreen,
     WebViewScreen: WebViewScreen,
     ForgotPasswordScreen: ForgotPasswordScreen

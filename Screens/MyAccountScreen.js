@@ -25,6 +25,7 @@ class MyAccountScreen extends Component {
     'Change Password': { icon: 'lock', visible: 'signed-in', action: () => { this.props.navigation.navigate('ChangePasswordScreen'); } },
     'Edit Practice': { icon: 'business', visible: 'signed-in-doctor', action: () => { this.props.navigation.navigate('EditPracticeScreen'); } },
     'Edit Schedule': { icon: 'calendar', visible: 'signed-in-doctor', action: () => { this.props.navigation.navigate('EditScheduleScreen'); } },
+    'Edit Specialties': { icon: 'ribbon', visible: 'signed-in-doctor', action: () => { this.props.navigation.navigate('EditSpecialtiesScreen'); } },
     'Terms of use': { icon: 'information-circle', visible: 'always', action: () => { this.props.navigation.navigate('WebViewScreen', { title: 'Terms of use', url: 'http://app.docmeapp.com/termsofuse/' }); } },
     'Privacy Policy': { icon: 'eye-off', visible: 'always', action: () => { this.props.navigation.navigate('WebViewScreen', { title: 'Privacy Policy', url: 'http://app.docmeapp.com/privacypolicy/' }); } },
     'Give app feedback': { icon: 'ribbon', visible: 'always', action: () => { Linking.openURL('mailto:faguebor@gmail.com?subject=DOCme%20-%20Give%20app%20feedback%21&body=Please%20share%20your%20feedback%20-%20be%20sure%20to%20include%20your%20account%20info%2C%20screenshots%2C%20and%2For%20any%20other%20information%20that%20could%20be%20useful.'); } },
