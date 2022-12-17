@@ -14,7 +14,6 @@ class MyAccountScreen extends Component {
   };
 
   state = {
-    errorMessage: null,
     isLoading: false
   };
 
@@ -32,18 +31,6 @@ class MyAccountScreen extends Component {
     'Share this app': { icon: 'share', visible: 'always', action: () => {  } },
     'Log out': { icon: 'log-out', visible: 'signed-in', action: () => { this.signOut(); } }
   };
-
-  async componentDidMount() {
-    this.setErrorMessage();
-  }
-
-  async componentDidUpdate(newProps) {
-    if (newProps.patient !== this.props.patient ||
-        newProps.doctor !== this.props.doctor ||
-        newProps.token !== this.props.token) {
-      this.setErrorMessage();
-    }
-  }
 
   render() {
     return (
@@ -73,16 +60,34 @@ class MyAccountScreen extends Component {
             )}
           </View>
         }
-        { !this.state.isLoading && this.state.errorMessage &&
+        { !this.state.isLoading && (this.props.doctor != null && !['trialing', 'active'].includes(this.props.doctor.stripeSubscriptionStatus || '')) &&
           <TouchableOpacity style={styles.errorView} onPress={() => this.props.navigation.navigate('CheckoutScreen')}>
-            <Icon style={styles.errorIcon} name='alert' />
-            <Text style={styles.errorText}>{this.state.errorMessage}</Text>
+            <Icon style={styles.errorIcon} name='card' />
+            <Text style={styles.errorText}>Doctor <Text style={{fontWeight: "bold"}}>subscription</Text> inactive! Tap to <Text style={{ textDecorationLine: "underline", fontStyle: "italic" }}>add payment</Text></Text>
           </TouchableOpacity>
         }
         { !this.state.isLoading && (this.props.doctor != null && ['trialing', 'active'].includes(this.props.doctor.stripeSubscriptionStatus || '')) &&
           <TouchableOpacity style={styles.subscriptionView} onPress={() => this.confirmCancelSubscription()}>
             <Text style={styles.subscriptionText}>Doctor subscription is <Text style={{fontWeight: "bold"}}>{this.props.doctor.stripeSubscriptionStatus}</Text> <Icon style={styles.subscriptionIcon} name='checkmark-circle' /> - </Text>
             <Text style={[styles.subscriptionText, { alignSelf: 'flex-end' }]}><Text style={{ textDecorationLine: "underline", fontStyle: "italic" }}>Cancel?</Text></Text>
+          </TouchableOpacity>
+        }
+        { !this.state.isLoading && (this.props.doctor != null && !this.props.doctor.practice) &&
+          <TouchableOpacity style={styles.errorView} onPress={this.options['Edit Practice'].action}>
+            <Icon style={styles.errorIcon} name={this.options['Edit Practice'].icon} />
+            <Text style={styles.errorText}>No <Text style={{fontWeight: "bold"}}>location</Text> entered! Tap to <Text style={{ textDecorationLine: "underline", fontStyle: "italic" }}>edit practice</Text></Text>
+          </TouchableOpacity>
+        }
+        { !this.state.isLoading && (this.props.doctor != null && !this.props.doctor.schedule) &&
+          <TouchableOpacity style={styles.errorView} onPress={this.options['Edit Schedule'].action}>
+            <Icon style={styles.errorIcon} name={this.options['Edit Schedule'].icon} />
+            <Text style={styles.errorText}>No <Text style={{fontWeight: "bold"}}>availability</Text> set! Tap to <Text style={{ textDecorationLine: "underline", fontStyle: "italic" }}>set schedule</Text></Text>
+          </TouchableOpacity>
+        }
+        { !this.state.isLoading && (this.props.doctor != null && (!this.props.doctor.specialties || this.props.doctor.specialties.length === 0)) &&
+          <TouchableOpacity style={styles.errorView} onPress={this.options['Edit Specialties'].action}>
+            <Icon style={styles.errorIcon} name={this.options['Edit Specialties'].icon} />
+            <Text style={styles.errorText}>No <Text style={{fontWeight: "bold"}}>specialties</Text> set! Tap to <Text style={{ textDecorationLine: "underline", fontStyle: "italic" }}>set specialties</Text></Text>
           </TouchableOpacity>
         }
         { this.state.isLoading &&
@@ -142,23 +147,18 @@ class MyAccountScreen extends Component {
           onPress: async () => {
             that.setState({ isLoading: true });
             var response = await that.cancelSubscription();
-            if (response) {
-              if (response.isSuccess) {
-                Alert.alert(
-                  "Subscription cancelled.",
-                  "You can activate a new subscription at any time on the My Account tab.",
-                  [{ text: "OK" }],
-                  { cancelable: false }
-                );
-                that.props.dispatch({ type: Actions.SET_DOCTOR, doctor: response.doctor || null });
-              } else {
-                that.setState({ errorMessage: response.errorMessage });
-              }
-              that.setState({ isLoading: false });
+            if (response && response.isSuccess) {
+              Alert.alert(
+                "Subscription cancelled.",
+                "You can activate a new subscription at any time on the My Account tab.",
+                [{ text: "OK" }],
+                { cancelable: false }
+              );
+              that.props.dispatch({ type: Actions.SET_DOCTOR, doctor: response.doctor || null });
             } else {
               Alert.alert(
                 "There was an error saving changes",
-                "Please update entries and try again",
+                (response.errorMessage && response.errorMessage.length > 0) ? response.errorMessage : "Please update entries and try again",
                 [{ text: "OK" }],
                 { cancelable: false }
               );
@@ -192,14 +192,6 @@ class MyAccountScreen extends Component {
       console.error(error);
       return undefined;
     });
-  }
-
-  setErrorMessage() {
-    if (this.props.doctor != null && !['trialing', 'active'].includes(this.props.doctor.stripeSubscriptionStatus || '')) {
-      this.setState({ errorMessage: 'Doctor subscription inactive. Tap to add payment!' });
-    } else {
-      this.setState({ errorMessage: null });
-    }
   }
 };
 
@@ -237,6 +229,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 15,
+    marginTop: 1,
     backgroundColor: Colors.RED
   },
   errorIcon: {
