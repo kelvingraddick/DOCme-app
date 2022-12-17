@@ -84,10 +84,10 @@ class EditAppointmentScreen extends Component {
               <View style={styles.header}>
                 <Text style={styles.titleText}>Date and Time</Text>
                 <Text style={styles.subTitleText}>{Moment(this.state.appointment.timestamp).format('dddd, MMMM Do') + ', ' + Moment(this.state.appointment.timestamp).format('h:mma')}</Text>
-                <Text style={styles.titleText}>Reason / Speciality</Text>
+                <Text style={styles.titleText}>Reason / Specialty</Text>
                 <TextInput
                   style={styles.textBox}
-                  placeholder='Reason / Speciality'
+                  placeholder='Reason / Specialty'
                   placeholderTextColor={Colors.MEDIUM_BLUE}
                   value={this.state.selectedSpecialtyOption.name}
                   onFocus={() => this.setState({isSpecialtySearchModalVisible: true})}
@@ -262,7 +262,7 @@ class EditAppointmentScreen extends Component {
   async validate() {
     var errorMessage = null;
     if (!this.state.appointment.specialty.id) {
-      errorMessage = 'Must select a speciality.';
+      errorMessage = 'Must select a specialty.';
     }
     if ((!this.props.patient && !this.props.doctor) || !this.props.token) {
       errorMessage = 'Must sign in or sign up to update.';

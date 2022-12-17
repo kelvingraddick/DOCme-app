@@ -92,7 +92,7 @@ class AppointmentsScreen extends Component {
                       <View style={styles.doctorDetailsView}>  
                         <Text style={styles.doctorNameText}>{item.patient.firstName} {item.patient.lastName}</Text>
                         <Text style={styles.doctorEmailAddressText}>{Moment(item.timestamp).isBefore(Moment()) ? '(Past)' : '' } {Moment(item.timestamp).format('dddd, MMMM Do') + ', ' + Moment(item.timestamp).format('h:mma')}</Text>
-                        <Text style={styles.doctorEmailAddressText}>Speciality: {item.specialty.name}</Text>
+                        <Text style={styles.doctorEmailAddressText}>Specialty: {item.specialty.name}</Text>
                       </View>
                     </View>
                   </TouchableOpacity>

@@ -33,7 +33,7 @@ class BookAppointmentScreen extends Component {
               <Text style={styles.titleText}>Speciality</Text>
               <TextInput
                 style={styles.textBox}
-                placeholder='Speciality'
+                placeholder='Specialty'
                 placeholderTextColor={Colors.MEDIUM_BLUE}
                 value={this.state.selectedSpecialtyOption.name}
                 onFocus={() => this.setState({isSpecialtySearchModalVisible: true})}
@@ -168,7 +168,7 @@ class BookAppointmentScreen extends Component {
   async validate() {
     var errorMessage = null;
     if (!this.state.selectedSpecialtyOption.id) {
-      errorMessage = 'Must select a speciality.';
+      errorMessage = 'Must select a specialty.';
     }
     if (!this.props.patient || !this.props.token) {
       errorMessage = 'Must sign in or sign up as a patient to book.';
