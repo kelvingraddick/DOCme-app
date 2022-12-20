@@ -19,7 +19,7 @@ class EditSpecialtiesScreen extends Component {
   };
 
   async componentDidMount() {
-    this.state.selectedSpecialtyOptionIds = this.props.doctor.specialties.map(specialty => { return specialty.id; });
+    this.setState({selectedSpecialtyOptionIds: this.props.doctor.specialties.map(specialty => { return specialty.id; })});
     await this.getSpecialtyOptions();
   }
 

@@ -158,7 +158,7 @@ class MyAccountScreen extends Component {
             } else {
               Alert.alert(
                 "There was an error saving changes",
-                (response.errorMessage && response.errorMessage.length > 0) ? response.errorMessage : "Please update entries and try again",
+                (response && response.errorMessage) || "Please update entries and try again",
                 [{ text: "OK" }],
                 { cancelable: false }
               );
