@@ -30,7 +30,7 @@ class BookAppointmentScreen extends Component {
             <View style={styles.header}>
               <Text style={styles.titleText}>Date and time</Text>
               <Text style={styles.subTitleText}>{this.props.navigation.state.params.date.format('dddd, MMMM Do') + ', ' + this.props.navigation.state.params.time.format('h:mma')}</Text>
-              <Text style={styles.titleText}>Speciality</Text>
+              <Text style={styles.titleText}>Specialty</Text>
               <TextInput
                 style={styles.textBox}
                 placeholder='Specialty'
