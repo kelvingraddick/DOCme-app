@@ -399,7 +399,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = HCQ2A438C7;
+						DevelopmentTeam = 75C7GYAWF7;
 						ProvisioningStyle = Manual;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -413,7 +413,7 @@
 					};
 					B68BAB462930BEE30018643F = {
 						CreatedOnToolsVersion = 13.4.1;
-						DevelopmentTeam = HCQ2A438C7;
+						DevelopmentTeam = 75C7GYAWF7;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -835,10 +835,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DOCmeApp/DOCmeApp.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 36;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = HCQ2A438C7;
+				DEVELOPMENT_TEAM = 75C7GYAWF7;
 				INFOPLIST_FILE = DOCmeApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -847,7 +848,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wavelinkllc.docme;
+				PRODUCT_BUNDLE_IDENTIFIER = com.docmeapp.docme;
 				PRODUCT_NAME = DOCmeApp;
 				PROVISIONING_PROFILE_SPECIFIER = "DOCme Provisioning Profile (Dev)";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -861,8 +862,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = DOCmeApp/DOCmeApp.entitlements;
-				CURRENT_PROJECT_VERSION = 36;
-				DEVELOPMENT_TEAM = HCQ2A438C7;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 75C7GYAWF7;
 				INFOPLIST_FILE = DOCmeApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -871,7 +872,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wavelinkllc.docme;
+				PRODUCT_BUNDLE_IDENTIFIER = com.docmeapp.docme;
 				PRODUCT_NAME = DOCmeApp;
 				PROVISIONING_PROFILE_SPECIFIER = "DOCme Provisioning Profile (App Store)";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1015,8 +1016,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Apple Development: Kelvin Graddick (AJ9V2TFVLP)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Kelvin Graddick (AJ9V2TFVLP)";
+				CODE_SIGN_IDENTITY = "Apple Development: Kelvin Graddick (WBQ6GU9DS8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Kelvin Graddick (WBQ6GU9DS8)";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1069,8 +1070,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Apple Distribution: Wave Link, LLC (HCQ2A438C7)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution: Wave Link, LLC (HCQ2A438C7)";
+				CODE_SIGN_IDENTITY = "Apple Distribution: iAmDrA LLC (75C7GYAWF7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution: iAmDrA LLC (75C7GYAWF7)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1101,10 +1102,11 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development: Kelvin Graddick (WBQ6GU9DS8)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = HCQ2A438C7;
+				DEVELOPMENT_TEAM = 75C7GYAWF7;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
@@ -1115,7 +1117,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wavelinkllc.docme.OneSignalNotificationServiceExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.docmeapp.docme.OneSignalNotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "DOCme Provisioning Profile (OneSignal / Dev)";
 				SKIP_INSTALL = YES;
@@ -1140,7 +1142,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = HCQ2A438C7;
+				DEVELOPMENT_TEAM = 75C7GYAWF7;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
@@ -1150,7 +1152,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wavelinkllc.docme.OneSignalNotificationServiceExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.docmeapp.docme.OneSignalNotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "DOCme Provisioning Profile (OneSignal / App Store)";
 				SKIP_INSTALL = YES;
