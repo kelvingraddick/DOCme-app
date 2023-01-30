@@ -19,7 +19,9 @@ class CheckoutScreen extends Component {
         <View style={styles.container}>  
           <WebView
             originWhitelist={['*']}
-            source={{ html: `
+            source={{ 
+              baseUrl: 'https://app.docmeapp.com',
+              html: `
               <!DOCTYPE html>
               <html>
                 <head>
@@ -94,7 +96,7 @@ class CheckoutScreen extends Component {
     }
     this.props.navigation.popToTop();
   };
-  onCanceledHandler = () => { /* TODO: do something */ };
+  onCanceledHandler = () => { this.props.navigation.popToTop(); };
 
   onLoadStart = async (syntheticEvent) => {
     const { nativeEvent } = syntheticEvent;
