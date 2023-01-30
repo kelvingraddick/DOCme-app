@@ -17,7 +17,7 @@
     "buffer": "^5.4.3",
     "moment": "^2.24.0",
     "react": "16.9.0",
-    "react-native": "0.61.5",
+    "react-native": "0.62.3",
     "react-native-date-picker": "^3.3.1",
     "react-native-document-scanner": "^1.4.2",
     "react-native-document-scanner-plugin": "^0.5.1",
