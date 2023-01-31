@@ -40,13 +40,13 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>DOCme would like access to the camera so that you can take a photo.</string>
+	<string>DOCme would like access to the camera for taking a photo to use in your profile picture, or for scanning in your health insurance card to find a doctor.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>DOCme would like to use your location to find doctors near you.</string>
+	<string>DOCme would like to use your location to assist in finding doctors and practices near you.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>DOCme would like access to the photo library for saving your photos.</string>
+	<string>DOCme would like access to the photo library for saving your profile and health insurance card photos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>DOCme would like access to the photo library so that you can select a photo.</string>
+	<string>DOCme would like access to the photo library for taking a photo to use in your profile picture, or for scanning in your health insurance card to find a doctor.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Ionicons.ttf</string>
