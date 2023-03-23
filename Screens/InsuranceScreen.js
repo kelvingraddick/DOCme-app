@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, Modal, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, Modal, FlatList, ActivityIndicator, Platform, PermissionsAndroid } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import DocumentScanner from 'react-native-document-scanner-plugin';
 import vision from '@react-native-firebase/ml-vision';
@@ -85,6 +85,13 @@ export default class InsuranceScreen extends Component {
 
   async onCameraButtonTapped(isFrontImage) {
     this.setState({ isLoading: true });
+
+    if (Platform.OS === 'android' &&
+        await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA) !== PermissionsAndroid.RESULTS.GRANTED) {
+      Alert.alert('Error', 'User must grant camera permissions to use document scanner.');
+      this.setState({ isLoading: false });
+      return;
+    }
 
     const { scannedImages } = await DocumentScanner.scanDocument({
       maxNumDocuments: 1
