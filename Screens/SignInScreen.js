@@ -42,7 +42,7 @@ class SignInScreen extends Component {
                 style={styles.textBox}
                 placeholder='Email Address'
                 placeholderTextColor={Colors.MEDIUM_BLUE}
-                autoCompleteType='email'
+                autoComplete='email'
                 autoCapitalize='none'
                 value={this.state.emailAddress}
                 onChangeText={text => this.setState({emailAddress: text})}
@@ -51,7 +51,7 @@ class SignInScreen extends Component {
                 style={styles.textBox}
                 placeholder='Password'
                 placeholderTextColor={Colors.MEDIUM_BLUE}
-                autoCompleteType='password'
+                autoComplete='password'
                 autoCapitalize='none'
                 value={this.state.password}
                 onChangeText={text => this.setState({password: text})}

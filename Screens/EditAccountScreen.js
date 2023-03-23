@@ -58,7 +58,7 @@ class EditAccountScreen extends Component {
                     style={styles.textBox}
                     placeholder='Email Address'
                     placeholderTextColor={Colors.MEDIUM_BLUE}
-                    autoCompleteType='email'
+                    autoComplete='email'
                     autoCapitalize='none'
                     defaultValue={this.props.patient.emailAddress}
                     onChangeText={text => this.props.patient.emailAddress = text}
@@ -113,7 +113,7 @@ class EditAccountScreen extends Component {
                     style={styles.textBox}
                     placeholder='Email Address'
                     placeholderTextColor={Colors.MEDIUM_BLUE}
-                    autoCompleteType='email'
+                    autoComplete='email'
                     autoCapitalize='none'
                     defaultValue={this.props.doctor.emailAddress}
                     onChangeText={text => this.props.doctor.emailAddress = text}

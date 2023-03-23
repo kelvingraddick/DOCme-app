@@ -64,7 +64,7 @@ class EditPracticeScreen extends Component {
                   style={styles.textBox}
                   placeholder='Email Address'
                   placeholderTextColor={Colors.MEDIUM_BLUE}
-                  autoCompleteType='email'
+                  autoComplete='email'
                   autoCapitalize='none'
                   defaultValue={this.props.doctor.practice.emailAddress}
                   onChangeText={text => this.props.doctor.practice.emailAddress = text}
@@ -73,7 +73,7 @@ class EditPracticeScreen extends Component {
                   style={styles.textBox}
                   placeholder='Phone Number'
                   placeholderTextColor={Colors.MEDIUM_BLUE}
-                  autoCompleteType='phone'
+                  autoComplete="tel"
                   autoCapitalize='none'
                   defaultValue={this.props.doctor.practice.phoneNumber}
                   onChangeText={text => this.props.doctor.practice.phoneNumber = text}
@@ -82,7 +82,7 @@ class EditPracticeScreen extends Component {
                   style={styles.textBox}
                   placeholder='Fax Number'
                   placeholderTextColor={Colors.MEDIUM_BLUE}
-                  autoCompleteType='phone'
+                  autoComplete="tel"
                   autoCapitalize='none'
                   defaultValue={this.props.doctor.practice.faxNumber}
                   onChangeText={text => this.props.doctor.practice.faxNumber = text}

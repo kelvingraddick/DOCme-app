@@ -31,7 +31,7 @@ class ChangePasswordScreen extends Component {
                 style={styles.textBox}
                 placeholder='Current Password'
                 placeholderTextColor={Colors.MEDIUM_BLUE}
-                autoCompleteType='password'
+                autoComplete='password'
                 autoCapitalize='none'
                 value={this.state.currentPassword}
                 onChangeText={text => this.setState({currentPassword: text})}
@@ -40,7 +40,7 @@ class ChangePasswordScreen extends Component {
                 style={styles.textBox}
                 placeholder='Password'
                 placeholderTextColor={Colors.MEDIUM_BLUE}
-                autoCompleteType='password'
+                autoComplete='password-new'
                 autoCapitalize='none'
                 value={this.state.newPassword}
                 onChangeText={text => this.setState({newPassword: text})}
@@ -49,7 +49,7 @@ class ChangePasswordScreen extends Component {
                 style={styles.textBox}
                 placeholder='Confirm password'
                 placeholderTextColor={Colors.MEDIUM_BLUE}
-                autoCompleteType='password'
+                autoComplete='password-new'
                 autoCapitalize='none'
                 value={this.state.newPasswordConfirm}
                 onChangeText={text => this.setState({newPasswordConfirm: text})}
