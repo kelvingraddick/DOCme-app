@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, Modal, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, StatusBar, Text, Image, TextInput, TouchableOpacity, TouchableHighlight, Modal, FlatList, ActivityIndicator, Platform } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Colors from '../Constants/Colors';
 import Fonts from '../Constants/Fonts';
@@ -179,9 +179,10 @@ export default class SearchScreen extends Component {
 
 const styles = StyleSheet.create({
   logoText: {
+    flex: 1,
     height: 45,
     width: 100,
-    marginTop: -11,
+    marginTop: Platform.OS === 'android' ? 0 : -11,
     resizeMode: 'contain'
   },
   container: {

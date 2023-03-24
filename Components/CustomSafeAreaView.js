@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, Platform } from 'react-native';
 
 export default class CustomSafeAreaView extends Component {
   render() {
@@ -14,7 +14,7 @@ export default class CustomSafeAreaView extends Component {
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
-    marginTop: -25,
-    marginBottom: -15
+    marginTop: Platform.OS === 'android' ? 0 : -25,
+    marginBottom: Platform.OS === 'android' ? 0 : -15
   }
 })
