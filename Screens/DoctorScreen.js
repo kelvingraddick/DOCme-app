@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, StatusBar, Image, Text, Button, FlatList } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, View, ScrollView, StatusBar, Image, Text, FlatList, TouchableOpacity } from 'react-native';
 import MapView from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 import { Marker } from 'react-native-maps';
